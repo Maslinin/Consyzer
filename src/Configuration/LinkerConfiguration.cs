@@ -8,8 +8,6 @@ namespace Consyzer.Configuration
     {
         public static string ConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConsyzerConfig.json");
 
-        public string PathToAnalyze { get; set; }
-
         /// <summary>
         /// Gets or sets a list of binary file extensions
         /// </summary>
