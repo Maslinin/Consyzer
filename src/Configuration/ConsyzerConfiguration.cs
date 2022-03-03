@@ -2,23 +2,28 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace Consyzer.Configuration
+namespace Consyzer.Config
 {
-    public sealed class LinkerConfiguration
+    public sealed class ConsyzerConfiguration
     {
-        public static string ConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConsyzerConfig.json");
+        /// <summary>
+        /// Gets the default location of the configuration file (executableFolder\ConsyzerConfig.json)
+        /// </summary>
+        public static string DefaultConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ConsyzerConfig.json");
 
         /// <summary>
         /// Gets or sets a list of binary file extensions
         /// </summary>
         public string[] BinaryFilesExtensions { get; set; }
 
+        private ConsyzerConfiguration() { }
+
         /// <summary>
         /// Reads the configuration file at the configPath path and deserializes it to the Configuration object
         /// </summary>
         /// <param name="configPath"></param>
         /// <returns> Deserialized LinkerConfiguration Instance </returns>
-        public static LinkerConfiguration LoadConfigFromFile(string configPath)
+        public static ConsyzerConfiguration LoadConfigFromFile(string configPath)
         {
             string configJson;
 
@@ -33,7 +38,7 @@ namespace Consyzer.Configuration
 
             try
             {
-                return JsonConvert.DeserializeObject<LinkerConfiguration>(configJson);
+                return JsonConvert.DeserializeObject<ConsyzerConfiguration>(configJson);
             }
             catch (Exception e)
             {
@@ -51,7 +56,7 @@ namespace Consyzer.Configuration
 
             try
             {
-                configContent = JsonConvert.SerializeObject(new LinkerConfiguration());
+                configContent = JsonConvert.SerializeObject(new ConsyzerConfiguration());
             }
             catch (Exception e)
             {

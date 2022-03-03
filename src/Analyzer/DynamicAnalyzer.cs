@@ -3,9 +3,13 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
+using ICSharpCode.Decompiler;
+using ICSharpCode.Decompiler.CSharp;
+using ICSharpCode.Decompiler.CSharp.Syntax;
+
 namespace Consyzer.Analyzer
 {
-    public class StaticAnalyzer
+    public class DynamicAnalyzer
     {
         public static IEnumerable<FileInfo> GetBinaryFilesName(string pathToBinaryFiles, string[] filesExtensions)
         {
@@ -29,6 +33,11 @@ namespace Consyzer.Analyzer
             {
                 throw new UnauthorizedAccessException($"You do not have read permissions in the specified folder: {pathToBinaryFiles}", e);
             }
+        }
+
+        public static SyntaxTree GetSyntaxTreeOfBinary(string pathToBinary)
+        {
+            return new CSharpDecompiler(pathToBinary, new DecompilerSettings()).DecompileModuleAndAssemblyAttributes();
         }
     }
 }

@@ -20,26 +20,38 @@ namespace Consyzer.Logger
 
         static NLogger()
         {
-            LogDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
-            if (!Directory.Exists(LogDirPath))
+            try
             {
-                Directory.CreateDirectory(LogDirPath);
+                LogDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+                if (!Directory.Exists(LogDirPath))
+                {
+                    Directory.CreateDirectory(LogDirPath);
+                }
+
+                string logFilePath = Path.Combine(LogDirPath, $"{DateTime.Now:MM.dd.yyyy}.txt");
+
+                var fileTarget = new NLog.Targets.FileTarget("ConsyzerLogger")
+                {
+                    FileName = logFilePath,
+                    DeleteOldFileOnStartup = false,
+                    Layout = "${message}"
+                };
+                var consoleTarget = new NLog.Targets.ConsoleTarget("ConsyzerLogger")
+                {
+                    Layout = "${message}"
+                };
+
+                var logConfig = new NLog.Config.LoggingConfiguration();
+                logConfig.AddRuleForAllLevels(fileTarget);
+                logConfig.AddRuleForAllLevels(consoleTarget);
+                LogManager.Configuration = logConfig;
+
+                Logger = LogManager.GetLogger("DLLConsyzerLogger");
             }
-
-            string logFilePath = Path.Combine(LogDirPath, $"{DateTime.Now:MM.dd.yyyy}.txt");
-
-            var fileTarget = new NLog.Targets.FileTarget("Consyzer")
+            catch(Exception e)
             {
-                FileName = logFilePath,
-                DeleteOldFileOnStartup = false,
-                Layout = "${message}"
-            };
-
-            var logConfig = new NLog.Config.LoggingConfiguration();
-            logConfig.AddRuleForAllLevels(fileTarget);
-            LogManager.Configuration = logConfig;
-
-            Logger = LogManager.GetLogger("DLLConsyzer");
+                throw new AggregateException("Error initializing static class fields", e);
+            }
         }
 
         /// <summary>
@@ -50,7 +62,7 @@ namespace Consyzer.Logger
         /// <param name="logLevel"></param>
         public static void Log(string message, LogLevel logLevel)
         {
-            Logger.Log(logLevel, $"[{DateTime.Now:HH:mm:ss}: ({logLevel.Name})] {message}");
+            Logger.Log(logLevel, $"[{DateTime.Now:HH:mm:ss}: {logLevel.Name.ToUpper()}] {message}");
         }
 
         /// <summary>
