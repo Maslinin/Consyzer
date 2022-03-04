@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Consyzer.Config
 {
-    public sealed class ConsyzerConfiguration
+    public sealed class ConsyzerConfig
     {
         /// <summary>
         /// Gets the default location of the configuration file (executableFolder\ConsyzerConfig.json)
@@ -16,14 +16,14 @@ namespace Consyzer.Config
         /// </summary>
         public string[] BinaryFilesExtensions { get; set; }
 
-        private ConsyzerConfiguration() { }
+        private ConsyzerConfig() { }
 
         /// <summary>
         /// Reads the configuration file at the configPath path and deserializes it to the Configuration object
         /// </summary>
         /// <param name="configPath"></param>
         /// <returns> Deserialized LinkerConfiguration Instance </returns>
-        public static ConsyzerConfiguration LoadConfigFromFile(string configPath)
+        public static ConsyzerConfig LoadConfigFromFile(string configPath)
         {
             string configJson;
 
@@ -38,7 +38,7 @@ namespace Consyzer.Config
 
             try
             {
-                return JsonConvert.DeserializeObject<ConsyzerConfiguration>(configJson);
+                return JsonConvert.DeserializeObject<ConsyzerConfig>(configJson);
             }
             catch (Exception e)
             {
@@ -56,7 +56,7 @@ namespace Consyzer.Config
 
             try
             {
-                configContent = JsonConvert.SerializeObject(new ConsyzerConfiguration());
+                configContent = JsonConvert.SerializeObject(new ConsyzerConfig());
             }
             catch (Exception e)
             {

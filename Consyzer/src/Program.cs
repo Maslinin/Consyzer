@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 
 using Consyzer.Logger;
-using Consyzer.Analyzer;
 using Consyzer.Config;
+using Consyzer.AnalyzerEngine.Support;
 
 namespace Consyzer
 {
@@ -25,21 +25,21 @@ namespace Consyzer
                     throw new DirectoryNotFoundException("The directory path for the analysis does not exist or is incorrect.");
                 }
 
-                if (!File.Exists(ConsyzerConfiguration.DefaultConfigPath))
+                if (!File.Exists(ConsyzerConfig.DefaultConfigPath))
                 {
-                    NLogger.Error($"Configuration file not found at path {ConsyzerConfiguration.DefaultConfigPath}.");
-                    ConsyzerConfiguration.CreateConfigFile(ConsyzerConfiguration.DefaultConfigPath);
-                    NLogger.Error($"The configuration file was recreated on path {ConsyzerConfiguration.DefaultConfigPath}. Please complete it before the next utility launch.");
+                    NLogger.Error($"Configuration file not found at path {ConsyzerConfig.DefaultConfigPath}.");
+                    ConsyzerConfig.CreateConfigFile(ConsyzerConfig.DefaultConfigPath);
+                    NLogger.Error($"The configuration file was recreated on path {ConsyzerConfig.DefaultConfigPath}. Please complete it before the next utility launch.");
 
                     throw new FileNotFoundException("Configuration file not found.");
                 }
                 NLogger.Info("Loading Configuration...");
-                var config = ConsyzerConfiguration.LoadConfigFromFile(ConsyzerConfiguration.DefaultConfigPath);
+                var config = ConsyzerConfig.LoadConfigFromFile(ConsyzerConfig.DefaultConfigPath);
                 NLogger.Info("Configuration file was successfully loaded.");
 
                 NLogger.Info($"Path for analyze: {pathForAnalyze}");
                 NLogger.Info("Getting binaries at the specified path with the specified extensions...");
-                var binaryFiles = DynamicAnalyzer.GetBinaryFilesName(pathForAnalyze, config.BinaryFilesExtensions).ToList();
+                var binaryFiles = IOSupport.GetBinaryFilesInfo(pathForAnalyze, config.BinaryFilesExtensions).ToList();
 
                 if(binaryFiles.FirstOrDefault() is null)
                 {
@@ -54,6 +54,7 @@ namespace Consyzer
                         NLogger.Info($"Name: {file.Name}, Full Name: {file.FullName}, Creation Time: {file.CreationTime}");
                     }
                 }
+
             }
             catch(Exception e)
             {

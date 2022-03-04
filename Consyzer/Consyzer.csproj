@@ -6,9 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="7.2.0.6844" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Consyzer.AnalyzerEngine\Consyzer.AnalyzerEngine.csproj" />
   </ItemGroup>
 
 </Project>
