@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Consyzer.Config
 {
-    public sealed class ConsyzerConfig
+    sealed class ConsyzerConfig
     {
         /// <summary>
         /// Gets the default location of the configuration file (executableFolder\ConsyzerConfig.json)

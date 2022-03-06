@@ -4,6 +4,7 @@ using System.Linq;
 
 using Consyzer.Logger;
 using Consyzer.Config;
+using Consyzer.AnalyzerEngine.Analyzer;
 using Consyzer.AnalyzerEngine.Support;
 
 namespace Consyzer
@@ -45,14 +46,30 @@ namespace Consyzer
                 {
                     NLogger.Warn("No binary files found for analysis.");
 
-                    return -1;
+                    return (int)PostCodes.UndefinedBehavior;
                 }
-                else
+                foreach (var file in binaryFiles)
                 {
-                    foreach (var file in binaryFiles)
-                    {
-                        NLogger.Info($"Name: {file.Name}, Full Name: {file.FullName}, Creation Time: {file.CreationTime}");
-                    }
+                    NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                }
+
+                NLogger.Info("Getting binary files containing metadata...");
+                var managedFiles = AnalyzerSupport.GetManagedFilesFromList(binaryFiles);
+                var unmanagedFiles = binaryFiles.Count() > managedFiles.Count() ? binaryFiles.Except(managedFiles) : managedFiles.Except(binaryFiles);
+                if (managedFiles.Count() == 0)
+                {
+                    NLogger.Warn("No analysis files containing metadata were found. All files found contain unmanaged code.");
+                    return (int)PostCodes.UndefinedBehavior;
+                }
+
+                foreach(var file in managedFiles)
+                {
+                    NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                }
+                NLogger.Info("The following files that are not managed were excluded from the analysis:");
+                foreach(var file in unmanagedFiles)
+                {
+                    NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
                 }
 
             }
