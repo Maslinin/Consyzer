@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection.PortableExecutable;
 
 using ICSharpCode.Decompiler.CSharp;
 using ICSharpCode.Decompiler.Metadata;
@@ -13,18 +15,22 @@ namespace Consyzer.AnalyzerEngine.Support
         {
             try
             {
-                new CSharpDecompiler(pathToBinary, new ICSharpCode.Decompiler.DecompilerSettings()).DecompileModuleAndAssemblyAttributes();
-                return true;
+                return new PEReader(new FileStream(pathToBinary, FileMode.Open, FileAccess.Read), PEStreamOptions.Default).HasMetadata;
             }
-            catch(PEFileNotSupportedException)
+            catch(UnauthorizedAccessException e)
             {
-                return false;
+                throw new UnauthorizedAccessException("The binary file could not be loaded due to its protection level", e);
             }
         }
 
-        public static IEnumerable<FileInfo> GetManagedFilesFromList(IEnumerable<FileInfo> binaryFiles)
+        public static IEnumerable<FileInfo> GetManagedFiles(IEnumerable<FileInfo> binaryFiles)
         {
             return binaryFiles.Where(f => AnalyzerSupport.IsManaged(f.FullName));
+        }
+
+        public static IEnumerable<FileInfo> GetUnManagedFiles(IEnumerable<FileInfo> binaryFiles)
+        {
+            return binaryFiles.Where(f => !AnalyzerSupport.IsManaged(f.FullName));
         }
     }
 }

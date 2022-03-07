@@ -15,7 +15,7 @@ namespace Consyzer.AnalyzerEngine.Support
             }
             if (filesExtensions is null)
             {
-                throw new ArgumentNullException("The \"filesExtensions\" argument: there is no reference to the object");
+                throw new ArgumentNullException($"The \"{nameof(filesExtensions)}\" argument: there is no reference to the object");
             }
 
             try

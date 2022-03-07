@@ -53,23 +53,28 @@ namespace Consyzer
                     NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
                 }
 
-                NLogger.Info("Getting binary files containing metadata...");
-                var managedFiles = AnalyzerSupport.GetManagedFilesFromList(binaryFiles);
-                var unmanagedFiles = binaryFiles.Count() > managedFiles.Count() ? binaryFiles.Except(managedFiles) : managedFiles.Except(binaryFiles);
+                NLogger.Info("Binary files containing metadata: ");
+                var managedFiles = AnalyzerSupport.GetManagedFiles(binaryFiles);
                 if (managedFiles.Count() == 0)
                 {
                     NLogger.Warn("No analysis files containing metadata were found. All files found contain unmanaged code.");
                     return (int)PostCodes.UndefinedBehavior;
                 }
-
-                foreach(var file in managedFiles)
+                else
                 {
-                    NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                    foreach (var file in managedFiles)
+                    {
+                        NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                    }
                 }
-                NLogger.Info("The following files that are not managed were excluded from the analysis:");
-                foreach(var file in unmanagedFiles)
+                var unmanagedFiles = AnalyzerSupport.GetUnManagedFiles(binaryFiles);
+                if(unmanagedFiles.Count() != 0)
                 {
-                    NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                    NLogger.Info("The following files that are not managed were excluded from the analysis: ");
+                    foreach (var file in unmanagedFiles)
+                    {
+                        NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                    }
                 }
 
             }
