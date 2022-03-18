@@ -4,7 +4,7 @@ namespace Consyzer.AnalyzerEngine.CommonModels.FileInfoModels
 {
     public sealed class BinaryFileInfo
     {
-        public FileInfo BaseFileInfo { get; set; }
+        public FileInfo BaseFileInfo { get; }
         public bool HasMetadata { get; }
         public bool IsAssembly { get; }
         public HashFileInfo HashInfo { get; }
