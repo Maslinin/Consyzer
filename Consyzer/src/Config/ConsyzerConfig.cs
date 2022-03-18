@@ -23,7 +23,7 @@ namespace Consyzer.Config
         /// </summary>
         /// <param name="configPath"></param>
         /// <returns> Deserialized LinkerConfiguration Instance </returns>
-        public static ConsyzerConfig LoadConfigFromFile(string configPath)
+        public static ConsyzerConfig LoadFromFile(string configPath)
         {
             string configJson;
 

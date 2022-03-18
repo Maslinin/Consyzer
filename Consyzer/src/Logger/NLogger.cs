@@ -65,30 +65,39 @@ namespace Consyzer.Logger
             Logger.Log(logLevel, $"[{DateTime.Now:HH:mm:ss}: {logLevel.Name.ToUpper()}] {message}");
         }
 
+        #region Logging methods by logging levels
+
         /// <summary>
         /// Logs a message with the specified text into a file at the <b>LogDirPath</b> path with the <b>Debug</b> logging level.<br/> 
         /// </summary>
         /// <param name="message"></param>
         public static void Debug(string message) => NLogger.Log(message, LogLevel.Debug);
+
         /// <summary>
         /// Logs a message with the specified text into a file at the <b>LogDirPath</b> path with the <b>Info</b> logging level.<br/> 
         /// </summary>
         /// <param name="message"></param>
         public static void Info(string message) => NLogger.Log(message, LogLevel.Info);
+
         /// <summary>
         /// Logs a message with the specified text into a file at the <b>LogDirPath</b> path with the <b>Trace</b> logging level.<br/> 
         /// </summary>
         /// <param name="message"></param>
         public static void Trace(string message) => NLogger.Log(message, LogLevel.Trace);
+
         /// <summary>
         /// Logs a message with the specified text into a file at the <b>LogDirPath</b> path with the <b>Warn</b> logging level.<br/> 
         /// </summary>
         /// <param name="message"></param>
         public static void Warn(string message) => NLogger.Log(message, LogLevel.Warn);
+
         /// <summary>
         /// Logs a message with the specified text into a file at the <b>LogDirPath</b> path with the <b>Error</b> logging level.<br/> 
         /// </summary>
         /// <param name="message"></param>
         public static void Error(string message) => NLogger.Log(message, LogLevel.Error);
+
+        #endregion
+
     }
 }

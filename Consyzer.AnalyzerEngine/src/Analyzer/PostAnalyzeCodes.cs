@@ -1,6 +1,6 @@
 ﻿namespace Consyzer.AnalyzerEngine.Analyzer
 {
-    public enum PostCodes
+    public enum PostAnalyzeCodes
     {
         UndefinedBehavior = -1,
         DLLExists = 0,
