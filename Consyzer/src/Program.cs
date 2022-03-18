@@ -35,45 +35,74 @@ namespace Consyzer
                     throw new FileNotFoundException("Configuration file not found.");
                 }
                 NLogger.Info("Loading Configuration...");
-                var config = ConsyzerConfig.LoadConfigFromFile(ConsyzerConfig.DefaultConfigPath);
+                var config = ConsyzerConfig.LoadFromFile(ConsyzerConfig.DefaultConfigPath);
                 NLogger.Info("Configuration file was successfully loaded.");
 
-                NLogger.Info($"Path for analyze: {pathForAnalyze}");
+                NLogger.Info($"Path for analyze: \"{pathForAnalyze}\".");
+                NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", config.BinaryFilesExtensions)}.");
                 NLogger.Info("Getting binaries at the specified path with the specified extensions...");
                 var binaryFiles = IOSupport.GetBinaryFilesInfo(pathForAnalyze, config.BinaryFilesExtensions).ToList();
-
                 if(binaryFiles.FirstOrDefault() is null)
                 {
                     NLogger.Warn("No binary files found for analysis.");
 
-                    return (int)PostCodes.UndefinedBehavior;
-                }
-                foreach (var file in binaryFiles)
-                {
-                    NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                    return (int)PostAnalyzeCodes.UndefinedBehavior;
                 }
 
-                NLogger.Info("Binary files containing metadata: ");
-                var managedFiles = AnalyzerSupport.GetManagedFiles(binaryFiles);
-                if (managedFiles.Count() == 0)
+                NLogger.Info("The following binary files were found: ");
+                foreach (var item in binaryFiles.Select((File, i) => (File, i)))
                 {
-                    NLogger.Warn("No analysis files containing metadata were found. All files found contain unmanaged code.");
-                    return (int)PostCodes.UndefinedBehavior;
+                    NLogger.Info($"[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
+                }
+
+                var metadataFiles = binaryFiles.GetFilesContainsMetadata();
+                var correctFiles = metadataFiles.GetAssemblyFiles().ToList();
+                if (correctFiles.Count() == 0)
+                {
+                    NLogger.Warn("No analysis files containing metadata were found. All files do not contain metadata.");
+
+                    return (int)PostAnalyzeCodes.UndefinedBehavior;
                 }
                 else
                 {
-                    foreach (var file in managedFiles)
+                    NLogger.Info("Binary assembly files for analyze containing metadata: ");
+                    foreach (var item in correctFiles.Select((File, i) => (File, i)))
                     {
-                        NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                        NLogger.Info($"[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}, " +
+                            $"MD5HashSum: {item.File.HashInfo.MD5Sum}, SHA256HashSum: {item.File.HashInfo.SHA256Sum}.");
                     }
                 }
-                var unmanagedFiles = AnalyzerSupport.GetUnManagedFiles(binaryFiles);
-                if(unmanagedFiles.Count() != 0)
+                var unsuitableFiles = binaryFiles.GetFilesNotContainsMetadata();
+                if(unsuitableFiles.Count() != 0)
                 {
-                    NLogger.Info("The following files that are not managed were excluded from the analysis: ");
-                    foreach (var file in unmanagedFiles)
+                    NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata: ");
+                    foreach (var item in unsuitableFiles.Select((File, i) => (File, i)))
                     {
-                        NLogger.Info($"Name: {file.Name}, Creation Time: {file.CreationTime}");
+                        NLogger.Info($"[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
+                    }
+                }
+                unsuitableFiles = metadataFiles.GetNotAssemblyFiles();
+                if (unsuitableFiles.Count() != 0)
+                {
+                    NLogger.Info("The following files were excluded from analysis because they are NOT assembly files: ");
+                    foreach (var item in unsuitableFiles.Select((File, i) => (File, i)))
+                    {
+                        NLogger.Info($"[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
+                    }
+                }
+
+                NLogger.Info("Getting information about the content of DLLImport in binary files...");
+                foreach (var item in correctFiles.Select((File, i) => (File, i)))
+                {
+                    var importedMethods = DynamicAnalyzer.GetImportedMethodsInfo(item.File.BaseFileInfo.FullName).ToList();
+
+                    NLogger.Info($"[{item.i}]From File {item.File.BaseFileInfo.FullName}: ");
+                    foreach (var import in importedMethods.Select((Signature, i) => (Signature, i)))
+                    {
+                        NLogger.Info($"[File: {item.i}, Method: {import.i}]Method Location: {import.Signature.SignatureInfo.GetMethodLocation()}");
+                        NLogger.Info($"[File: {item.i}, Method: {import.i}]Method Signature: {import.Signature.SignatureInfo.GetBaseMethodSignature()}");
+                        NLogger.Info($"[File: {item.i}, Method: {import.i}]DLL Location: {import.Signature.DLLPosition}");
+                        NLogger.Info($"[File: {item.i}, Method: {import.i}]DLL Import Arguments: {import.Signature.DLLImportArguments}");
                     }
                 }
 
