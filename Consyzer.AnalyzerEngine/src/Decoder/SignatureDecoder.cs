@@ -29,7 +29,7 @@ namespace Consyzer.AnalyzerEngine.Decoder
             //Getting Method Access Modifier:
             var methodAttributes = fullMethodAttributes.Split(',').Select(s => s.Trim()).ToList();
             string methodAccessibility = string.Empty;
-            foreach (AccessibilityModifiersIL modifier in Enum.GetValues(typeof(AccessibilityModifiersIL)))
+            foreach (AccessibilityModifiersNotTranslated modifier in Enum.GetValues(typeof(AccessibilityModifiersNotTranslated)))
             {
                 if (methodAttributes.Any(s => s.ToLower() == modifier.ToString().ToLower()))
                 {

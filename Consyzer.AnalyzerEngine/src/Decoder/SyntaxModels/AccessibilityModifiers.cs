@@ -2,7 +2,7 @@
 
 namespace Consyzer.AnalyzerEngine.Decoder.SyntaxModels
 {
-    internal enum AccessibilityModifiersIL
+    internal enum AccessibilityModifiersNotTranslated
     {
         Private = MethodAttributes.Private,
         Public = MethodAttributes.Public,
@@ -12,9 +12,9 @@ namespace Consyzer.AnalyzerEngine.Decoder.SyntaxModels
 
     public enum AccessibilityModifiers
     {
-        Private = AccessibilityModifiersIL.Private,
-        Public = AccessibilityModifiersIL.Public,
-        Internal = AccessibilityModifiersIL.Assembly,
-        Protected = AccessibilityModifiersIL.Family
+        Private = AccessibilityModifiersNotTranslated.Private,
+        Public = AccessibilityModifiersNotTranslated.Public,
+        Internal = AccessibilityModifiersNotTranslated.Assembly,
+        Protected = AccessibilityModifiersNotTranslated.Family
     }
 }
