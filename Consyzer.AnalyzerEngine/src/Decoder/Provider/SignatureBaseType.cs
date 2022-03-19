@@ -17,8 +17,8 @@
         public static string ULong => "ulong";
         public static string Float => "float";
         public static string Double => "double";
-        public static string IntPtr => "int*";
-        public static string UIntPtr => "uint*";
+        public static string IntPtr => "IntPtr";
+        public static string UIntPtr => "UIntPtr";
         public static string String => "string";
         public static string Object => "object";
         public static string TypedReference => "typedref";

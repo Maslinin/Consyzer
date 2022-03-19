@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
 
@@ -9,6 +10,7 @@ namespace Consyzer.AnalyzerEngine.Decoder.Provider
         private readonly MetadataReader _mdReader;
         private readonly MethodDefinition _methodDef;
 
+        //status fields:
         private bool _isReturnType = false;
         private int _parameterIteration = 0;
 
@@ -18,9 +20,62 @@ namespace Consyzer.AnalyzerEngine.Decoder.Provider
             this._methodDef = methodDef;
         }
 
+        public SignatureBaseType GetArrayType(SignatureBaseType elementType, ArrayShape shape) //.NET we only support SZAray, but still...
+        {
+            var type = new StringBuilder();
+
+            type.Append($"{elementType.Type}[");
+            for (int i = 0; i < shape.Rank; i++)
+            {
+                if (i > 0)
+                    type.Append(", ");
+                if (i < shape.LowerBounds.Length || i < shape.Sizes.Length)
+                {
+                    int lower = 0;
+                    if (i < shape.LowerBounds.Length)
+                    {
+                        type.Append(shape.LowerBounds[i].ToString());
+                    }
+                    type.Append("...");
+                    if (i < shape.Sizes.Length)
+                        type.Append((lower + shape.Sizes[i] - 1).ToString());
+                }
+            }
+            type.Append(']');
+
+            return new SignatureBaseType(type.ToString());
+        }
+
         public SignatureBaseType GetByReferenceType(SignatureBaseType elementType)
         {
             return new SignatureBaseType($"{elementType.Type}&", elementType.Attributes, elementType.Name);
+        }
+
+        public SignatureBaseType GetFunctionPointerType(MethodSignature<SignatureBaseType> signature)
+        {
+            var type = new StringBuilder();
+
+            type.Append($"{signature.ReturnType} *({signature.ParameterTypes[0].Type}");
+            for (int i = 1; i < signature.ParameterTypes.Length; i++)
+            {
+                type.Append($", {signature.ParameterTypes[i].Type}");
+            }
+            type.Append(')');
+
+            return new SignatureBaseType(type.ToString());
+        }
+
+        public SignatureBaseType GetGenericInstantiation(SignatureBaseType genericType, ImmutableArray<SignatureBaseType> typeArguments)
+        {
+            var type = new StringBuilder();
+            type.Append($"{genericType.Type} <{typeArguments[0].Type}");
+            for (int i = 1; i < typeArguments.Length; i++)
+            {
+                type.Append($", {typeArguments[i].Type}");
+            }
+            type.Append('>');
+
+            return new SignatureBaseType(type.ToString(), genericType.Attributes, genericType.Name);
         }
 
         public SignatureBaseType GetModifiedType(SignatureBaseType modifier, SignatureBaseType unmodifiedType, bool isRequired)
@@ -86,22 +141,6 @@ namespace Consyzer.AnalyzerEngine.Decoder.Provider
         }
 
         #region NotSupported
-
-        public SignatureBaseType GetArrayType(SignatureBaseType elementType, ArrayShape shape)
-        {
-            //.NET we only support SZAray.
-            return new SignatureBaseType(SignatureBaseType.NotSupported);
-        }
-
-        public SignatureBaseType GetFunctionPointerType(MethodSignature<SignatureBaseType> signature)
-        {
-            return new SignatureBaseType(SignatureBaseType.NotSupported);
-        }
-
-        public SignatureBaseType GetGenericInstantiation(SignatureBaseType genericType, ImmutableArray<SignatureBaseType> typeArguments)
-        {
-            return new SignatureBaseType(SignatureBaseType.NotSupported);
-        }
 
         public SignatureBaseType GetGenericMethodParameter(object genericContext, int index)
         {
