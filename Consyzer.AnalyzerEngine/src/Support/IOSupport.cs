@@ -33,7 +33,7 @@ namespace Consyzer.AnalyzerEngine.Support
 
         public static bool IsAbsolutePath(string path)
         {
-            return path.Contains("\\") || path.Contains("/");
+            return path.Contains(Path.DirectorySeparatorChar) || path.Contains(Path.AltDirectorySeparatorChar);
         }
     }
 }

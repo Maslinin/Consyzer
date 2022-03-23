@@ -15,7 +15,7 @@ namespace Consyzer
         {
             try
             {
-                if(args.Length < 1)
+                if(args.FirstOrDefault() is null)
                 {
                     throw new ArgumentException("The command line parameter responsible for the directory location for the analysis was not passed.");
                 }
@@ -52,7 +52,7 @@ namespace Consyzer
                 NLogger.Info("The following binary files were found: ");
                 foreach (var item in binaryFiles.Select((File, i) => (File, i)))
                 {
-                    NLogger.Info($"[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
+                    NLogger.Info($"\t[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
                 }
 
                 var metadataFiles = binaryFiles.GetFilesContainsMetadata();
@@ -68,7 +68,7 @@ namespace Consyzer
                     NLogger.Info("Binary assembly files for analyze containing metadata: ");
                     foreach (var item in correctFiles.Select((File, i) => (File, i)))
                     {
-                        NLogger.Info($"[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}, " +
+                        NLogger.Info($"\t[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}, " +
                             $"MD5HashSum: {item.File.HashInfo.MD5Sum}, SHA256HashSum: {item.File.HashInfo.SHA256Sum}.");
                     }
                 }
@@ -78,7 +78,7 @@ namespace Consyzer
                     NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata: ");
                     foreach (var item in unsuitableFiles.Select((File, i) => (File, i)))
                     {
-                        NLogger.Info($"[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
+                        NLogger.Info($"\t[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
                     }
                 }
                 unsuitableFiles = metadataFiles.GetNotAssemblyFiles();
@@ -87,7 +87,7 @@ namespace Consyzer
                     NLogger.Info("The following files were excluded from analysis because they are NOT assembly files: ");
                     foreach (var item in unsuitableFiles.Select((File, i) => (File, i)))
                     {
-                        NLogger.Info($"[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
+                        NLogger.Info($"\t[{item.i}]Name: {item.File.BaseFileInfo.Name}, Creation Time: {item.File.BaseFileInfo.CreationTime}.");
                     }
                 }
 
@@ -96,13 +96,13 @@ namespace Consyzer
                 {
                     var importedMethods = DynamicAnalyzer.GetImportedMethodsInfo(item.File.BaseFileInfo.FullName).ToList();
 
-                    NLogger.Info($"[{item.i}]From File {item.File.BaseFileInfo.FullName}: ");
+                    NLogger.Info($"\t[{item.i}]From File {item.File.BaseFileInfo.FullName}: ");
                     foreach (var import in importedMethods.Select((Signature, i) => (Signature, i)))
                     {
-                        NLogger.Info($"[File: {item.i}, Method: {import.i}]Method Location: {import.Signature.SignatureInfo.GetMethodLocation()}");
-                        NLogger.Info($"[File: {item.i}, Method: {import.i}]Method Signature: {import.Signature.SignatureInfo.GetBaseMethodSignature()}");
-                        NLogger.Info($"[File: {item.i}, Method: {import.i}]DLL Location: {import.Signature.DLLPosition}");
-                        NLogger.Info($"[File: {item.i}, Method: {import.i}]DLL Import Arguments: {import.Signature.DLLImportArguments}");
+                        NLogger.Info($"\t[File: {item.i}, Method: {import.i}]Method Location: {import.Signature.SignatureInfo.GetMethodLocation()}");
+                        NLogger.Info($"\t[File: {item.i}, Method: {import.i}]Method Signature: {import.Signature.SignatureInfo.GetBaseMethodSignature()}");
+                        NLogger.Info($"\t[File: {item.i}, Method: {import.i}]DLL Location: {import.Signature.DLLPosition}");
+                        NLogger.Info($"\t[File: {item.i}, Method: {import.i}]DLL Import Arguments: {import.Signature.DLLImportArguments}");
                     }
                 }
 

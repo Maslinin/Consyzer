@@ -30,13 +30,13 @@ namespace Consyzer.Logger
 
                 string logFilePath = Path.Combine(LogDirPath, $"{DateTime.Now:MM.dd.yyyy}.txt");
 
-                var fileTarget = new NLog.Targets.FileTarget("ConsyzerLogger")
+                var fileTarget = new NLog.Targets.FileTarget()
                 {
                     FileName = logFilePath,
                     DeleteOldFileOnStartup = false,
                     Layout = "${message}"
                 };
-                var consoleTarget = new NLog.Targets.ConsoleTarget("ConsyzerLogger")
+                var consoleTarget = new NLog.Targets.ConsoleTarget()
                 {
                     Layout = "${message}"
                 };
@@ -46,7 +46,7 @@ namespace Consyzer.Logger
                 logConfig.AddRuleForAllLevels(consoleTarget);
                 LogManager.Configuration = logConfig;
 
-                Logger = LogManager.GetLogger("DLLConsyzerLogger");
+                Logger = LogManager.GetLogger("ConsyzerLogger");
             }
             catch(Exception e)
             {

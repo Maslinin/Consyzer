@@ -60,13 +60,15 @@ namespace Consyzer.AnalyzerEngine.Support
 
         #endregion
 
-        public static bool IsAssembly(string pathToBinary)
+        public static bool MetadataFileIsAssembly(string pathToBinary)
         {
             try
             {
                 var reader = new PEReader(new FileStream(pathToBinary, FileMode.Open, FileAccess.Read), PEStreamOptions.Default);
-                if(!reader.HasMetadata)
+                if (!reader.HasMetadata)
+                {
                     return false;
+                }
 
                 return reader.GetMetadataReader().IsAssembly;
             }
@@ -84,7 +86,7 @@ namespace Consyzer.AnalyzerEngine.Support
 
         public static IEnumerable<FileInfo> GetAssemblyFiles(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => AnalyzerSupport.IsAssembly(f.FullName));
+            return binaryFiles.Where(f => AnalyzerSupport.MetadataFileIsAssembly(f.FullName));
         }
 
         public static IEnumerable<PEReader> GetAssemblyFiles(this IEnumerable<PEReader> binaryFiles)
@@ -99,7 +101,7 @@ namespace Consyzer.AnalyzerEngine.Support
 
         public static IEnumerable<FileInfo> GetNotAssemblyFiles(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => !AnalyzerSupport.IsAssembly(f.FullName));
+            return binaryFiles.Where(f => !AnalyzerSupport.MetadataFileIsAssembly(f.FullName));
         }
 
         public static IEnumerable<PEReader> GetNotAssemblyFiles(this IEnumerable<PEReader> binaryFiles)

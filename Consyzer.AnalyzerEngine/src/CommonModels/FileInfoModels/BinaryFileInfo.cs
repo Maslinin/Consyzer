@@ -19,7 +19,7 @@ namespace Consyzer.AnalyzerEngine.CommonModels.FileInfoModels
             
             this.BaseFileInfo = info;
             this.HasMetadata = Support.AnalyzerSupport.HasMetadata(pathToBinary);
-            this.IsAssembly = Support.AnalyzerSupport.IsAssembly(pathToBinary);
+            this.IsAssembly = Support.AnalyzerSupport.MetadataFileIsAssembly(pathToBinary);
             this.HashInfo = HashFileInfo.Calculate(info);
         }
     }
