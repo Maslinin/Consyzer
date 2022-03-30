@@ -2,7 +2,7 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace Consyzer.AnalyzerEngine.CommonModels.FileInfoModels
+namespace Consyzer.AnalyzerEngine.CommonModels
 {
     public sealed class HashFileInfo
     {
@@ -65,6 +65,11 @@ namespace Consyzer.AnalyzerEngine.CommonModels.FileInfoModels
             }
 
             return new HashFileInfo(MD5Sum, SHA256Sum);
+        }
+
+        public static HashFileInfo Calculate(BinaryFileInfo binary)
+        {
+            return Calculate(new FileInfo(binary.BaseFileInfo.FullName));
         }
 
         public static HashFileInfo Calculate(string pathToBinary)

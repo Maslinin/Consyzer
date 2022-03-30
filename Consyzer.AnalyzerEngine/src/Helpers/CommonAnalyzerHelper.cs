@@ -4,11 +4,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
-using Consyzer.AnalyzerEngine.CommonModels.FileInfoModels;
+using Consyzer.AnalyzerEngine.CommonModels;
 
-namespace Consyzer.AnalyzerEngine.Support
+namespace Consyzer.AnalyzerEngine.Helpers
 {
-    public static class AnalyzerSupport
+    public static class CommonAnalyzerHelper
     {
         public static bool HasMetadata(string pathToBinary)
         {
@@ -26,11 +26,11 @@ namespace Consyzer.AnalyzerEngine.Support
             }
         }
 
-        #region HasMetadata: IEnumerable extensions
+        #region GetFilesContainsMetadata overloads
 
         public static IEnumerable<FileInfo> GetFilesContainsMetadata(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => AnalyzerSupport.HasMetadata(f.FullName));
+            return binaryFiles.Where(f => CommonAnalyzerHelper.HasMetadata(f.FullName));
         }
 
         public static IEnumerable<PEReader> GetFilesContainsMetadata(this IEnumerable<PEReader> binaryFiles)
@@ -43,9 +43,13 @@ namespace Consyzer.AnalyzerEngine.Support
             return binaryFiles.Where(f => f.HasMetadata);
         }
 
+        #endregion
+
+        #region GetFilesNotContainsMetadata overloads
+
         public static IEnumerable<FileInfo> GetFilesNotContainsMetadata(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => !AnalyzerSupport.HasMetadata(f.FullName));
+            return binaryFiles.Where(f => !CommonAnalyzerHelper.HasMetadata(f.FullName));
         }
 
         public static IEnumerable<PEReader> GetFilesNotContainsMetadata(this IEnumerable<PEReader> binaryFiles)
@@ -82,38 +86,43 @@ namespace Consyzer.AnalyzerEngine.Support
             }
         }
 
-        #region IsAssembly: IEnumerable extensions
+        #region GetMetadataAssemblyFiles overloads
 
-        public static IEnumerable<FileInfo> GetAssemblyFiles(this IEnumerable<FileInfo> binaryFiles)
+        public static IEnumerable<FileInfo> GetMetadataAssemblyFiles(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => AnalyzerSupport.MetadataFileIsAssembly(f.FullName));
+            return binaryFiles.Where(f => CommonAnalyzerHelper.MetadataFileIsAssembly(f.FullName));
         }
 
-        public static IEnumerable<PEReader> GetAssemblyFiles(this IEnumerable<PEReader> binaryFiles)
+        public static IEnumerable<PEReader> GetMetadataAssemblyFiles(this IEnumerable<PEReader> binaryFiles)
         {
             return binaryFiles.Where(f => f.GetMetadataReader().IsAssembly);
         }
 
-        public static IEnumerable<BinaryFileInfo> GetAssemblyFiles(this IEnumerable<BinaryFileInfo> binaryFiles)
+        public static IEnumerable<BinaryFileInfo> GetMetadataAssemblyFiles(this IEnumerable<BinaryFileInfo> binaryFiles)
         {
             return binaryFiles.Where(f => f.IsAssembly);
         }
 
-        public static IEnumerable<FileInfo> GetNotAssemblyFiles(this IEnumerable<FileInfo> binaryFiles)
+        #endregion
+
+        #region GetNotMetadataAssemblyFiles overloads
+
+        public static IEnumerable<FileInfo> GetNotMetadataAssemblyFiles(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => !AnalyzerSupport.MetadataFileIsAssembly(f.FullName));
+            return binaryFiles.Where(f => !CommonAnalyzerHelper.MetadataFileIsAssembly(f.FullName));
         }
 
-        public static IEnumerable<PEReader> GetNotAssemblyFiles(this IEnumerable<PEReader> binaryFiles)
+        public static IEnumerable<PEReader> GetNotMetadataAssemblyFiles(this IEnumerable<PEReader> binaryFiles)
         {
             return binaryFiles.Where(f => !f.GetMetadataReader().IsAssembly);
         }
 
-        public static IEnumerable<BinaryFileInfo> GetNotAssemblyFiles(this IEnumerable<BinaryFileInfo> binaryFiles)
+        public static IEnumerable<BinaryFileInfo> GetNotMetadataAssemblyFiles(this IEnumerable<BinaryFileInfo> binaryFiles)
         {
             return binaryFiles.Where(f => !f.IsAssembly);
         }
 
         #endregion
+
     }
 }

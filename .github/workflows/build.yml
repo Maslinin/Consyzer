@@ -44,8 +44,10 @@ jobs:
         run: .\.sonar\scanner\dotnet-sonarscanner begin /k:"Maslinin_Consyzer" /o:"maslinin" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
       - name: Build
         run: dotnet build --configuration Release
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
+      - name: Unit Tests Executing
+        run: dotnet test $env:AnalyzerEngineTests
+        env:
+            AnalyzerEngineTests: Consyzer.AnalyzerEngine.Tests\bin\Release\netcoreapp3.1\Consyzer.AnalyzerEngine.Tests.dll
       - name: End Alanyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -54,8 +56,13 @@ jobs:
         run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       - name: Publish
         run: dotnet publish
-      - name: Upload Artifact
+      - name: Upload Artifact - Consyzer Utility
         uses: actions/upload-artifact@v3
         with:
           name: Consyzer
           path: Consyzer\bin\Release
+      - name: Upload Artifact - Consyzer.AnalyzerEngine
+        uses: actions/upload-artifact@v3
+        with:
+          name: Consyzer.AnalyzerEngine
+          path: Consyzer.AnalyzerEngine\bin\Release\netstandard2.0

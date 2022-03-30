@@ -20,32 +20,6 @@ namespace Consyzer.AnalyzerEngine.Decoder.Provider
             this._methodDef = methodDef;
         }
 
-        public SignatureBaseType GetArrayType(SignatureBaseType elementType, ArrayShape shape) //.NET we only support SZAray, but still...
-        {
-            var type = new StringBuilder();
-
-            type.Append($"{elementType.Type}[");
-            for (int i = 0; i < shape.Rank; i++)
-            {
-                if (i > 0)
-                    type.Append(", ");
-                if (i < shape.LowerBounds.Length || i < shape.Sizes.Length)
-                {
-                    int lower = 0;
-                    if (i < shape.LowerBounds.Length)
-                    {
-                        type.Append(shape.LowerBounds[i].ToString());
-                    }
-                    type.Append("...");
-                    if (i < shape.Sizes.Length)
-                        type.Append((lower + shape.Sizes[i] - 1).ToString());
-                }
-            }
-            type.Append(']');
-
-            return new SignatureBaseType(type.ToString());
-        }
-
         public SignatureBaseType GetByReferenceType(SignatureBaseType elementType)
         {
             return new SignatureBaseType($"{elementType.Type}&", elementType.Attributes, elementType.Name);
@@ -93,7 +67,7 @@ namespace Consyzer.AnalyzerEngine.Decoder.Provider
             string attributes = SignatureBaseType.AttributesDefaultValue, name = SignatureBaseType.NameDefaultValue;
 
             //Always return method type is first defined
-            if (this._isReturnType == false)
+            if (!this._isReturnType)
             {
                 this._isReturnType = true;
             }
@@ -141,6 +115,12 @@ namespace Consyzer.AnalyzerEngine.Decoder.Provider
         }
 
         #region NotSupported
+
+        //.NET we only support SZAray
+        public SignatureBaseType GetArrayType(SignatureBaseType elementType, ArrayShape shape)
+        {
+            return new SignatureBaseType(SignatureBaseType.NotSupported);
+        }
 
         public SignatureBaseType GetGenericMethodParameter(object genericContext, int index)
         {
