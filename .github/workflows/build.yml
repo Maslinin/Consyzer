@@ -53,7 +53,7 @@ jobs:
         env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-            scanMetadataReportFile: Consyzer\TestResults\Consyzer.AnalyzeEngine.Tests-Results.trx
+            scanMetadataReportFile: Consyzer/TestResults/Consyzer.AnalyzeEngine.Tests-Results.trx
       - name: End Analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
