@@ -45,15 +45,9 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
       - name: Unit Tests Executing
-        run: dotnet test -c "Release" --logger:"txt;LogFileName=consyzer-analyzerengine-report-task.txt" $env:AnalyzerEngineTests
+        run: dotnet test --logger:trx $env:AnalyzerEngineTests
         env:
             AnalyzerEngineTests: Consyzer.AnalyzerEngine.Tests\bin\Release\netcoreapp3.1\Consyzer.AnalyzerEngine.Tests.dll
-      - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-            scanMetadataReportFile: Consyzer/TestResults/consyzer-analyzerengine-report-task.txt
       - name: End Analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
