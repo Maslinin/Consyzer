@@ -7,16 +7,28 @@ namespace Consyzer.AnalyzerEngine.Analyzer.Searchers
 {
     public static class BinarySearcher
     {
-        public static BinarySearcherStatusCodes CheckBinaryExists(string path)
+        public static BinarySearcherStatusCodes CheckBinaryExist(string binaryPath, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(binaryPath))
             {
-                throw new ArgumentNullException($"{nameof(path)} is null or empty");
+                throw new ArgumentNullException($"{nameof(binaryPath)} is null or empty.");
+            }
+            if (string.IsNullOrEmpty(analysisFolder))
+            {
+                throw new ArgumentNullException($"{nameof(binaryPath)} is null or empty.");
             }
 
-            bool pathIsExists = File.Exists(path);
-            bool pathIsAbsolute = IOHelper.IsAbsolutePath(path);
+            bool pathIsAbsolute = IOHelper.IsAbsolutePath(binaryPath);
+            if (!pathIsAbsolute)
+            {
+                binaryPath = Path.Combine(analysisFolder, binaryPath);
+            }
+            if (!Path.HasExtension(binaryPath))
+            {
+                binaryPath = $"{binaryPath}{defaultBinaryExtension}";
+            }
 
+            bool pathIsExists = File.Exists(binaryPath);
             if (pathIsExists)
             {
                 return pathIsAbsolute ? BinarySearcherStatusCodes.BinaryExistsOnAbsolutePath : BinarySearcherStatusCodes.BinaryExistsOnSourcePath;
@@ -27,14 +39,14 @@ namespace Consyzer.AnalyzerEngine.Analyzer.Searchers
             }
         }
 
-        public static BinarySearcherStatusCodes CheckBinaryExists(ImportedMethodInfo importedMethod)
+        public static BinarySearcherStatusCodes CheckBinaryExist(ImportedMethodInfo importedMethod, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
             if (importedMethod is null)
             {
                 throw new ArgumentNullException($"{nameof(importedMethod)} is null");
             }
 
-            return BinarySearcher.CheckBinaryExists(importedMethod.DllLocation);
+            return BinarySearcher.CheckBinaryExist(importedMethod.DllLocation, analysisFolder, defaultBinaryExtension);
         }
     }
 }

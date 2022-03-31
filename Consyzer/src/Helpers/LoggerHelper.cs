@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Consyzer.Logger;
+using Consyzer.AnalyzerEngine.Helpers;
 using Consyzer.AnalyzerEngine.Analyzer;
 using Consyzer.AnalyzerEngine.Analyzer.Searchers;
 using Consyzer.AnalyzerEngine.Analyzer.SyntaxModels;
@@ -9,11 +10,12 @@ using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.Helpers
 {
-    public static class DisplayHelper
+    public static class LoggerHelper
     {
-        #region DisplayBaseFileInfo
 
-        public static void DisplayBaseFileInfo(this IEnumerable<BinaryFileInfo> binaryFiles)
+        #region LoggingBaseFileInfo
+
+        public static void LoggingBaseFileInfo(this IEnumerable<BinaryFileInfo> binaryFiles)
         {
             foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
             {
@@ -21,7 +23,7 @@ namespace Consyzer.Helpers
             }
         }
 
-        public static void DisplayBaseFileInfo(this IEnumerable<MetadataAnalyzer> binaryFiles)
+        public static void LoggingBaseFileInfo(this IEnumerable<MetadataAnalyzer> binaryFiles)
         {
             foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
             {
@@ -31,9 +33,9 @@ namespace Consyzer.Helpers
 
         #endregion
 
-        #region DisplayBaseAndHashFileInfo
+        #region LoggingBaseAndHashFileInfo
 
-        public static void DisplayBaseAndHashFileInfo(this IEnumerable<BinaryFileInfo> binaryFiles)
+        public static void LoggingBaseAndHashFileInfo(this IEnumerable<BinaryFileInfo> binaryFiles)
         {
             foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
             {
@@ -42,7 +44,7 @@ namespace Consyzer.Helpers
             }
         }
 
-        public static void DisplayBaseAndHashFileInfo(this IEnumerable<MetadataAnalyzer> binaryFiles)
+        public static void LoggingBaseAndHashFileInfo(this IEnumerable<MetadataAnalyzer> binaryFiles)
         {
             foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
             {
@@ -53,7 +55,7 @@ namespace Consyzer.Helpers
 
         #endregion
 
-        public static void DisplayImportedMethodsInfo(this IEnumerable<ImportedMethodInfo> importedMethods)
+        public static void LoggingImportedMethodsInfo(this IEnumerable<ImportedMethodInfo> importedMethods)
         {
             foreach (var import in importedMethods.Select((Signature, i) => (Signature, i)))
             {
@@ -65,26 +67,30 @@ namespace Consyzer.Helpers
             }
         }
 
-        public static void DisplayImportedMethodsInfoForEachBinary(this IEnumerable<MetadataAnalyzer> metadataAnalyzers)
+        public static void LoggingImportedMethodsInfoForEachBinary(this IEnumerable<MetadataAnalyzer> metadataAnalyzers)
         {
             foreach (var item in metadataAnalyzers.Select((File, i) => (File, i)))
             {
                 var importedMethods = item.File.GetImportedMethodsInfo().ToList();
 
                 NLogger.Info($"[{item.i}]File {item.File.BinaryInfo.BaseFileInfo.FullName}: ");
-                importedMethods.DisplayImportedMethodsInfo();
+                importedMethods.LoggingImportedMethodsInfo();
             }
         }
 
-        //public static void DisplayBinaryExistStatus(string dllLocation, BinarySearcherStatusCodes binarySearcherStatus)
-        //{
-        //    int enumLength = Enum.GetValues(typeof(BinarySearcherStatusCodes)).Length;
-        //    BinarySearcherStatusCodes last = (BinarySearcherStatusCodes)Enum.GetValues(typeof(BinarySearcherStatusCodes)).GetValue(enumLength - 1);
-
-        //    if(binarySearcherStatus.Equals(last))
-        //    {
-
-        //    }
-        //}
+        public static void LoggingBinariesExistsStatus(this IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
+        {
+            foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
+            {
+                if (BinarySearcher.CheckBinaryExist(item.Location, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists)
+                {
+                    NLogger.Error($"[{item.i}]{item.Location}: NOT exist!");
+                }
+                else
+                {
+                    NLogger.Info($"[{item.i}]{item.Location}: exist.");
+                }
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzer.Searchers
         public void CheckBinaryExists()
         {
             var location = Assembly.GetExecutingAssembly().Location;
-            var statusCode = BinarySearcher.CheckBinaryExists(location);
+            var statusCode = BinarySearcher.CheckBinaryExist(location, System.Environment.CurrentDirectory, ".dll");
             Assert.Equal(BinarySearcherStatusCodes.BinaryExistsOnAbsolutePath, statusCode);
         }
     }

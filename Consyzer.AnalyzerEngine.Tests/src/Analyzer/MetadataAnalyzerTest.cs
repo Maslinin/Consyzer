@@ -1,5 +1,4 @@
 using Xunit;
-using System.Linq;
 using System.Reflection;
 using Consyzer.AnalyzerEngine.Analyzer;
 using Consyzer.AnalyzerEngine.CommonModels;
