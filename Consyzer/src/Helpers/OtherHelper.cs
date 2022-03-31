@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Consyzer.Helpers
 {
@@ -11,7 +12,7 @@ namespace Consyzer.Helpers
             string pathToAnalyze = Environment.GetCommandLineArgs().ElementAtOrDefault(1);
             if(pathToAnalyze is null) // 0 is path to current executable, 1 is path to binary
             {
-                throw new ArgumentException("The command line parameter responsible for the directory location for the analysis was not passed.");
+                throw new ArgumentException("No command line parameter was passed that contains the location of the catalog to analyze.");
             }
 
             if (!Directory.Exists(pathToAnalyze))
@@ -22,5 +23,15 @@ namespace Consyzer.Helpers
             return pathToAnalyze;
         }
 
+        public static IEnumerable<string> GetBinaryFilesExtensions()
+        {
+            string pathToAnalyze = Environment.GetCommandLineArgs().ElementAtOrDefault(2);
+            if (pathToAnalyze is null) // 0 is path to current executable, 1 is path to binary, 2 are files extensions
+            {
+                throw new ArgumentException("No command line parameter containing binary file extensions for analysis was passed.");
+            }
+
+            return pathToAnalyze.Split(',');
+        }
     }
 }

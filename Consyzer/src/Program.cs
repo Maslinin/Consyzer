@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Consyzer.Logger;
-using Consyzer.Config;
 using Consyzer.Helpers;
 using Consyzer.AnalyzerEngine.Helpers;
 
@@ -18,13 +17,11 @@ namespace Consyzer
                 string analysisFolder = OtherHelper.GetDirectoryWithBinariesFromCommandLineArgs();
                 NLogger.Info($"Path for analyze: \"{analysisFolder}\".");
 
-                NLogger.Info("Loading Configuration...");
-                var config = ConfigHelper.GetConfig(ConsyzerConfig.DefaultConfigPath);
-                NLogger.Info("Configuration file was successfully loaded.");
+                var filesExtensions = OtherHelper.GetBinaryFilesExtensions();
+                NLogger.Info($"Specified binary file extensions for analysis: {string.Join(',', filesExtensions)}.");
 
-                NLogger.Info($"Specified binary file extensions for analysis: {config.GetBinaryFilesExtensions()}.");
                 NLogger.Info("Getting binaries at the specified path with the specified extensions...");
-                var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, config.BinaryFilesExtensions).ToList();
+                var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions).ToList();
                 if(binaryFiles.Any() is false)
                 {
                     NLogger.Warn("No binary files found for analysis.");
