@@ -45,9 +45,11 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
       - name: Unit Tests Executing
-        run: dotnet test --logger:trx $env:AnalyzerEngineTests
+        run: dotnet test --logger "trx;LogFileName=testresult.trx" $env:AnalyzerEngineTests
         env:
             AnalyzerEngineTests: Consyzer.AnalyzerEngine.Tests\bin\Release\netcoreapp3.1\Consyzer.AnalyzerEngine.Tests.dll
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: End Analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
