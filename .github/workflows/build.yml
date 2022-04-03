@@ -41,15 +41,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
-        run: .\.sonar\scanner\dotnet-sonarscanner begin /k:"Maslinin_Consyzer" /o:"maslinin" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+        run: .\.sonar\scanner\dotnet-sonarscanner begin /k:"Maslinin_Consyzer" /o:"maslinin" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
       - name: Build
         run: dotnet build --configuration Release
       - name: Unit Tests Executing
-        run: dotnet test --logger "trx;LogFileName=testresult.trx" $env:AnalyzerEngineTests
-        env:
-            AnalyzerEngineTests: Consyzer.AnalyzerEngine.Tests\bin\Release\netcoreapp3.1\Consyzer.AnalyzerEngine.Tests.dll
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet test --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
       - name: End Analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
