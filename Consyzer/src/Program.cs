@@ -18,7 +18,7 @@ namespace Consyzer
                 string analysisFolder = OtherHelper.GetDirectoryWithBinariesFromCommandLineArgs();
                 NLogger.Info($"Path for analyze: \"{analysisFolder}\".");
 
-                var filesExtensions = OtherHelper.GetBinaryFilesExtensions();
+                var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
                 NLogger.Info($"Specified binary file extensions for analysis: {string.Join(',', filesExtensions)}.");
 
                 NLogger.Info("Getting binaries at the specified path with the specified extensions...");
@@ -62,7 +62,7 @@ namespace Consyzer
                 correctFiles.LoggingImportedMethodsInfoForEachBinary();
 
                 NLogger.Info("Checking the existence of binary files on the received locations...");
-                var binaryLocations = correctFiles.GetBinaryLocations();
+                var binaryLocations = correctFiles.GetImportedBinariesLocations();
                 binaryLocations.LoggingBinariesExistsStatus(analysisFolder);
 
                 NLogger.Info($"Total: {binaryLocations.GetExistsBinaries(analysisFolder).Count()} exists, {binaryLocations.GetNotExistsBinaries(analysisFolder).Count()} not exists.");

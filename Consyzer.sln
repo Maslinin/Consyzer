@@ -1,4 +1,5 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32317.152
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -6,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer", "Consyzer\Consyz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.AnalyzerEngine", "Consyzer.AnalyzerEngine\Consyzer.AnalyzerEngine.csproj", "{33E2C4A7-AB8F-4BBC-9DF9-E2F2C9CAC76C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consyzer.AnalyzerEngine.Tests", "Consyzer.AnalyzerEngine.Tests\Consyzer.AnalyzerEngine.Tests.csproj", "{642E42AF-A2B2-4229-A93A-3CE26079B1D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.AnalyzerEngine.Tests", "Consyzer.AnalyzerEngine.Tests\Consyzer.AnalyzerEngine.Tests.csproj", "{642E42AF-A2B2-4229-A93A-3CE26079B1D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consyzer.Tests", "Consyzer.Tests\Consyzer.Tests.csproj", "{897A0A9B-2526-41C1-AF1A-6F7AD92596A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +29,10 @@ Global
 		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{897A0A9B-2526-41C1-AF1A-6F7AD92596A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{897A0A9B-2526-41C1-AF1A-6F7AD92596A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{897A0A9B-2526-41C1-AF1A-6F7AD92596A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{897A0A9B-2526-41C1-AF1A-6F7AD92596A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

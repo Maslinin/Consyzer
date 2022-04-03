@@ -10,7 +10,7 @@ namespace Consyzer.Helpers
         public static string GetDirectoryWithBinariesFromCommandLineArgs()
         {
             string pathToAnalyze = Environment.GetCommandLineArgs().ElementAtOrDefault(1);
-            if(pathToAnalyze is null) // 0 is path to current executable, 1 is path to binary
+            if (pathToAnalyze is null) // 0 is path to current executable, 1 is path to binary
             {
                 throw new ArgumentException("No command line parameter was passed that contains the location of the catalog to analyze.");
             }
@@ -23,15 +23,22 @@ namespace Consyzer.Helpers
             return pathToAnalyze;
         }
 
-        public static IEnumerable<string> GetBinaryFilesExtensions()
+        public static IEnumerable<string> GetBinaryFilesExtensionsFromCommandLineArgs()
         {
-            string pathToAnalyze = Environment.GetCommandLineArgs().ElementAtOrDefault(2);
-            if (pathToAnalyze is null) // 0 is path to current executable, 1 is path to binary, 2 are files extensions
+            string binaryExtensions = Environment.GetCommandLineArgs().ElementAtOrDefault(2);
+
+            if (binaryExtensions is null) // 0 is path to current executable, 1 is path to binary, 2 are files extensions
             {
                 throw new ArgumentException("No command line parameter containing binary file extensions for analysis was passed.");
             }
 
-            return pathToAnalyze.Split(',');
+            var extensions = binaryExtensions.Split(',').Select(e => e.Trim());
+            if (!extensions.All(e => Path.HasExtension(e)))
+            {
+                throw new ArgumentException("One or more names are not extensions");
+            }
+
+            return binaryExtensions.Split(',').Select(e => e.Trim());
         }
     }
 }

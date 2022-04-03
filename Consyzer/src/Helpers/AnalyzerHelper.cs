@@ -13,7 +13,7 @@ namespace Consyzer.Helpers
             return binaryFiles.Select(f => new MetadataAnalyzer(f.BaseFileInfo.FullName));
         }
 
-        public static IEnumerable<string> GetBinaryLocations(this IEnumerable<MetadataAnalyzer> metadataAnalyzers)
+        public static IEnumerable<string> GetImportedBinariesLocations(this IEnumerable<MetadataAnalyzer> metadataAnalyzers)
         {
             var importedMethods = new List<string>();
 
