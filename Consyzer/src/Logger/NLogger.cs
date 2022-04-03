@@ -7,6 +7,7 @@ namespace Consyzer.Logger
     /// <summary>
     /// Static class that provides static methods for event logging
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class NLogger
     {
         /// <summary>

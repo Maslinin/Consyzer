@@ -1,8 +1,6 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using Consyzer.Logger;
-using Consyzer.AnalyzerEngine.Helpers;
 using Consyzer.AnalyzerEngine.Analyzer;
 using Consyzer.AnalyzerEngine.Analyzer.Searchers;
 using Consyzer.AnalyzerEngine.Analyzer.SyntaxModels;
@@ -10,6 +8,7 @@ using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.Helpers
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class LoggerHelper
     {
 

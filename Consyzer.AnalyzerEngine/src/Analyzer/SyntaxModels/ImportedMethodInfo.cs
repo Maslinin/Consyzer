@@ -2,6 +2,7 @@
 
 namespace Consyzer.AnalyzerEngine.Analyzer.SyntaxModels
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class ImportedMethodInfo
     {
         public SignatureInfo SignatureInfo { get; }

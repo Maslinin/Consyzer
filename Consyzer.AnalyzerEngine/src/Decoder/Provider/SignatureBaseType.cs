@@ -1,5 +1,6 @@
 ﻿namespace Consyzer.AnalyzerEngine.Decoder.Provider
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureBaseType
     {
         #region Type Defenitions

@@ -24,11 +24,11 @@ namespace Consyzer.AnalyzerEngine.Decoder
         {
             if (!binary.HasMetadata)
             {
-                throw new MetadataFileNotSupportedException($"{nameof(binary.BaseFileInfo.FullName)} is does not contain metadata.");
+                throw new MetadataFileNotSupportedException($"{binary.BaseFileInfo.FullName} is does not contain metadata.");
             }
             if (!binary.IsAssembly)
             {
-                throw new AssemblyFileNotSupportedException($"{nameof(binary.BaseFileInfo.FullName)} is contains metadata, but is not an assembly.");
+                throw new AssemblyFileNotSupportedException($"{binary.BaseFileInfo.FullName} is contains metadata, but is not an assembly.");
             }
 
             var peReader = new System.Reflection.PortableExecutable.PEReader(new FileStream(binary.BaseFileInfo.FullName, FileMode.Open, FileAccess.Read));
