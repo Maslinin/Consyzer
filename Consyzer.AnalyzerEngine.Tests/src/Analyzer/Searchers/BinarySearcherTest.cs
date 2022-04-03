@@ -4,6 +4,7 @@ using Consyzer.AnalyzerEngine.Analyzer.Searchers;
 
 namespace Consyzer.AnalyzerEngine.Tests.Analyzer.Searchers
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class BinarySearcherTest
     {
         [Fact(DisplayName = "Checking the existence of a binary file")]

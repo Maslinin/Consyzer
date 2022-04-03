@@ -8,6 +8,7 @@ namespace Consyzer
 {
     static class Program
     {
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private static int Main()
         {
             int exitCode = (int)WorkStatusCodes.UndefinedBehavior;

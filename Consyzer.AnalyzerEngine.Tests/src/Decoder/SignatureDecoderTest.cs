@@ -7,6 +7,7 @@ using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.AnalyzerEngine.Tests.Decoder
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureDecoderTest
     {
 

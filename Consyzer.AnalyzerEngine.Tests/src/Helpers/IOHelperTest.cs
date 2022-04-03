@@ -5,6 +5,7 @@ using Consyzer.AnalyzerEngine.Helpers;
 
 namespace Consyzer.AnalyzerEngine.Tests.Helpers
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class IOHelperTest
     {
         [Fact(DisplayName = "Checking for information about binary files")]

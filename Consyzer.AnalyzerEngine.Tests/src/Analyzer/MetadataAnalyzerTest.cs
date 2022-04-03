@@ -5,6 +5,7 @@ using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.AnalyzerEngine.Tests.Analyzer
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class MetadataAnalyzerTest
     {
         [Fact(DisplayName = "Instance Creation")]

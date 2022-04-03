@@ -5,6 +5,7 @@ using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.AnalyzerEngine.Tests.CommonModels
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class HashFileInfoTest
     {
         [Fact(DisplayName = "Hash calculating check")]

@@ -8,6 +8,7 @@ using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.AnalyzerEngine.Tests.Helpers
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class CommonAnalyzerHelperTest
     {
         [Fact(DisplayName = "Checking Definition for Metadata Content")]
