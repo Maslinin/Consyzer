@@ -22,10 +22,10 @@ namespace Consyzer.AnalyzerEngine.CommonModels
                 throw new FileNotFoundException($"{fileInfo.FullName} does not exist.");
             }
 
-            BaseFileInfo = fileInfo;
-            HasMetadata = CommonAnalyzerHelper.HasMetadata(fileInfo.FullName);
-            IsAssembly = CommonAnalyzerHelper.MetadataFileIsAssembly(fileInfo.FullName);
-            HashInfo = HashFileInfo.Calculate(fileInfo);
+            this.BaseFileInfo = fileInfo;
+            this.HasMetadata = CommonAnalyzerHelper.HasMetadata(fileInfo.FullName);
+            this.IsAssembly = CommonAnalyzerHelper.MetadataFileIsAssembly(fileInfo.FullName);
+            this.HashInfo = HashFileInfo.Calculate(fileInfo);
         }
 
         public BinaryFileInfo(string pathToBinary)
@@ -41,10 +41,10 @@ namespace Consyzer.AnalyzerEngine.CommonModels
 
             var info = new FileInfo(pathToBinary);
 
-            BaseFileInfo = info;
-            HasMetadata = CommonAnalyzerHelper.HasMetadata(pathToBinary);
-            IsAssembly = CommonAnalyzerHelper.MetadataFileIsAssembly(pathToBinary);
-            HashInfo = HashFileInfo.Calculate(info);
+            this.BaseFileInfo = info;
+            this.HasMetadata = CommonAnalyzerHelper.HasMetadata(pathToBinary);
+            this.IsAssembly = CommonAnalyzerHelper.MetadataFileIsAssembly(pathToBinary);
+            this.HashInfo = HashFileInfo.Calculate(info);
         }
 
     }

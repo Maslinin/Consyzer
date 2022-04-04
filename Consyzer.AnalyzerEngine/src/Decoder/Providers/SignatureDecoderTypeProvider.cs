@@ -3,7 +3,7 @@ using System.Text;
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
 
-namespace Consyzer.AnalyzerEngine.Decoder.Provider
+namespace Consyzer.AnalyzerEngine.Decoder.Providers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureDecoderTypeProvider : ISignatureTypeProvider<SignatureBaseType, object>

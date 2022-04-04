@@ -1,4 +1,4 @@
-﻿namespace Consyzer.AnalyzerEngine.Decoder.Provider
+﻿namespace Consyzer.AnalyzerEngine.Decoder.Providers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureBaseType

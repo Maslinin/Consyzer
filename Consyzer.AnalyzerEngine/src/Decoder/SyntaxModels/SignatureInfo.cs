@@ -1,37 +1,29 @@
 ﻿using System.Text;
 using System.Collections.Generic;
-using Consyzer.AnalyzerEngine.Decoder.Provider;
+using Consyzer.AnalyzerEngine.Decoder.Providers;
 
 namespace Consyzer.AnalyzerEngine.Decoder.SyntaxModels
 {
     public sealed class SignatureInfo
     {
-        public string Namespace { get; }
-        public string ClassName { get; }
-        public string MethodName { get; }
-        public string Accessibility { get; }
-        public bool IsStatic { get; }
-        public string ReturnType { get; }
-        public IEnumerable<SignatureBaseType> Parameters { get; }
-        public string AllMethodAttributes { get; }
+        public string Namespace { get; set; }
+        public string ClassName { get; set; }
+        public string MethodName { get; set; }
+        public string Accessibility { get; set; }
+        public bool IsStatic { get; set; }
+        public string ReturnType { get; set; }
+        public IEnumerable<SignatureBaseType> MethodArguments { get; set; }
+        public string AllMethodAttributes { get; set; }
 
-        public SignatureInfo(string Namespace,
-                             string ClassName,
-                             string MethodName,
-                             string Accessibility,
-                             bool IsStatic,
-                             string ReturnType,
-                             IEnumerable<SignatureBaseType> Parameters,
-                             string AllMethodAttributes)
+        public SignatureInfo()
         {
-            this.Namespace = Namespace;
-            this.ClassName = ClassName;
-            this.MethodName = MethodName;
-            this.Accessibility = Accessibility;
-            this.IsStatic = IsStatic;
-            this.ReturnType = ReturnType;
-            this.Parameters = Parameters;
-            this.AllMethodAttributes = AllMethodAttributes;
+            this.Namespace = string.Empty;
+            this.ClassName = string.Empty;
+            this.MethodName = string.Empty;
+            this.Accessibility = string.Empty;
+            this.ReturnType = string.Empty;
+            this.MethodArguments = new List<SignatureBaseType>();
+            this.AllMethodAttributes = string.Empty;
         }
 
         public string GetMethodLocation()
@@ -39,11 +31,11 @@ namespace Consyzer.AnalyzerEngine.Decoder.SyntaxModels
             return $"{Namespace}.{ClassName}.{MethodName}";
         }
 
-        public string GetMethodParametersAsString()
+        public string GetMethodArgsAsString()
         {
             var builder = new StringBuilder();
 
-            foreach (var parameter in this.Parameters)
+            foreach (var parameter in this.MethodArguments)
             {
                 if (parameter.Attributes != SignatureBaseType.AttributesDefaultValue)
                 {
@@ -62,7 +54,7 @@ namespace Consyzer.AnalyzerEngine.Decoder.SyntaxModels
 
         public string GetBaseMethodSignature()
         {
-            return $"{this.Namespace}.{this.ClassName}.{this.MethodName}({this.GetMethodParametersAsString()})";
+            return $"{this.Namespace}.{this.ClassName}.{this.MethodName}({this.GetMethodArgsAsString()})";
         }
 
         public string GetFullMethodSignature()

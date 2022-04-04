@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using Consyzer.AnalyzerEngine.CommonModels;
-using Consyzer.AnalyzerEngine.Decoder.Provider;
+using Consyzer.AnalyzerEngine.Decoder.Providers;
 using Consyzer.AnalyzerEngine.Decoder.SyntaxModels;
 
 namespace Consyzer.AnalyzerEngine.Decoder
@@ -81,7 +81,17 @@ namespace Consyzer.AnalyzerEngine.Decoder
                 fullMethodAttributes = $"{fullMethodAttributes}, {methodImplAttributes}";
             }
 
-            return new SignatureInfo(@namespace, @class, @methodName, methodAccessibility, methodIsStatic, signature.ReturnType.ToString(), methodParameters, fullMethodAttributes);
+            return new SignatureInfo()
+            {
+                Namespace = @namespace,
+                ClassName = @class,
+                MethodName = methodName,
+                Accessibility = methodAccessibility,
+                IsStatic = methodIsStatic,
+                ReturnType = signature.ReturnType.ToString(),
+                MethodArguments = methodParameters,
+                AllMethodAttributes = fullMethodAttributes
+            };
         }
 
         public SignatureInfo GetDecodedSignature(MethodDefinitionHandle methodHandle)
