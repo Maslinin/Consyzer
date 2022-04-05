@@ -17,42 +17,34 @@ namespace Consyzer.Logger
         /// <summary>
         /// Gets the path to the logging folder
         /// </summary>
-        public static string LogDirPath { get; }
+        public static string LogDirPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
 
         static NLogger()
         {
-            try
+            if (!Directory.Exists(NLogger.LogDirPath))
             {
-                LogDirPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
-                if (!Directory.Exists(LogDirPath))
-                {
-                    Directory.CreateDirectory(LogDirPath);
-                }
-
-                string logFilePath = Path.Combine(LogDirPath, $"{DateTime.Now:MM.dd.yyyy}.txt");
-
-                var fileTarget = new NLog.Targets.FileTarget()
-                {
-                    FileName = logFilePath,
-                    DeleteOldFileOnStartup = false,
-                    Layout = "${message}"
-                };
-                var consoleTarget = new NLog.Targets.ConsoleTarget()
-                {
-                    Layout = "${message}"
-                };
-
-                var logConfig = new NLog.Config.LoggingConfiguration();
-                logConfig.AddRuleForAllLevels(fileTarget);
-                logConfig.AddRuleForAllLevels(consoleTarget);
-                LogManager.Configuration = logConfig;
-
-                Logger = LogManager.GetLogger("ConsyzerLogger");
+                Directory.CreateDirectory(NLogger.LogDirPath);
             }
-            catch(Exception e)
+
+            string logFilePath = Path.Combine(NLogger.LogDirPath, $"{DateTime.Now:MM.dd.yyyy}.txt");
+
+            var fileTarget = new NLog.Targets.FileTarget()
             {
-                throw new AggregateException("Error initializing static class fields", e);
-            }
+                FileName = logFilePath,
+                DeleteOldFileOnStartup = false,
+                Layout = "${message}"
+            };
+            var consoleTarget = new NLog.Targets.ConsoleTarget()
+            {
+                Layout = "${message}"
+            };
+
+            var logConfig = new NLog.Config.LoggingConfiguration();
+            logConfig.AddRuleForAllLevels(fileTarget);
+            logConfig.AddRuleForAllLevels(consoleTarget);
+            LogManager.Configuration = logConfig;
+
+            NLogger.Logger = LogManager.GetLogger("ConsyzerLogger");
         }
 
         /// <summary>
