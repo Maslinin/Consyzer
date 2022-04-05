@@ -5,11 +5,10 @@ namespace Consyzer.AnalyzerEngine
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [Serializable]
-    public class PEFileNotSupportedException : Exception
+    public sealed class PEFileNotSupportedException : Exception
     {
         public PEFileNotSupportedException() { }
         public PEFileNotSupportedException(string message) : base(message) { }
         public PEFileNotSupportedException(string message, Exception ex) : base(message, ex) { }
-        protected PEFileNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }
