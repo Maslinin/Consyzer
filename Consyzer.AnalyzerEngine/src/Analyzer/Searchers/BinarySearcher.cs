@@ -15,7 +15,7 @@ namespace Consyzer.AnalyzerEngine.Analyzer.Searchers
             }
             if (string.IsNullOrEmpty(analysisFolder))
             {
-                throw new ArgumentNullException($"{nameof(binaryPath)} is null or empty.");
+                throw new ArgumentNullException($"{nameof(analysisFolder)} is null or empty.");
             }
 
             bool pathIsAbsolute = IOHelper.IsAbsolutePath(binaryPath);

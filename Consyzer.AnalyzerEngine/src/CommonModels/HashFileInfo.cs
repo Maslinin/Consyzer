@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Security.Cryptography;
 
@@ -21,14 +22,14 @@ namespace Consyzer.AnalyzerEngine.CommonModels
         {
             if (fileInfo is null)
             {
-                throw new System.NullReferenceException($"{nameof(fileInfo)} has null reference");
+                throw new ArgumentNullException($"{nameof(fileInfo)} is null.");
             }
             if (!fileInfo.Exists)
             {
-                throw new FileNotFoundException($"File {fileInfo.FullName} does not exist");
+                throw new FileNotFoundException($"File {fileInfo.FullName} does not exist.");
             }
 
-            string MD5Sum, SHA256Sum;
+            string @MD5Sum, @SHA256Sum;
 
             //MD5 hash compute:
             using (var md5 = MD5.Create())
@@ -38,12 +39,12 @@ namespace Consyzer.AnalyzerEngine.CommonModels
                     byte[] hashBytes = md5.ComputeHash(fStream);
 
                     var hash = new StringBuilder();
-                    for (int i = 0; i < hashBytes.Length; i++)
+                    for (int i = 0; i < hashBytes.Length; ++i)
                     {
                         hash.Append(hashBytes[i].ToString("X2"));
                     }
 
-                    MD5Sum = hash.ToString();
+                    @MD5Sum = hash.ToString();
                 }
             }
 
@@ -55,16 +56,16 @@ namespace Consyzer.AnalyzerEngine.CommonModels
                     byte[] hashBytes = sha256.ComputeHash(fStream);
 
                     var hash = new StringBuilder();
-                    for (int i = 0; i < hashBytes.Length; i++)
+                    for (int i = 0; i < hashBytes.Length; ++i)
                     {
                         hash.Append(hashBytes[i].ToString("X2"));
                     }
 
-                    SHA256Sum = hash.ToString();
+                    @SHA256Sum = hash.ToString();
                 }
             }
 
-            return new HashFileInfo(MD5Sum, SHA256Sum);
+            return new HashFileInfo(@MD5Sum, @SHA256Sum);
         }
 
         public static HashFileInfo Calculate(BinaryFileInfo binary)
