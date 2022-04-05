@@ -11,10 +11,5 @@ namespace Consyzer.AnalyzerEngine
         public PEFileNotSupportedException(string message) : base(message) { }
         public PEFileNotSupportedException(string message, Exception ex) : base(message, ex) { }
         protected PEFileNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-        }
     }
 }
