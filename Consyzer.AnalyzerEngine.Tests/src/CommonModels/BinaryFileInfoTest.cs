@@ -13,11 +13,11 @@ namespace Consyzer.AnalyzerEngine.Tests.CommonModels
         {
             string location = Assembly.GetExecutingAssembly().Location;
 
-            var exceptionOptionOne = Record.Exception(() => new BinaryFileInfo(location));
-            var exceptionOptionTwo = Record.Exception(() => new BinaryFileInfo(new FileInfo(location)));
+            var exceptionOverloadOne = Record.Exception(() => new BinaryFileInfo(location));
+            var exceptionOverloadTwo = Record.Exception(() => new BinaryFileInfo(new FileInfo(location)));
 
-            Assert.Null(exceptionOptionOne);
-            Assert.Null(exceptionOptionTwo);
+            Assert.Null(exceptionOverloadOne);
+            Assert.Null(exceptionOverloadTwo);
         }
     }
 }

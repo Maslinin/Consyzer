@@ -9,8 +9,6 @@ namespace Consyzer.AnalyzerEngine.Analyzer.SyntaxModels
         public string DllLocation { get; }
         public string DllImportArguments { get; }
 
-        public ImportedMethodInfo() { }
-
         public ImportedMethodInfo(SignatureInfo SignatureInfo, string DllLocation, string DllImportArguments)
         {
             this.SignatureInfo = SignatureInfo;

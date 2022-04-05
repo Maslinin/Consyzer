@@ -24,13 +24,13 @@ namespace Consyzer.AnalyzerEngine.Tests.Helpers
         {
             string location = Assembly.GetExecutingAssembly().Location;
 
-            var hasMetadataFilesOptionOne = new List<FileInfo> { new FileInfo(location) }.GetFilesContainsMetadata();
-            var hasMetadataFilesOptionTwo = new List<BinaryFileInfo> { new BinaryFileInfo(location) }.GetFilesContainsMetadata();
-            var hasMetadataFilesOptionThree = new List<PEReader> { new PEReader(new FileStream(location, FileMode.Open, FileAccess.Read)) }.GetFilesContainsMetadata();
+            var hasMetadataFilesOverloadOne = new List<FileInfo> { new FileInfo(location) }.GetFilesContainsMetadata();
+            var hasMetadataFilesOverloadTwo = new List<BinaryFileInfo> { new BinaryFileInfo(location) }.GetFilesContainsMetadata();
+            var hasMetadataFilesOverloadThree = new List<PEReader> { new PEReader(new FileStream(location, FileMode.Open, FileAccess.Read)) }.GetFilesContainsMetadata();
 
-            Assert.NotEmpty(hasMetadataFilesOptionOne);
-            Assert.NotEmpty(hasMetadataFilesOptionTwo);
-            Assert.NotEmpty(hasMetadataFilesOptionThree);
+            Assert.NotEmpty(hasMetadataFilesOverloadOne);
+            Assert.NotEmpty(hasMetadataFilesOverloadTwo);
+            Assert.NotEmpty(hasMetadataFilesOverloadThree);
         }
 
         [Fact(DisplayName = "Checking for files not containing metadata")]
@@ -38,13 +38,13 @@ namespace Consyzer.AnalyzerEngine.Tests.Helpers
         {
             string location = Assembly.GetExecutingAssembly().Location;
 
-            var notHasMetadataFilesOptionOne = new List<FileInfo> { new FileInfo(location) }.GetFilesNotContainsMetadata();
-            var notHasMetadataFilesOptionTwo = new List<BinaryFileInfo> { new BinaryFileInfo(location) }.GetFilesNotContainsMetadata();
-            var notHasMetadataFilesOptionThree = new List<PEReader> { new PEReader(new FileStream(location, FileMode.Open, FileAccess.Read)) }.GetFilesNotContainsMetadata();
+            var notHasMetadataFilesOverloadOne = new List<FileInfo> { new FileInfo(location) }.GetFilesNotContainsMetadata();
+            var notHasMetadataFilesOverloadTwo = new List<BinaryFileInfo> { new BinaryFileInfo(location) }.GetFilesNotContainsMetadata();
+            var notHasMetadataFilesOverloadThree = new List<PEReader> { new PEReader(new FileStream(location, FileMode.Open, FileAccess.Read)) }.GetFilesNotContainsMetadata();
 
-            Assert.Empty(notHasMetadataFilesOptionOne);
-            Assert.Empty(notHasMetadataFilesOptionTwo);
-            Assert.Empty(notHasMetadataFilesOptionThree);
+            Assert.Empty(notHasMetadataFilesOverloadOne);
+            Assert.Empty(notHasMetadataFilesOverloadTwo);
+            Assert.Empty(notHasMetadataFilesOverloadThree);
         }
 
         [Fact(DisplayName = "Checking that the metadata file is an assembly")]
@@ -60,13 +60,13 @@ namespace Consyzer.AnalyzerEngine.Tests.Helpers
         {
             string location = Assembly.GetExecutingAssembly().Location;
 
-            var areAssembliesFilesOptionOne = new List<FileInfo> { new FileInfo(location) }.GetMetadataAssemblyFiles();
-            var areAssembliesFilesOptionTwo = new List<BinaryFileInfo> { new BinaryFileInfo(location) }.GetMetadataAssemblyFiles();
-            var areAssembliesFilesOptionThree = new List<PEReader> { new PEReader(new FileStream(location, FileMode.Open, FileAccess.Read)) }.GetMetadataAssemblyFiles();
+            var areAssembliesFilesOverloadOne = new List<FileInfo> { new FileInfo(location) }.GetMetadataAssemblyFiles();
+            var areAssembliesFilesOverloadTwo = new List<BinaryFileInfo> { new BinaryFileInfo(location) }.GetMetadataAssemblyFiles();
+            var areAssembliesFilesOverloadThree = new List<PEReader> { new PEReader(new FileStream(location, FileMode.Open, FileAccess.Read)) }.GetMetadataAssemblyFiles();
 
-            Assert.NotEmpty(areAssembliesFilesOptionOne);
-            Assert.NotEmpty(areAssembliesFilesOptionTwo);
-            Assert.NotEmpty(areAssembliesFilesOptionThree);
+            Assert.NotEmpty(areAssembliesFilesOverloadOne);
+            Assert.NotEmpty(areAssembliesFilesOverloadTwo);
+            Assert.NotEmpty(areAssembliesFilesOverloadThree);
         }
 
         [Fact(DisplayName = "Checking that metadata files are not assemblies")]
@@ -74,13 +74,13 @@ namespace Consyzer.AnalyzerEngine.Tests.Helpers
         {
             string location = Assembly.GetExecutingAssembly().Location;
 
-            var areNotAssembliesFilesOptionOne = new List<FileInfo> { new FileInfo(location) }.GetNotMetadataAssemblyFiles();
-            var areNotAssembliesFilesOptionTwo = new List<BinaryFileInfo> { new BinaryFileInfo(location) }.GetNotMetadataAssemblyFiles();
-            var areNotAssembliesFilesOptionThree = new List<PEReader> { new PEReader(new FileStream(location, FileMode.Open, FileAccess.Read)) }.GetNotMetadataAssemblyFiles();
+            var areNotAssembliesFilesOverloadOne = new List<FileInfo> { new FileInfo(location) }.GetNotMetadataAssemblyFiles();
+            var areNotAssembliesFilesOverloadTwo = new List<BinaryFileInfo> { new BinaryFileInfo(location) }.GetNotMetadataAssemblyFiles();
+            var areNotAssembliesFilesOverloadThree = new List<PEReader> { new PEReader(new FileStream(location, FileMode.Open, FileAccess.Read)) }.GetNotMetadataAssemblyFiles();
 
-            Assert.Empty(areNotAssembliesFilesOptionOne);
-            Assert.Empty(areNotAssembliesFilesOptionTwo);
-            Assert.Empty(areNotAssembliesFilesOptionThree);
+            Assert.Empty(areNotAssembliesFilesOverloadOne);
+            Assert.Empty(areNotAssembliesFilesOverloadTwo);
+            Assert.Empty(areNotAssembliesFilesOverloadThree);
         }
     }
 }

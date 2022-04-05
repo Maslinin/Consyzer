@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 namespace Consyzer.AnalyzerEngine.Decoder.Providers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public sealed class SignatureDecoderTypeProvider : ISignatureTypeProvider<SignatureBaseType, object>
+    internal sealed class SignatureDecoderTypeProvider : ISignatureTypeProvider<SignatureBaseType, object>
     {
         private readonly MetadataReader _mdReader;
         private readonly MethodDefinition _methodDef;

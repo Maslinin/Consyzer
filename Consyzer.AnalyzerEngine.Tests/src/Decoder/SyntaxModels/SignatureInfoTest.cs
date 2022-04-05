@@ -22,7 +22,9 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoder.SyntaxModels
             string location = Assembly.GetExecutingAssembly().Location;
             var mdAnalyzer = new MetadataAnalyzer(location);
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
+
             string methodLocation = decoder.GetDecodedSignature(mdAnalyzer.GetMethodsDefinitions().First()).GetMethodLocation();
+
             Assert.NotEmpty(methodLocation);
         }
 
@@ -32,7 +34,9 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoder.SyntaxModels
             string location = Assembly.GetExecutingAssembly().Location;
             var mdAnalyzer = new MetadataAnalyzer(location);
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
+
             string methodArgs = decoder.GetDecodedSignature(mdAnalyzer.GetMethodsDefinitions().First()).GetMethodArgsAsString();
+
             Assert.NotEmpty(methodArgs);
         }
         
@@ -42,7 +46,9 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoder.SyntaxModels
             string location = Assembly.GetExecutingAssembly().Location;
             var mdAnalyzer = new MetadataAnalyzer(location);
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
+
             string baseMethodSignature = decoder.GetDecodedSignature(mdAnalyzer.GetMethodsDefinitions().First()).GetBaseMethodSignature();
+
             Assert.NotEmpty(baseMethodSignature);
         }
 
@@ -52,7 +58,9 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoder.SyntaxModels
             string location = Assembly.GetExecutingAssembly().Location;
             var mdAnalyzer = new MetadataAnalyzer(location);
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
+
             string baseMethodSignature = decoder.GetDecodedSignature(mdAnalyzer.GetMethodsDefinitions().First()).GetFullMethodSignature();
+
             Assert.NotEmpty(baseMethodSignature);
         }
     }

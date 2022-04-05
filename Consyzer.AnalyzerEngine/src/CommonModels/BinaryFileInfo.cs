@@ -4,6 +4,7 @@ using Consyzer.AnalyzerEngine.Helpers;
 
 namespace Consyzer.AnalyzerEngine.CommonModels
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class BinaryFileInfo
     {
         public FileInfo BaseFileInfo { get; }

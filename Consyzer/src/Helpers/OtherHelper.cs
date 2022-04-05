@@ -7,6 +7,7 @@ namespace Consyzer.Helpers
 {
     public static class OtherHelper
     {
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public static string GetDirectoryWithBinariesFromCommandLineArgs()
         {
             string pathToAnalyze = Environment.GetCommandLineArgs().ElementAtOrDefault(1);
@@ -23,6 +24,7 @@ namespace Consyzer.Helpers
             return pathToAnalyze;
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public static IEnumerable<string> GetBinaryFilesExtensionsFromCommandLineArgs()
         {
             string binaryExtensions = Environment.GetCommandLineArgs().ElementAtOrDefault(2);

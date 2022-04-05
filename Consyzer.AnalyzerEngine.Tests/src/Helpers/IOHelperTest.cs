@@ -12,8 +12,14 @@ namespace Consyzer.AnalyzerEngine.Tests.Helpers
         public void GetBinaryFilesInfoFrom()
         {
             string location = Environment.CurrentDirectory;
-            var files = IOHelper.GetBinaryFilesInfoFrom(location, new string[] { ".exe", ".dll" });
-            Assert.NotEmpty(files);
+
+            var filesOptionOne = IOHelper.GetBinaryFilesInfoFrom(location, new string[] { ".exe", ".dll" });
+            var filesOptionTwo = IOHelper.GetBinaryFilesInfoFrom(location);
+            var exceptionOptionOne = Record.Exception(() => IOHelper.GetBinaryFilesInfoFrom($"{location}:Test"));
+
+            Assert.NotEmpty(filesOptionOne);
+            Assert.NotEmpty(filesOptionTwo);
+            Assert.NotNull(exceptionOptionOne);
         }
 
         [Fact(DisplayName = "Checking executable location to an absolute path")]

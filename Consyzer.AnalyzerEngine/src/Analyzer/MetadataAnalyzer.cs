@@ -14,6 +14,7 @@ namespace Consyzer.AnalyzerEngine.Analyzer
         public BinaryFileInfo BinaryInfo { get; }
         public MetadataReader MdReader { get; }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public MetadataAnalyzer(BinaryFileInfo binary)
         {
             if (binary is null)
@@ -35,6 +36,7 @@ namespace Consyzer.AnalyzerEngine.Analyzer
             this.MdReader = new PEReader(new FileStream(this.BinaryInfo.BaseFileInfo.FullName, FileMode.Open, FileAccess.Read)).GetMetadataReader();
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public MetadataAnalyzer(string pathToBinary)
         {
             if (!File.Exists(pathToBinary))

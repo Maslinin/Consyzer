@@ -15,10 +15,10 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoder
         public void InstanceCreation()
         {
             string location = Assembly.GetExecutingAssembly().Location;
-            var exceptionOptionOne = Record.Exception(() => new SignatureDecoder(location));
-            var exceptionOptionTwo = Record.Exception(() => new SignatureDecoder(new BinaryFileInfo(location)));
-            Assert.Null(exceptionOptionOne);
-            Assert.Null(exceptionOptionTwo);
+            var exceptionOverloadOne = Record.Exception(() => new SignatureDecoder(location));
+            var exceptionOverloadTwo = Record.Exception(() => new SignatureDecoder(new BinaryFileInfo(location)));
+            Assert.Null(exceptionOverloadOne);
+            Assert.Null(exceptionOverloadTwo);
         }
 
         [Fact(DisplayName = "Signature Decoding Check")]
@@ -29,11 +29,11 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoder
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
             var methodHandle = mdAnalyzer.GetMethodsDefinitionsHandles().First();
 
-            var signatureOptionOne = decoder.GetDecodedSignature(methodHandle);
-            var signatureOptionTwo = decoder.GetDecodedSignature(mdAnalyzer.MdReader.GetMethodDefinition(methodHandle));
+            var signatureOverloadOne = decoder.GetDecodedSignature(methodHandle);
+            var signatureOverloadTwo = decoder.GetDecodedSignature(mdAnalyzer.MdReader.GetMethodDefinition(methodHandle));
 
-            Assert.NotNull(signatureOptionOne);
-            Assert.NotNull(signatureOptionTwo);
+            Assert.NotNull(signatureOverloadOne);
+            Assert.NotNull(signatureOverloadTwo);
         }
 
         [Fact(DisplayName = "Signatures Decoding Check")]
@@ -45,19 +45,19 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoder
             var typesHandles = mdAnalyzer.GetTypesDefinitionsHandles();
             var methodHandles = typesHandles.Select(h => mdAnalyzer.MdReader.GetTypeDefinition(h)).First().GetMethods();
 
-            var signaturesOptionOne = decoder.GetDecodedSignatures(typesHandles);
-            var signaturesOptionTwo = decoder.GetDecodedSignatures(typesHandles.First());
-            var signaturesOptionThree = decoder.GetDecodedSignatures(mdAnalyzer.MdReader.GetTypeDefinition(typesHandles.First()));
-            var signaturesOptionFour = decoder.GetDecodedSignatures(typesHandles.Select(h => mdAnalyzer.MdReader.GetTypeDefinition(h)));
-            var signaturesOptionFive = decoder.GetDecodedSignatures(methodHandles);
-            var signaturesOptionSix = decoder.GetDecodedSignatures(methodHandles.Select(h => mdAnalyzer.MdReader.GetMethodDefinition(h)));
+            var signaturesOverloadOne = decoder.GetDecodedSignatures(typesHandles);
+            var signaturesOverloadTwo = decoder.GetDecodedSignatures(typesHandles.First());
+            var signaturesOverloadThree = decoder.GetDecodedSignatures(mdAnalyzer.MdReader.GetTypeDefinition(typesHandles.First()));
+            var signaturesOverloadFour = decoder.GetDecodedSignatures(typesHandles.Select(h => mdAnalyzer.MdReader.GetTypeDefinition(h)));
+            var signaturesOverloadFive = decoder.GetDecodedSignatures(methodHandles);
+            var signaturesOverloadSix = decoder.GetDecodedSignatures(methodHandles.Select(h => mdAnalyzer.MdReader.GetMethodDefinition(h)));
 
-            Assert.NotNull(signaturesOptionOne);
-            Assert.NotNull(signaturesOptionTwo);
-            Assert.NotNull(signaturesOptionThree);
-            Assert.NotNull(signaturesOptionFour);
-            Assert.NotNull(signaturesOptionFive);
-            Assert.NotNull(signaturesOptionSix);
+            Assert.NotNull(signaturesOverloadOne);
+            Assert.NotNull(signaturesOverloadTwo);
+            Assert.NotNull(signaturesOverloadThree);
+            Assert.NotNull(signaturesOverloadFour);
+            Assert.NotNull(signaturesOverloadFive);
+            Assert.NotNull(signaturesOverloadSix);
         }
 
     }

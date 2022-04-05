@@ -12,10 +12,12 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzer
         public void InstanceCreation()
         {
             string location = Assembly.GetExecutingAssembly().Location;
-            var exceptionOptionOne = Record.Exception(() => new MetadataAnalyzer(location));
-            var exceptionOptionTwo = Record.Exception(() => new MetadataAnalyzer(new BinaryFileInfo(location)));
-            Assert.Null(exceptionOptionOne);
-            Assert.Null(exceptionOptionTwo);
+
+            var exceptionOverloadOne = Record.Exception(() => new MetadataAnalyzer(location));
+            var exceptionOverloadTwo = Record.Exception(() => new MetadataAnalyzer(new BinaryFileInfo(location)));
+
+            Assert.Null(exceptionOverloadOne);
+            Assert.Null(exceptionOverloadTwo);
         }
 
         [Fact(DisplayName = "Getting Imported Methods Definitions")]

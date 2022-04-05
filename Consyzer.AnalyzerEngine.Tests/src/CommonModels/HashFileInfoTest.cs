@@ -13,16 +13,16 @@ namespace Consyzer.AnalyzerEngine.Tests.CommonModels
         {
             string location = Assembly.GetExecutingAssembly().Location;
 
-            var hashInfoOptionOne = HashFileInfo.Calculate(location);
-            var hashInfoOptionTwo = HashFileInfo.Calculate(new FileInfo(location));
-            var hashInfoOptionThree = HashFileInfo.Calculate(new BinaryFileInfo(location));
+            var hashInfoOverloadOne = HashFileInfo.Calculate(location);
+            var hashInfoOverloadTwo = HashFileInfo.Calculate(new FileInfo(location));
+            var hashInfoOverloadThree = HashFileInfo.Calculate(new BinaryFileInfo(location));
 
-            Assert.NotEmpty(hashInfoOptionOne.MD5Sum);
-            Assert.NotEmpty(hashInfoOptionOne.SHA256Sum);
-            Assert.NotEmpty(hashInfoOptionTwo.MD5Sum);
-            Assert.NotEmpty(hashInfoOptionTwo.SHA256Sum);
-            Assert.NotEmpty(hashInfoOptionThree.MD5Sum);
-            Assert.NotEmpty(hashInfoOptionThree.SHA256Sum);
+            Assert.NotEmpty(hashInfoOverloadOne.MD5Sum);
+            Assert.NotEmpty(hashInfoOverloadOne.SHA256Sum);
+            Assert.NotEmpty(hashInfoOverloadTwo.MD5Sum);
+            Assert.NotEmpty(hashInfoOverloadTwo.SHA256Sum);
+            Assert.NotEmpty(hashInfoOverloadThree.MD5Sum);
+            Assert.NotEmpty(hashInfoOverloadThree.SHA256Sum);
         }
     }
 }
