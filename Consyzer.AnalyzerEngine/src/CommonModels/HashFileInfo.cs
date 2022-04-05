@@ -70,11 +70,21 @@ namespace Consyzer.AnalyzerEngine.CommonModels
 
         public static HashFileInfo Calculate(BinaryFileInfo binary)
         {
+            if (binary is null)
+            {
+                throw new ArgumentNullException($"{nameof(binary)} is null.");
+            }
+
             return Calculate(new FileInfo(binary.BaseFileInfo.FullName));
         }
 
         public static HashFileInfo Calculate(string pathToBinary)
         {
+            if (string.IsNullOrEmpty(pathToBinary))
+            {
+                throw new ArgumentNullException($"{nameof(pathToBinary)} is null or empty.");
+            }
+
             return Calculate(new FileInfo(pathToBinary));
         }
 

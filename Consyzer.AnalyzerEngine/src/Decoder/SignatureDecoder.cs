@@ -15,11 +15,7 @@ namespace Consyzer.AnalyzerEngine.Decoder
 
         #region SignatureDecoder constructors
 
-        public SignatureDecoder(MetadataReader mdReader)
-        {
-            this.MdReader = mdReader;
-        }
-
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public SignatureDecoder(BinaryFileInfo binary)
         {
             if (!binary.HasMetadata)
@@ -38,6 +34,11 @@ namespace Consyzer.AnalyzerEngine.Decoder
         public SignatureDecoder(string pathToBinary)
         {
             this.MdReader = new SignatureDecoder(new BinaryFileInfo(pathToBinary)).MdReader;
+        }
+
+        public SignatureDecoder(MetadataReader mdReader)
+        {
+            this.MdReader = mdReader;
         }
 
         #endregion
