@@ -5,7 +5,7 @@ namespace Consyzer.AnalyzerEngine
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [Serializable]
-    public class MetadataFileNotSupportedException : Exception, ISerializable
+    public class MetadataFileNotSupportedException : Exception
     {
         public MetadataFileNotSupportedException() { }
         public MetadataFileNotSupportedException(string message) : base(message) { }

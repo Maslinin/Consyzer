@@ -5,7 +5,7 @@ namespace Consyzer.AnalyzerEngine
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [Serializable]
-    public class AssemblyFileNotSupportedException : Exception, ISerializable
+    public class AssemblyFileNotSupportedException : Exception
     {
         public AssemblyFileNotSupportedException() { }
         public AssemblyFileNotSupportedException(string message) : base(message) { }

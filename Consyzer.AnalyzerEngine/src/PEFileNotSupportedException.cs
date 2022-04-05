@@ -5,7 +5,7 @@ namespace Consyzer.AnalyzerEngine
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [Serializable]
-    public class PEFileNotSupportedException : Exception, ISerializable
+    public class PEFileNotSupportedException : Exception
     {
         public PEFileNotSupportedException() { }
         public PEFileNotSupportedException(string message) : base(message) { }
