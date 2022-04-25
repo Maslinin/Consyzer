@@ -82,7 +82,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         }
 
         /// <summary>
-        /// Returns a list of method definitions imported from other assemblies.
+        /// Returns a list of methods definitions imported from other assemblies.
         /// </summary>
         /// <returns><b>IEnumerable&lt;MethodDefinition&gt;</b> collection.</returns>
         public IEnumerable<MethodDefinition> GetImportedMethodsDefinitions()
@@ -168,7 +168,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         }
 
         /// <summary>
-        /// Returns a collection of all method definitions in an assembly.
+        /// Returns a collection of all methods definitions in an assembly.
         /// </summary>
         /// <returns><b>IEnumerable&lt;MethodDefinition&gt;</b> collection.</returns>
         public IEnumerable<MethodDefinition> GetMethodsDefinitions()
