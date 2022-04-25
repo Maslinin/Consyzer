@@ -15,7 +15,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders.SyntaxModels
             var mdAnalyzer = new MetadataAnalyzer(location);
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
 
-            string methodLocation = decoder.GetDecodedSignature(mdAnalyzer.GetMethodsDefinitions().First()).GetMethodLocation();
+            string methodLocation = decoder.GetDecodedSignature(mdAnalyzer.GetMethodDefinitions().First()).GetMethodLocation();
 
             Assert.NotEmpty(methodLocation);
         }
@@ -27,7 +27,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders.SyntaxModels
             var mdAnalyzer = new MetadataAnalyzer(location);
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
 
-            string methodArgs = decoder.GetDecodedSignature(mdAnalyzer.GetMethodsDefinitions().First()).GetMethodArgsAsString();
+            string methodArgs = decoder.GetDecodedSignature(mdAnalyzer.GetMethodDefinitions().First()).GetMethodArgsAsString();
 
             Assert.NotEmpty(methodArgs);
         }
@@ -39,7 +39,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders.SyntaxModels
             var mdAnalyzer = new MetadataAnalyzer(location);
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
 
-            string baseMethodSignature = decoder.GetDecodedSignature(mdAnalyzer.GetMethodsDefinitions().First()).GetBaseMethodSignature();
+            string baseMethodSignature = decoder.GetDecodedSignature(mdAnalyzer.GetMethodDefinitions().First()).GetBaseMethodSignature();
 
             Assert.NotEmpty(baseMethodSignature);
         }
@@ -51,7 +51,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders.SyntaxModels
             var mdAnalyzer = new MetadataAnalyzer(location);
             var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
 
-            string baseMethodSignature = decoder.GetDecodedSignature(mdAnalyzer.GetMethodsDefinitions().First()).GetFullMethodSignature();
+            string baseMethodSignature = decoder.GetDecodedSignature(mdAnalyzer.GetMethodDefinitions().First()).GetFullMethodSignature();
 
             Assert.NotEmpty(baseMethodSignature);
         }

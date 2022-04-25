@@ -26,7 +26,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
             string location = Assembly.GetExecutingAssembly().Location;
             var mdAnalyzer = new MetadataAnalyzer(location);
 
-            var importMethodsDefs = mdAnalyzer.GetImportedMethodsDefinitions();
+            var importMethodsDefs = mdAnalyzer.GetImportedMethodDefinitions();
 
             Assert.NotNull(importMethodsDefs);
         }
@@ -81,7 +81,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
             string location = Assembly.GetExecutingAssembly().Location;
             var mdAnalyzer = new MetadataAnalyzer(location);
 
-            var methodsDefs = mdAnalyzer.GetMethodsDefinitions();
+            var methodsDefs = mdAnalyzer.GetMethodDefinitions();
 
             Assert.NotNull(methodsDefs);
         }
