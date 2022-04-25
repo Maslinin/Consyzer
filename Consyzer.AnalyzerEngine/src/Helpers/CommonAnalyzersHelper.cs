@@ -8,7 +8,7 @@ using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.AnalyzerEngine.Helpers
 {
-    public static class CommonAnalyzerHelper
+    public static class CommonAnalyzersHelper
     {
         public static bool HasMetadata(string pathToBinary)
         {
@@ -30,7 +30,7 @@ namespace Consyzer.AnalyzerEngine.Helpers
 
         public static IEnumerable<FileInfo> GetFilesContainsMetadata(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => CommonAnalyzerHelper.HasMetadata(f.FullName));
+            return binaryFiles.Where(f => CommonAnalyzersHelper.HasMetadata(f.FullName));
         }
 
         public static IEnumerable<PEReader> GetFilesContainsMetadata(this IEnumerable<PEReader> binaryFiles)
@@ -49,7 +49,7 @@ namespace Consyzer.AnalyzerEngine.Helpers
 
         public static IEnumerable<FileInfo> GetFilesNotContainsMetadata(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => !CommonAnalyzerHelper.HasMetadata(f.FullName));
+            return binaryFiles.Where(f => !CommonAnalyzersHelper.HasMetadata(f.FullName));
         }
 
         public static IEnumerable<PEReader> GetFilesNotContainsMetadata(this IEnumerable<PEReader> binaryFiles)
@@ -90,7 +90,7 @@ namespace Consyzer.AnalyzerEngine.Helpers
 
         public static IEnumerable<FileInfo> GetMetadataAssemblyFiles(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => CommonAnalyzerHelper.MetadataFileIsAssembly(f.FullName));
+            return binaryFiles.Where(f => CommonAnalyzersHelper.MetadataFileIsAssembly(f.FullName));
         }
 
         public static IEnumerable<PEReader> GetMetadataAssemblyFiles(this IEnumerable<PEReader> binaryFiles)
@@ -109,7 +109,7 @@ namespace Consyzer.AnalyzerEngine.Helpers
 
         public static IEnumerable<FileInfo> GetNotMetadataAssemblyFiles(this IEnumerable<FileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => !CommonAnalyzerHelper.MetadataFileIsAssembly(f.FullName));
+            return binaryFiles.Where(f => !CommonAnalyzersHelper.MetadataFileIsAssembly(f.FullName));
         }
 
         public static IEnumerable<PEReader> GetNotMetadataAssemblyFiles(this IEnumerable<PEReader> binaryFiles)

@@ -1,11 +1,11 @@
 ﻿using Xunit;
 using System.Linq;
 using System.Reflection;
-using Consyzer.AnalyzerEngine.Decoder;
-using Consyzer.AnalyzerEngine.Analyzer;
+using Consyzer.AnalyzerEngine.Decoders;
+using Consyzer.AnalyzerEngine.Analyzers;
 using Consyzer.AnalyzerEngine.CommonModels;
 
-namespace Consyzer.AnalyzerEngine.Tests.Decoder
+namespace Consyzer.AnalyzerEngine.Tests.Decoders
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureDecoderTest

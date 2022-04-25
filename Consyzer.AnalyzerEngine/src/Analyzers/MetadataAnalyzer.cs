@@ -3,17 +3,33 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
-using Consyzer.AnalyzerEngine.Decoder;
-using Consyzer.AnalyzerEngine.Analyzer.SyntaxModels;
+using Consyzer.AnalyzerEngine.Decoders;
+using Consyzer.AnalyzerEngine.Analyzers.SyntaxModels;
 using Consyzer.AnalyzerEngine.CommonModels;
 
-namespace Consyzer.AnalyzerEngine.Analyzer
+namespace Consyzer.AnalyzerEngine.Analyzers
 {
+    /// <summary>
+    /// [Sealed] Provides tools for analyzing CLI metadata.
+    /// </summary>
     public sealed class MetadataAnalyzer
     {
+        /// <summary>
+        /// Gets the <b>BinaryFileInfo</b> instance that contains detailed information about the binary file being analyzed.
+        /// </summary>
         public BinaryFileInfo BinaryInfo { get; }
+        /// <summary>
+        /// Gets a <b>MetadataReader</b> instance representing the current PE file being processed. 
+        /// </summary>
         public MetadataReader MdReader { get; }
 
+        /// <summary>
+        /// Initializes a new instance of <b>MetadataAnalyzer</b>.
+        /// </summary>
+        /// <param name="binary"></param>
+        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="MetadataFileNotSupportedException"></exception>
+        /// <exception cref="AssemblyFileNotSupportedException"></exception>
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public MetadataAnalyzer(BinaryFileInfo binary)
         {
@@ -36,6 +52,13 @@ namespace Consyzer.AnalyzerEngine.Analyzer
             this.MdReader = new PEReader(new FileStream(this.BinaryInfo.BaseFileInfo.FullName, FileMode.Open, FileAccess.Read)).GetMetadataReader();
         }
 
+        /// <summary>
+        /// Initializes a new instance of <b>MetadataAnalyzer</b>.
+        /// </summary>
+        /// <param name="pathToBinary"></param>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <exception cref="MetadataFileNotSupportedException"></exception>
+        /// <exception cref="AssemblyFileNotSupportedException"></exception>
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public MetadataAnalyzer(string pathToBinary)
         {
@@ -58,10 +81,14 @@ namespace Consyzer.AnalyzerEngine.Analyzer
             this.MdReader = new PEReader(new FileStream(this.BinaryInfo.BaseFileInfo.FullName, FileMode.Open, FileAccess.Read)).GetMetadataReader();
         }
 
-        public IEnumerable<MethodDefinition> GetImportedMethodsDefinitions()
+        /// <summary>
+        /// Returns a list of method definitions imported from other assemblies.
+        /// </summary>
+        /// <returns><b>IEnumerable&lt;MethodDefinition&gt;</b> collection.</returns>
+        public IEnumerable<MethodDefinition> GetImportedMethodDefinitions()
         {
             var importedMethods = new List<MethodDefinition>();
-            foreach (var method in this.GetMethodsDefinitions())
+            foreach (var method in this.GetMethodDefinitions())
             {
                 var import = method.GetImport();
                 if (!import.Name.IsNil || !import.Module.IsNil)
@@ -73,11 +100,15 @@ namespace Consyzer.AnalyzerEngine.Analyzer
             return importedMethods;
         }
 
+        /// <summary>
+        /// Returns the <b>ImportedMethodInfo</b> collection that contains detailed information about all methods in the assembly imported by their other assembly.
+        /// </summary>
+        /// <returns><b>IEnumerable&lt;ImportedMethodInfo&gt;</b> collection.</returns>
         public IEnumerable<ImportedMethodInfo> GetImportedMethodsInfo()
         {
             var dllImports = new List<ImportedMethodInfo>();
 
-            foreach (var methodDef in this.GetImportedMethodsDefinitions())
+            foreach (var methodDef in this.GetImportedMethodDefinitions())
             {
                 var import = methodDef.GetImport();
                 var signature = new SignatureDecoder(this.MdReader).GetDecodedSignature(methodDef);
@@ -88,6 +119,10 @@ namespace Consyzer.AnalyzerEngine.Analyzer
             return dllImports;
         }
 
+        /// <summary>
+        /// Returns a collection of all types definitions handles in an assembly.
+        /// </summary>
+        /// <returns><b>IEnumerable&lt;TypeDefinitionHandle&gt;</b> collection.</returns>
         public IEnumerable<TypeDefinitionHandle> GetTypesDefinitionsHandles()
         {
             var handles = new List<TypeDefinitionHandle>();
@@ -99,6 +134,10 @@ namespace Consyzer.AnalyzerEngine.Analyzer
             return handles;
         }
 
+        /// <summary>
+        /// Returns a collection of all types definitions in an assembly.
+        /// </summary>
+        /// <returns><b>IEnumerable&lt;TypeDefinition&gt;</b> collection.</returns>
         public IEnumerable<TypeDefinition> GetTypesDefinitions()
         {
             var defs = new List<TypeDefinition>();
@@ -110,6 +149,10 @@ namespace Consyzer.AnalyzerEngine.Analyzer
             return defs;
         }
 
+        /// <summary>
+        /// Returns a collection of all methods definitions handle in an assembly.
+        /// </summary>
+        /// <returns><b>IEnumerable&lt;MethodDefinitionHandle&gt;</b> collection.</returns>
         public IEnumerable<MethodDefinitionHandle> GetMethodsDefinitionsHandles()
         {
             var handles = new List<MethodDefinitionHandle>();
@@ -124,7 +167,11 @@ namespace Consyzer.AnalyzerEngine.Analyzer
             return handles;
         }
 
-        public IEnumerable<MethodDefinition> GetMethodsDefinitions()
+        /// <summary>
+        /// Returns a collection of all method definitions in an assembly.
+        /// </summary>
+        /// <returns><b>IEnumerable&lt;MethodDefinition&gt;</b> collection.</returns>
+        public IEnumerable<MethodDefinition> GetMethodDefinitions()
         {
             var defs = new List<MethodDefinition>();
             foreach (var typeDef in this.MdReader.TypeDefinitions.Select(h => this.MdReader.GetTypeDefinition(h)))

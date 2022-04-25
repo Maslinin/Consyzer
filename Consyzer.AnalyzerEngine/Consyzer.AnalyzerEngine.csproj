@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+	  <Title>Consyzer Analyzer Engine</Title>
+	  <Product>Consyzer</Product>
+	  <Copyright>Copyright 2022</Copyright>	  
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>

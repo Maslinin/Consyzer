@@ -4,17 +4,29 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using Consyzer.AnalyzerEngine.CommonModels;
-using Consyzer.AnalyzerEngine.Decoder.Providers;
-using Consyzer.AnalyzerEngine.Decoder.SyntaxModels;
+using Consyzer.AnalyzerEngine.Decoders.Providers;
+using Consyzer.AnalyzerEngine.Decoders.SyntaxModels;
 
-namespace Consyzer.AnalyzerEngine.Decoder
+namespace Consyzer.AnalyzerEngine.Decoders
 {
+    /// <summary>
+    /// [Sealed] Contains tools for decoding a method signature.
+    /// </summary>
     public sealed class SignatureDecoder
     {
+        /// <summary>
+        /// Gets a <b>MetadataReader</b> instance representing the current PE file being processed. 
+        /// </summary>
         public MetadataReader MdReader { get; }
 
         #region SignatureDecoder constructors
 
+        /// <summary>
+        /// Initializes a new instance of <b>SignatureDecoder</b>.
+        /// </summary>
+        /// <param name="binary"></param>
+        /// <exception cref="MetadataFileNotSupportedException"></exception>
+        /// <exception cref="AssemblyFileNotSupportedException"></exception>
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public SignatureDecoder(BinaryFileInfo binary)
         {
@@ -31,11 +43,19 @@ namespace Consyzer.AnalyzerEngine.Decoder
             this.MdReader = peReader.GetMetadataReader();
         }
 
+        /// <summary>
+        /// Initializes a new instance of <b>SignatureDecoder</b>.
+        /// </summary>
+        /// <param name="pathToBinary"></param>
         public SignatureDecoder(string pathToBinary)
         {
             this.MdReader = new SignatureDecoder(new BinaryFileInfo(pathToBinary)).MdReader;
         }
 
+        /// <summary>
+        /// Initializes a new instance of <b>SignatureDecoder</b>.
+        /// </summary>
+        /// <param name="mdReader"></param>
         public SignatureDecoder(MetadataReader mdReader)
         {
             this.MdReader = mdReader;
@@ -45,6 +65,11 @@ namespace Consyzer.AnalyzerEngine.Decoder
 
         #region GetDecodedSignature overlaods
 
+        /// <summary>
+        /// Decodes the method signature and returns a <b>SignatureInfo</b> instance containing the decoded signature information.
+        /// </summary>
+        /// <param name="methodDef"></param>
+        /// <returns>A SignatureInfo instance containing decoded signature information.</returns>
         public SignatureInfo GetDecodedSignature(MethodDefinition methodDef)
         {
             var typeDef = this.MdReader.GetTypeDefinition(methodDef.GetDeclaringType());
@@ -59,7 +84,7 @@ namespace Consyzer.AnalyzerEngine.Decoder
             var methodAttributes = fullMethodAttributes.Split(',').Select(s => s.Trim()).ToList();
             string methodAccessibility = string.Empty;
 
-            foreach (AccessibilityModifiersNotTranslated modifier in Enum.GetValues(typeof(AccessibilityModifiersNotTranslated)))
+            foreach (AccessibilityModifiersIL modifier in Enum.GetValues(typeof(AccessibilityModifiersIL)))
             { //does not take into account private protected and protected internal
                 int indexOf = methodAttributes.IndexOf(methodAttributes.Find(s => s.ToLower() == modifier.ToString().ToLower()));
                 if (indexOf != -1)
@@ -91,10 +116,15 @@ namespace Consyzer.AnalyzerEngine.Decoder
                 IsStatic = methodIsStatic,
                 ReturnType = signature.ReturnType.ToString(),
                 MethodArguments = methodParameters,
-                AllMethodAttributes = fullMethodAttributes
+                MethodAttributes = fullMethodAttributes
             };
         }
 
+        /// <summary>
+        /// Decodes the method signature and returns a <b>SignatureInfo</b> instance containing the decoded signature information.
+        /// </summary>
+        /// <param name="methodHandle"></param>
+        /// <returns>A SignatureInfo instance containing decoded signature information.</returns>
         public SignatureInfo GetDecodedSignature(MethodDefinitionHandle methodHandle)
         {
             return this.GetDecodedSignature(this.MdReader.GetMethodDefinition(methodHandle));
@@ -104,6 +134,11 @@ namespace Consyzer.AnalyzerEngine.Decoder
 
         #region GetDecodedSignatures overloads
 
+        /// <summary>
+        /// Decodes method signatures and returns a collection of <b>SignatureInfo</b> instances containing decoded signature information.
+        /// </summary>
+        /// <param name="typeDefs"></param>
+        /// <returns>A collection of <b>SignatureInfo</b> instances containing decoded signature information.</returns>
         public IEnumerable<SignatureInfo> GetDecodedSignatures(IEnumerable<TypeDefinition> typeDefs)
         {
             var decodedSignatures = new List<SignatureInfo>();
@@ -116,21 +151,41 @@ namespace Consyzer.AnalyzerEngine.Decoder
             return decodedSignatures;
         }
 
+        /// <summary>
+        /// Decodes method signatures and returns a collection of <b>SignatureInfo</b> instances containing decoded signature information.
+        /// </summary>
+        /// <param name="typeDef"></param>
+        /// <returns>A collection of <b>SignatureInfo</b> instances containing decoded signature information.</returns>
         public IEnumerable<SignatureInfo> GetDecodedSignatures(TypeDefinition typeDef)
         {
             return this.GetDecodedSignatures(typeDef.GetMethods().Select(m => this.MdReader.GetMethodDefinition(m)));
         }
 
+        /// <summary>
+        /// Decodes method signatures and returns a collection of <b>SignatureInfo</b> instances containing decoded signature information.
+        /// </summary>
+        /// <param name="typeHandle"></param>
+        /// <returns>A collection of <b>SignatureInfo</b> instances containing decoded signature information.</returns>
         public IEnumerable<SignatureInfo> GetDecodedSignatures(TypeDefinitionHandle typeHandle)
         {
             return this.GetDecodedSignatures(this.MdReader.GetTypeDefinition(typeHandle).GetMethods().Select(m => this.MdReader.GetMethodDefinition(m)));
         }
 
+        /// <summary>
+        /// Decodes method signatures and returns a collection of <b>SignatureInfo</b> instances containing decoded signature information.
+        /// </summary>
+        /// <param name="typeHadles"></param>
+        /// <returns>A collection of <b>SignatureInfo</b> instances containing decoded signature information.</returns>
         public IEnumerable<SignatureInfo> GetDecodedSignatures(IEnumerable<TypeDefinitionHandle> typeHadles)
         {
             return this.GetDecodedSignatures(typeHadles.Select(h => this.MdReader.GetTypeDefinition(h)));
         }
 
+        /// <summary>
+        /// Decodes method signatures and returns a collection of <b>SignatureInfo</b> instances containing decoded signature information.
+        /// </summary>
+        /// <param name="methodDefs"></param>
+        /// <returns>A collection of <b>SignatureInfo</b> instances containing decoded signature information.</returns>
         public IEnumerable<SignatureInfo> GetDecodedSignatures(IEnumerable<MethodDefinition> methodDefs)
         {
             var decodedSignatures = new List<SignatureInfo>();
@@ -143,6 +198,11 @@ namespace Consyzer.AnalyzerEngine.Decoder
             return decodedSignatures;
         }
 
+        /// <summary>
+        /// Decodes method signatures and returns a collection of <b>SignatureInfo</b> instances containing decoded signature information.
+        /// </summary>
+        /// <param name="methodHandles"></param>
+        /// <returns>A collection of <b>SignatureInfo</b> instances containing decoded signature information.</returns>
         public IEnumerable<SignatureInfo> GetDecodedSignatures(IEnumerable<MethodDefinitionHandle> methodHandles)
         {
             return this.GetDecodedSignatures(methodHandles.Select(h => this.MdReader.GetMethodDefinition(h)));

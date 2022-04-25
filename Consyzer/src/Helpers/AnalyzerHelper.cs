@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using Consyzer.AnalyzerEngine.Analyzer;
-using Consyzer.AnalyzerEngine.Analyzer.Searchers;
+using Consyzer.AnalyzerEngine.Analyzers;
+using Consyzer.AnalyzerEngine.Analyzers.Searchers;
 using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.Helpers

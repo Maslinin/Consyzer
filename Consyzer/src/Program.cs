@@ -21,7 +21,7 @@ namespace Consyzer
                 var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
                 NLogger.Info($"Specified binary file extensions for analysis: {string.Join(',', filesExtensions)}.");
 
-                NLogger.Info("Getting binaries at the specified path with the specified extensions...");
+                NLogger.Info("Getting binaries at the path with the specified extensions...");
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions).ToList();
                 if(binaryFiles.Any() is false)
                 {
@@ -41,7 +41,7 @@ namespace Consyzer
                 }
                 else
                 {
-                    NLogger.Info("Binary assembly files for analyze containing metadata: ");
+                    NLogger.Info("Binary assembly files containing metadata were found: ");
                     correctFiles.LoggingBaseAndHashFileInfo();
                 }
 

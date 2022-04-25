@@ -4,14 +4,35 @@ using Consyzer.AnalyzerEngine.Helpers;
 
 namespace Consyzer.AnalyzerEngine.CommonModels
 {
+    /// <summary>
+    /// [Sealed] Provides detailed information about the binary file.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class BinaryFileInfo
     {
+        /// <summary>
+        /// Gets a <b>FileInfo</b> instance of the current file containing basic information about the file.
+        /// </summary>
         public FileInfo BaseFileInfo { get; }
+        /// <summary>
+        /// Gets true if the binary file contains metadata; otherwise false.
+        /// </summary>
         public bool HasMetadata { get; }
+        /// <summary>
+        /// Gets true if the binary is an assembly; otherwise false.
+        /// </summary>
         public bool IsAssembly { get; }
+        /// <summary>
+        /// Gets an instance of <b>HashFileInfo</b> containing information about the hash amounts of the current file.
+        /// </summary>
         public HashFileInfo HashInfo { get; }
 
+        /// <summary>
+        /// Initializes a new instance of <b>BinaryFileInfo</b>.
+        /// </summary>
+        /// <param name="fileInfo"></param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
         public BinaryFileInfo(FileInfo fileInfo)
         {
             if (fileInfo is null)
@@ -24,11 +45,17 @@ namespace Consyzer.AnalyzerEngine.CommonModels
             }
 
             this.BaseFileInfo = fileInfo;
-            this.HasMetadata = CommonAnalyzerHelper.HasMetadata(fileInfo.FullName);
-            this.IsAssembly = CommonAnalyzerHelper.MetadataFileIsAssembly(fileInfo.FullName);
+            this.HasMetadata = CommonAnalyzersHelper.HasMetadata(fileInfo.FullName);
+            this.IsAssembly = CommonAnalyzersHelper.MetadataFileIsAssembly(fileInfo.FullName);
             this.HashInfo = HashFileInfo.Calculate(fileInfo);
         }
 
+        /// <summary>
+        /// Initializes a new instance of <b>BinaryFileInfo</b>.
+        /// </summary>
+        /// <param name="pathToBinary"></param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
         public BinaryFileInfo(string pathToBinary)
         {
             if (pathToBinary is null)
@@ -43,8 +70,8 @@ namespace Consyzer.AnalyzerEngine.CommonModels
             var info = new FileInfo(pathToBinary);
 
             this.BaseFileInfo = info;
-            this.HasMetadata = CommonAnalyzerHelper.HasMetadata(pathToBinary);
-            this.IsAssembly = CommonAnalyzerHelper.MetadataFileIsAssembly(pathToBinary);
+            this.HasMetadata = CommonAnalyzersHelper.HasMetadata(pathToBinary);
+            this.IsAssembly = CommonAnalyzersHelper.MetadataFileIsAssembly(pathToBinary);
             this.HashInfo = HashFileInfo.Calculate(info);
         }
 

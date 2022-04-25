@@ -5,9 +5,18 @@ using System.Security.Cryptography;
 
 namespace Consyzer.AnalyzerEngine.CommonModels
 {
+    /// <summary>
+    /// [Sealed] Provides information about the hash amounts of the binary file.
+    /// </summary>
     public sealed class HashFileInfo
     {
+        /// <summary>
+        /// Gets the <b>MD5</b> hash sum as a string.
+        /// </summary>
         public string MD5Sum { get; }
+        /// <summary>
+        /// Gets the <b>SHA256</b> hash sum as a string.
+        /// </summary>
         public string SHA256Sum { get; }
 
         private HashFileInfo(string MD5Sum, string SHA256Sum)
@@ -18,6 +27,13 @@ namespace Consyzer.AnalyzerEngine.CommonModels
 
         #region Overloads of hash sum calculation
 
+        /// <summary>
+        /// Calculates the hash of the sum of the binary file.
+        /// </summary>
+        /// <param name="fileInfo"></param>
+        /// <returns><b>HashFileInfo</b> instance containing the calculated hash sums of the binary file.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
         public static HashFileInfo Calculate(FileInfo fileInfo)
         {
             if (fileInfo is null)
@@ -68,6 +84,12 @@ namespace Consyzer.AnalyzerEngine.CommonModels
             return new HashFileInfo(@MD5Sum, @SHA256Sum);
         }
 
+        /// <summary>
+        /// Calculates the hash of the sum of the binary file.
+        /// </summary>
+        /// <param name="binary"></param>
+        /// <returns><b>HashFileInfo</b> instance containing the calculated hash sums of the binary file.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static HashFileInfo Calculate(BinaryFileInfo binary)
         {
             if (binary is null)
@@ -75,9 +97,15 @@ namespace Consyzer.AnalyzerEngine.CommonModels
                 throw new ArgumentNullException($"{nameof(binary)} is null.");
             }
 
-            return Calculate(new FileInfo(binary.BaseFileInfo.FullName));
+            return HashFileInfo.Calculate(new FileInfo(binary.BaseFileInfo.FullName));
         }
 
+        /// <summary>
+        /// Calculates the hash of the sum of the binary file.
+        /// </summary>
+        /// <param name="pathToBinary"></param>
+        /// <returns><b>HashFileInfo</b> instance containing the calculated hash sums of the binary file.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static HashFileInfo Calculate(string pathToBinary)
         {
             if (string.IsNullOrEmpty(pathToBinary))
@@ -85,7 +113,7 @@ namespace Consyzer.AnalyzerEngine.CommonModels
                 throw new ArgumentNullException($"{nameof(pathToBinary)} is null or empty.");
             }
 
-            return Calculate(new FileInfo(pathToBinary));
+            return HashFileInfo.Calculate(new FileInfo(pathToBinary));
         }
 
         #endregion

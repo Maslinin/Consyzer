@@ -1,9 +1,9 @@
 using Xunit;
 using System.Reflection;
-using Consyzer.AnalyzerEngine.Analyzer;
+using Consyzer.AnalyzerEngine.Analyzers;
 using Consyzer.AnalyzerEngine.CommonModels;
 
-namespace Consyzer.AnalyzerEngine.Tests.Analyzer
+namespace Consyzer.AnalyzerEngine.Tests.Analyzers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class MetadataAnalyzerTest

@@ -15,7 +15,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Helpers
         public void HasMetadata()
         {
             string location = Assembly.GetExecutingAssembly().Location;
-            bool hasMetadata = CommonAnalyzerHelper.HasMetadata(location);
+            bool hasMetadata = CommonAnalyzersHelper.HasMetadata(location);
             Assert.True(hasMetadata);
         }
 
@@ -51,7 +51,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Helpers
         public void MetadataFileIsAssembly()
         {
             string location = Assembly.GetExecutingAssembly().Location;
-            bool isMetadata = CommonAnalyzerHelper.MetadataFileIsAssembly(location);
+            bool isMetadata = CommonAnalyzersHelper.MetadataFileIsAssembly(location);
             Assert.True(isMetadata);
         }
 

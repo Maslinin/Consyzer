@@ -1,21 +1,13 @@
 ﻿using Xunit;
 using System.Linq;
 using System.Reflection;
-using Consyzer.AnalyzerEngine.Analyzer;
-using Consyzer.AnalyzerEngine.Decoder;
-using Consyzer.AnalyzerEngine.Decoder.SyntaxModels;
+using Consyzer.AnalyzerEngine.Analyzers;
+using Consyzer.AnalyzerEngine.Decoders;
 
-namespace Consyzer.AnalyzerEngine.Tests.Decoder.SyntaxModels
+namespace Consyzer.AnalyzerEngine.Tests.Decoders.SyntaxModels
 {
     public class SignatureInfoTest
     {
-        [Fact(DisplayName = "Instance Creation")]
-        public void InstanceCreation()
-        {
-            var exception = Record.Exception(() => new SignatureInfo());
-            Assert.Null(exception);
-        }
-
         [Fact(DisplayName = "Getting Method Location")]
         public void GetMethodLocation()
         {

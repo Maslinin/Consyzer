@@ -48,8 +48,8 @@ namespace Consyzer.Logger
         }
 
         /// <summary>
-        /// Logs a message with the specified text into a file at the <b>LogDirPath</b> path with the specified logging level.<br/> 
-        /// The logging level is set to <b>Info</b> if it is not set.
+        /// Logs a message with the specific text into a file at the <b>LogDirPath</b> path with the specified logging level.<br/> 
+        /// The logging level is set to <b>Info</b> otherwise.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="logLevel"></param>

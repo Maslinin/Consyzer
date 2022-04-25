@@ -2,8 +2,8 @@ using Xunit;
 using System;
 using System.Reflection;
 using Consyzer.Helpers;
-using Consyzer.AnalyzerEngine.Analyzer;
-using Consyzer.AnalyzerEngine.Analyzer.Searchers;
+using Consyzer.AnalyzerEngine.Analyzers;
+using Consyzer.AnalyzerEngine.Analyzers.Searchers;
 using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.Tests.Helpers

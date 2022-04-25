@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using Consyzer.Logger;
-using Consyzer.AnalyzerEngine.Analyzer;
-using Consyzer.AnalyzerEngine.Analyzer.Searchers;
-using Consyzer.AnalyzerEngine.Analyzer.SyntaxModels;
+using Consyzer.AnalyzerEngine.Analyzers;
+using Consyzer.AnalyzerEngine.Analyzers.Searchers;
+using Consyzer.AnalyzerEngine.Analyzers.SyntaxModels;
 using Consyzer.AnalyzerEngine.CommonModels;
 
 namespace Consyzer.Helpers
