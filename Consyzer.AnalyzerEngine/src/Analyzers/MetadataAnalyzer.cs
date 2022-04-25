@@ -85,10 +85,10 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// Returns a list of method definitions imported from other assemblies.
         /// </summary>
         /// <returns><b>IEnumerable&lt;MethodDefinition&gt;</b> collection.</returns>
-        public IEnumerable<MethodDefinition> GetImportedMethodDefinitions()
+        public IEnumerable<MethodDefinition> GetImportedMethodsDefinitions()
         {
             var importedMethods = new List<MethodDefinition>();
-            foreach (var method in this.GetMethodDefinitions())
+            foreach (var method in this.GetMethodsDefinitions())
             {
                 var import = method.GetImport();
                 if (!import.Name.IsNil || !import.Module.IsNil)
@@ -108,7 +108,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         {
             var dllImports = new List<ImportedMethodInfo>();
 
-            foreach (var methodDef in this.GetImportedMethodDefinitions())
+            foreach (var methodDef in this.GetImportedMethodsDefinitions())
             {
                 var import = methodDef.GetImport();
                 var signature = new SignatureDecoder(this.MdReader).GetDecodedSignature(methodDef);
@@ -171,7 +171,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// Returns a collection of all method definitions in an assembly.
         /// </summary>
         /// <returns><b>IEnumerable&lt;MethodDefinition&gt;</b> collection.</returns>
-        public IEnumerable<MethodDefinition> GetMethodDefinitions()
+        public IEnumerable<MethodDefinition> GetMethodsDefinitions()
         {
             var defs = new List<MethodDefinition>();
             foreach (var typeDef in this.MdReader.TypeDefinitions.Select(h => this.MdReader.GetTypeDefinition(h)))
