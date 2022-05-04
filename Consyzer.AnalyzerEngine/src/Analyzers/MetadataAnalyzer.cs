@@ -85,6 +85,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// Returns a list of methods definitions handles imported from other assemblies.
         /// </summary>
         /// <returns><b>IEnumerable&lt;MethodDefinitionHandle&gt;</b> collection.</returns>
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public IEnumerable<MethodDefinitionHandle> GetImportedMethodsDefinitionsHandles()
         {
             var importedMethods = new List<MethodDefinitionHandle>();
@@ -106,6 +107,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// Returns a list of methods definitions imported from other assemblies.
         /// </summary>
         /// <returns><b>IEnumerable&lt;MethodDefinition&gt;</b> collection.</returns>
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public IEnumerable<MethodDefinition> GetImportedMethodsDefinitions()
         {
             var importedMethods = new List<MethodDefinition>();
@@ -125,6 +127,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// Returns the <b>ImportedMethodInfo</b> collection that contains detailed information about all methods in the assembly imported by their other assembly.
         /// </summary>
         /// <returns><b>IEnumerable&lt;ImportedMethodInfo&gt;</b> collection.</returns>
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public IEnumerable<ImportedMethodInfo> GetImportedMethodsInfo()
         {
             var dllImports = new List<ImportedMethodInfo>();

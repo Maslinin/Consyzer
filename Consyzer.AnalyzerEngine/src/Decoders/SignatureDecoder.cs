@@ -80,7 +80,6 @@ namespace Consyzer.AnalyzerEngine.Decoders
 
             string fullMethodAttributes = methodDef.Attributes.ToString();
 
-            //Getting Method Access Modifier:
             var methodAttributes = fullMethodAttributes.Split(',').Select(s => s.Trim()).ToList();
             string methodAccessibility = string.Empty;
 
@@ -93,14 +92,11 @@ namespace Consyzer.AnalyzerEngine.Decoders
                 }
             }
 
-            //Whether the method is static:
             bool methodIsStatic = methodAttributes.Any(s => s.ToLower() == "Static".ToLower());
 
-            //Getting a list of method parameters:
             List<SignatureBaseType> methodParameters = new List<SignatureBaseType>();
             methodParameters.AddRange(signature.ParameterTypes);
 
-            //Getting ALL Method Attributes:
             string methodImplAttributes = methodDef.ImplAttributes.ToString();
             if (!string.IsNullOrEmpty(methodImplAttributes))
             {

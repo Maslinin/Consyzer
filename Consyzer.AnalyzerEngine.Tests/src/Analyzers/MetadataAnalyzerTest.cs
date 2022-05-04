@@ -20,6 +20,17 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
             Assert.Null(exceptionOverloadTwo);
         }
 
+        [Fact(DisplayName = "Getting Imported Methods Definitions Handles")]
+        public void GetImportedMethodsDefinitionsHandles ()
+        {
+            string location = Assembly.GetExecutingAssembly().Location;
+            var mdAnalyzer = new MetadataAnalyzer(location);
+
+            var importMethodsDefs = mdAnalyzer.GetImportedMethodsDefinitionsHandles();
+
+            Assert.NotNull(importMethodsDefs);
+        }
+
         [Fact(DisplayName = "Getting Imported Methods Definitions")]
         public void GetImportedMethodsDefinitions()
         {
