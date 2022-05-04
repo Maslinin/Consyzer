@@ -82,6 +82,27 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         }
 
         /// <summary>
+        /// Returns a list of methods definitions handles imported from other assemblies.
+        /// </summary>
+        /// <returns><b>IEnumerable&lt;MethodDefinitionHandle&gt;</b> collection.</returns>
+        public IEnumerable<MethodDefinitionHandle> GetImportedMethodsDefinitionsHandles()
+        {
+            var importedMethods = new List<MethodDefinitionHandle>();
+            foreach(var methodHandle in this.GetMethodsDefinitionsHandles())
+            {
+                var method = this.MdReader.GetMethodDefinition(methodHandle);
+
+                var import = method.GetImport();
+                if (!import.Name.IsNil || !import.Module.IsNil)
+                {
+                    importedMethods.Add(methodHandle);
+                }
+            }
+
+            return importedMethods;
+        }
+
+        /// <summary>
         /// Returns a list of methods definitions imported from other assemblies.
         /// </summary>
         /// <returns><b>IEnumerable&lt;MethodDefinition&gt;</b> collection.</returns>
@@ -156,7 +177,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         public IEnumerable<MethodDefinitionHandle> GetMethodsDefinitionsHandles()
         {
             var handles = new List<MethodDefinitionHandle>();
-            foreach (var typeDef in this.MdReader.TypeDefinitions.Select(h => this.MdReader.GetTypeDefinition(h)))
+            foreach (var typeDef in this.GetTypesDefinitions())
             {
                 foreach (var methodHandle in typeDef.GetMethods())
                 {
@@ -174,7 +195,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         public IEnumerable<MethodDefinition> GetMethodsDefinitions()
         {
             var defs = new List<MethodDefinition>();
-            foreach (var typeDef in this.MdReader.TypeDefinitions.Select(h => this.MdReader.GetTypeDefinition(h)))
+            foreach (var typeDef in this.GetTypesDefinitions())
             {
                 foreach (var methodDef in typeDef.GetMethods().Select(h => this.MdReader.GetMethodDefinition(h)))
                 {
