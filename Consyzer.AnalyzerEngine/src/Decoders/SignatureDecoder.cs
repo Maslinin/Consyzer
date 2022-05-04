@@ -114,7 +114,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
                 MethodName = methodName,
                 Accessibility = methodAccessibility,
                 IsStatic = methodIsStatic,
-                ReturnType = signature.ReturnType.ToString(),
+                ReturnType = signature.ReturnType,
                 MethodArguments = methodParameters,
                 MethodAttributes = fullMethodAttributes
             };

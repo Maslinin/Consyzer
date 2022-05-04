@@ -26,13 +26,13 @@ namespace Consyzer.AnalyzerEngine.Decoders.SyntaxModels
         /// </summary>
         public string Accessibility { get; internal set; }
         /// <summary>
-        /// Gets a value indicating whether the method is static
+        /// Gets a value indicating whether the method is static.
         /// </summary>
         public bool IsStatic { get; internal set; }
         /// <summary>
         /// Gets the return type of the method.
         /// </summary>
-        public string ReturnType { get; internal set; }
+        public SignatureBaseType ReturnType { get; internal set; }
         /// <summary>
         /// Gets method arguments.
         /// </summary>
@@ -54,7 +54,7 @@ namespace Consyzer.AnalyzerEngine.Decoders.SyntaxModels
         /// <param name="MethodArguments"></param>
         /// <param name="MethodAttributes"></param>
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        internal SignatureInfo(string Namespace = null, string ClassName = null, string MethodName = null, string Accessibility = null, bool IsStatic = false, string ReturnType = null, IEnumerable<SignatureBaseType> MethodArguments = null, string MethodAttributes = null)
+        internal SignatureInfo(string Namespace = null, string ClassName = null, string MethodName = null, string Accessibility = null, bool IsStatic = false, SignatureBaseType ReturnType = null, IEnumerable<SignatureBaseType> MethodArguments = null, string MethodAttributes = null)
         {
             this.Namespace = Namespace;
             this.ClassName = ClassName;
@@ -116,7 +116,7 @@ namespace Consyzer.AnalyzerEngine.Decoders.SyntaxModels
         /// <returns>A string containing the complete method signature in the format <b>{{Accessibility} {ReturnType} Namespace.Class.Method(Args)}</b>.</returns>
         public string GetFullMethodSignature()
         {
-            return $"{this.Accessibility} {(this.IsStatic ? "static" : string.Empty)} {this.ReturnType} {this.GetBaseMethodSignature()})";
+            return $"{this.Accessibility} {(this.IsStatic ? "static" : string.Empty)} {this.ReturnType.Type} {this.GetBaseMethodSignature()})";
         }
     }
 }
