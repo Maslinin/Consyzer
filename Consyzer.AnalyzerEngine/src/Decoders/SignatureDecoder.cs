@@ -82,15 +82,11 @@ namespace Consyzer.AnalyzerEngine.Decoders
 
             var methodAttributes = fullMethodAttributes.Split(',').Select(s => s.Trim()).ToList();
 
-            AccessibilityModifiers methodAccessibility = default;
-            foreach (AccessibilityModifiersIL modifier in Enum.GetValues(typeof(AccessibilityModifiersIL)))
-            {
-                if (methodAttributes.Contains(modifier.ToString()))
-                {
-                    methodAccessibility = (AccessibilityModifiers)(int)modifier;
-                    break;
-                }
-            }
+            AccessibilityModifiers methodAccessibility = (AccessibilityModifiers)(int)Enum.Parse(typeof(AccessibilityModifiersIL), 
+                Enum.GetValues(typeof(AccessibilityModifiersIL))
+                .OfType<AccessibilityModifiersIL>()
+                .Select(m => m.ToString())
+                .Intersect(methodAttributes).First());
 
             bool methodIsStatic = methodAttributes.Any(s => s.ToLower() == "Static");
 
