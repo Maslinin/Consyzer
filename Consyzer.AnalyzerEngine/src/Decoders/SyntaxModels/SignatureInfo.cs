@@ -24,7 +24,7 @@ namespace Consyzer.AnalyzerEngine.Decoders.SyntaxModels
         /// <summary>
         /// Gets method accessibility modifiers.
         /// </summary>
-        public string Accessibility { get; internal set; }
+        public AccessibilityModifiers Accessibility { get; internal set; }
         /// <summary>
         /// Gets a value indicating whether the method is static.
         /// </summary>
@@ -54,7 +54,7 @@ namespace Consyzer.AnalyzerEngine.Decoders.SyntaxModels
         /// <param name="MethodArguments"></param>
         /// <param name="MethodAttributes"></param>
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        internal SignatureInfo(string Namespace = null, string ClassName = null, string MethodName = null, string Accessibility = null, bool IsStatic = false, SignatureBaseType ReturnType = null, IEnumerable<SignatureBaseType> MethodArguments = null, string MethodAttributes = null)
+        internal SignatureInfo(string Namespace = null, string ClassName = null, string MethodName = null, AccessibilityModifiers Accessibility = default, bool IsStatic = false, SignatureBaseType ReturnType = null, IEnumerable<SignatureBaseType> MethodArguments = null, string MethodAttributes = null)
         {
             this.Namespace = Namespace;
             this.ClassName = ClassName;

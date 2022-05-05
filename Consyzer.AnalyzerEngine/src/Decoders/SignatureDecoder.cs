@@ -81,18 +81,18 @@ namespace Consyzer.AnalyzerEngine.Decoders
             string fullMethodAttributes = methodDef.Attributes.ToString();
 
             var methodAttributes = fullMethodAttributes.Split(',').Select(s => s.Trim()).ToList();
-            string methodAccessibility = string.Empty;
 
+            AccessibilityModifiers methodAccessibility = default;
             foreach (AccessibilityModifiersIL modifier in Enum.GetValues(typeof(AccessibilityModifiersIL)))
-            { //does not take into account private protected and protected internal
-                int indexOf = methodAttributes.IndexOf(methodAttributes.Find(s => s.ToLower() == modifier.ToString().ToLower()));
-                if (indexOf != -1)
+            {
+                if (methodAttributes.Contains(modifier.ToString()))
                 {
-                    methodAccessibility = ((AccessibilityModifiers)Enum.GetValues(typeof(AccessibilityModifiers)).GetValue(indexOf)).ToString();
+                    methodAccessibility = (AccessibilityModifiers)(int)modifier;
+                    break;
                 }
             }
 
-            bool methodIsStatic = methodAttributes.Any(s => s.ToLower() == "Static".ToLower());
+            bool methodIsStatic = methodAttributes.Any(s => s.ToLower() == "Static");
 
             List<SignatureBaseType> methodParameters = new List<SignatureBaseType>();
             methodParameters.AddRange(signature.ParameterTypes);
