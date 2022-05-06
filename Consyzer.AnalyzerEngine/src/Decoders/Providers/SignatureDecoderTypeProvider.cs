@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 namespace Consyzer.AnalyzerEngine.Decoders.Providers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    internal sealed class SignatureDecoderTypeProvider : ISignatureTypeProvider<SignatureBaseType, object>
+    internal sealed class SignatureDecoderTypeProvider : ISignatureTypeProvider<ISignatureType, object>
     {
         private readonly MetadataReader _mdReader;
         private readonly MethodDefinition _methodDef;
@@ -21,12 +21,12 @@ namespace Consyzer.AnalyzerEngine.Decoders.Providers
             this._methodDef = methodDef;
         }
 
-        public SignatureBaseType GetByReferenceType(SignatureBaseType elementType)
+        public ISignatureType GetByReferenceType(ISignatureType elementType)
         {
             return new SignatureBaseType($"{elementType.Type}&", elementType.Attributes, elementType.Name);
         }
 
-        public SignatureBaseType GetFunctionPointerType(MethodSignature<SignatureBaseType> signature)
+        public ISignatureType GetFunctionPointerType(MethodSignature<ISignatureType> signature)
         {
             var type = new StringBuilder();
 
@@ -40,7 +40,7 @@ namespace Consyzer.AnalyzerEngine.Decoders.Providers
             return new SignatureBaseType(type.ToString());
         }
 
-        public SignatureBaseType GetGenericInstantiation(SignatureBaseType genericType, ImmutableArray<SignatureBaseType> typeArguments)
+        public ISignatureType GetGenericInstantiation(ISignatureType genericType, ImmutableArray<ISignatureType> typeArguments)
         {
             var type = new StringBuilder();
             type.Append($"{genericType.Type} <{typeArguments[0].Type}");
@@ -53,17 +53,17 @@ namespace Consyzer.AnalyzerEngine.Decoders.Providers
             return new SignatureBaseType(type.ToString(), genericType.Attributes, genericType.Name);
         }
 
-        public SignatureBaseType GetModifiedType(SignatureBaseType modifier, SignatureBaseType unmodifiedType, bool isRequired)
+        public ISignatureType GetModifiedType(ISignatureType modifier, ISignatureType unmodifiedType, bool isRequired)
         {
             return unmodifiedType;
         }
 
-        public SignatureBaseType GetPointerType(SignatureBaseType elementType)
+        public ISignatureType GetPointerType(ISignatureType elementType)
         {
             return new SignatureBaseType($"{elementType.Type}*", elementType.Attributes, elementType.Name);
         }
 
-        public SignatureBaseType GetPrimitiveType(PrimitiveTypeCode typeCode)
+        public ISignatureType GetPrimitiveType(PrimitiveTypeCode typeCode)
         {
             string attributes = SignatureBaseType.AttributesDefaultValue, name = SignatureBaseType.NameDefaultValue;
 
@@ -105,12 +105,12 @@ namespace Consyzer.AnalyzerEngine.Decoders.Providers
             }
         }
 
-        public SignatureBaseType GetSZArrayType(SignatureBaseType elementType)
+        public ISignatureType GetSZArrayType(ISignatureType elementType)
         {
             return new SignatureBaseType($"{elementType.Type}[]", elementType.Attributes, elementType.Name);
         }
 
-        public SignatureBaseType GetTypeFromSpecification(MetadataReader reader, object genericContext, TypeSpecificationHandle handle, byte rawTypeKind)
+        public ISignatureType GetTypeFromSpecification(MetadataReader reader, object genericContext, TypeSpecificationHandle handle, byte rawTypeKind)
         {
             return reader.GetTypeSpecification(handle).DecodeSignature(this, genericContext);
         }
@@ -118,32 +118,32 @@ namespace Consyzer.AnalyzerEngine.Decoders.Providers
         #region NotSupported
 
         //.NET we only support SZAray
-        public SignatureBaseType GetArrayType(SignatureBaseType elementType, ArrayShape shape)
+        public ISignatureType GetArrayType(ISignatureType elementType, ArrayShape shape)
         {
             return new SignatureBaseType(SignatureBaseType.NotSupported);
         }
 
-        public SignatureBaseType GetGenericMethodParameter(object genericContext, int index)
+        public ISignatureType GetGenericMethodParameter(object genericContext, int index)
         {
             return new SignatureBaseType(SignatureBaseType.NotSupported);
         }
 
-        public SignatureBaseType GetGenericTypeParameter(object genericContext, int index)
+        public ISignatureType GetGenericTypeParameter(object genericContext, int index)
         {
             return new SignatureBaseType(SignatureBaseType.NotSupported);
         }
 
-        public SignatureBaseType GetPinnedType(SignatureBaseType elementType)
+        public ISignatureType GetPinnedType(ISignatureType elementType)
         {
             return new SignatureBaseType(SignatureBaseType.NotSupported);
         }
 
-        public SignatureBaseType GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind)
+        public ISignatureType GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind)
         {
             return new SignatureBaseType(SignatureBaseType.NotSupported);
         }
 
-        public SignatureBaseType GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind)
+        public ISignatureType GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind)
         {
             return new SignatureBaseType(SignatureBaseType.NotSupported);
         }

@@ -88,10 +88,10 @@ namespace Consyzer.AnalyzerEngine.Decoders
                 .Select(m => m.ToString())
                 .Intersect(methodAttributes).First());
 
-            bool methodIsStatic = methodAttributes.Any(s => s.ToLower() == "Static");
+            bool methodIsStatic = methodAttributes.Any(s => s == "Static");
 
             List<SignatureBaseType> methodParameters = new List<SignatureBaseType>();
-            methodParameters.AddRange(signature.ParameterTypes);
+            methodParameters.AddRange(signature.ParameterTypes.OfType<SignatureBaseType>());
 
             string methodImplAttributes = methodDef.ImplAttributes.ToString();
             if (!string.IsNullOrEmpty(methodImplAttributes))
@@ -106,7 +106,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
                 MethodName = methodName,
                 Accessibility = methodAccessibility,
                 IsStatic = methodIsStatic,
-                ReturnType = signature.ReturnType,
+                ReturnType = (SignatureBaseType)signature.ReturnType,
                 MethodArguments = methodParameters,
                 MethodAttributes = fullMethodAttributes
             };

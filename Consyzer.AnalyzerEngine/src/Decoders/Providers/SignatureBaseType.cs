@@ -4,7 +4,7 @@
     /// [Sealed] Represents a description of a type that is part of a method signature.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public sealed class SignatureBaseType
+    public sealed class SignatureBaseType : ISignatureType
     {
         #region Type Defenitions
 
@@ -37,17 +37,8 @@
 
         #endregion
 
-        /// <summary>
-        /// Gets a string representation of the type of the current instance.
-        /// </summary>
         public string Type { get; }
-        /// <summary>
-        /// Gets a string representation of the attributes of the current instance.
-        /// </summary>
         public string Attributes { get; }
-        /// <summary>
-        /// Gets the string representation of the type variable name represented by the current instance.
-        /// </summary>
         public string Name { get; }
 
         /// <summary>
