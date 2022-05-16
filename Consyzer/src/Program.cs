@@ -19,63 +19,68 @@ namespace Consyzer
                 NLogger.Info($"Path for analyze: \"{analysisFolder}\".");
 
                 var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
-                NLogger.Info($"Specified binary file extensions for analysis: {string.Join(',', filesExtensions)}.");
+                NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions)}.");
 
-                NLogger.Info("Getting binaries at the path with the specified extensions...");
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions).ToList();
                 if(binaryFiles.Any() is false)
                 {
-                    NLogger.Warn("No binary files found for analysis.");
+                    NLogger.Warn("Binary files for analysis with the specified extensions were not found.");
                     return exitCode;
                 }
 
-                NLogger.Info("The following binary files were found: ");
+                NLogger.Info("The following binary files with the specified extensions were found:");
                 binaryFiles.LoggingBaseFileInfo();
 
                 var metadataFiles = binaryFiles.GetFilesContainsMetadata();
-                var correctFiles = metadataFiles.GetMetadataAssemblyFiles().GetMetadataAnalyzersFromMetadataAssemblyFiles().ToList();
-                if (correctFiles.Any() is false)
-                {
-                    NLogger.Warn("No analysis files containing metadata were found. All files do not contain metadata.");
-                    return exitCode;
-                }
-                else
-                {
-                    NLogger.Info("Binary assembly files containing metadata were found: ");
-                    correctFiles.LoggingBaseAndHashFileInfo();
-                }
 
                 var unsuitableFiles = binaryFiles.GetFilesNotContainsMetadata();
-                if(unsuitableFiles.Any() is true)
+                if (unsuitableFiles.Any() is true)
                 {
-                    NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata: ");
+                    NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
                     unsuitableFiles.LoggingBaseFileInfo();
+                }
+                if (metadataFiles.Count() == unsuitableFiles.Count())
+                {
+                    NLogger.Warn("All found files do NOT contain metadata.");
+                    return (int)WorkStatusCodes.SuccessExit;
                 }
                 unsuitableFiles = metadataFiles.GetNotMetadataAssemblyFiles();
                 if (unsuitableFiles.Any() is true)
                 {
-                    NLogger.Info("The following files were excluded from analysis because they are NOT assembly files: ");
+                    NLogger.Info("The following files were excluded from analysis because they are NOT assembly files:");
                     unsuitableFiles.LoggingBaseFileInfo();
                 }
+                if (metadataFiles.Count() == unsuitableFiles.Count())
+                {
+                    NLogger.Warn("All found files contain metadata, but are NOT assembly files.");
+                    return (int)WorkStatusCodes.SuccessExit;
+                }
 
-                NLogger.Info("Getting information about the content of DLLImport in binary files...");
-                correctFiles.LoggingImportedMethodsInfoForEachBinary();
+                var sortedFilesAnalyzers = metadataFiles.GetMetadataAssemblyFiles().GetMetadataAnalyzersFromMetadataAssemblyFiles().ToList();
+                NLogger.Info("The following assembly binaries containing metadata were found:");
+                sortedFilesAnalyzers.LoggingBaseAndHashFileInfo();
 
-                NLogger.Info("Checking the existence of binary files on the received locations...");
-                var binaryLocations = correctFiles.GetImportedBinariesLocations();
+                NLogger.Info("Information about imported methods from other assemblies in the analyzed files:");
+                sortedFilesAnalyzers.LoggingImportedMethodsInfoForEachBinary();
+
+                var binaryLocations = sortedFilesAnalyzers.GetImportedBinariesLocations();
+                if (binaryLocations.Any() is false)
+                {
+                    NLogger.Info("All files are missing imported methods from other assemblies.");
+                    return (int)WorkStatusCodes.SuccessExit;
+                }
+                NLogger.Info("The presence of binary files in the received locations:");
                 binaryLocations.LoggingBinariesExistsStatus(analysisFolder);
 
                 NLogger.Info($"Total: {binaryLocations.GetExistsBinaries(analysisFolder).Count()} exists, {binaryLocations.GetNotExistsBinaries(analysisFolder).Count()} not exists.");
 
-                exitCode = (int)AnalyzerHelper.GetTopBinarySearcherStatusAmongBinaries(binaryLocations, analysisFolder);
+                return exitCode = (int)AnalyzerHelper.GetTopBinarySearcherStatusAmongBinaries(binaryLocations, analysisFolder);
             }
             catch(Exception e)
             {
                 NLogger.Error(e.ToString());
                 return exitCode;
             }
-
-            return exitCode;
         }
     }
 }

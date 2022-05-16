@@ -16,33 +16,33 @@ namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
         /// 1 if the binary file is <b>on an absolute path</b>;<br/>
         /// 2 if the binary file <b>does not exist</b>.
         /// </summary>
-        /// <param name="binaryPath"></param>
+        /// <param name="pathToBinary"></param>
         /// <param name="analysisFolder"></param>
         /// <param name="defaultBinaryExtension"></param>
         /// <returns>Binary existence status code.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static BinarySearcherStatusCodes CheckBinaryExist(string binaryPath, string analysisFolder, string defaultBinaryExtension = ".dll")
+        public static BinarySearcherStatusCodes CheckBinaryExist(string pathToBinary, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
-            if (string.IsNullOrEmpty(binaryPath))
+            if (string.IsNullOrEmpty(pathToBinary))
             {
-                throw new ArgumentNullException($"{nameof(binaryPath)} is null or empty.");
+                throw new ArgumentNullException($"{nameof(pathToBinary)} is null or empty.");
             }
             if (string.IsNullOrEmpty(analysisFolder))
             {
                 throw new ArgumentNullException($"{nameof(analysisFolder)} is null or empty.");
             }
 
-            bool pathIsAbsolute = IOHelper.IsAbsolutePath(binaryPath);
+            bool pathIsAbsolute = IOHelper.IsAbsolutePath(pathToBinary);
             if (!pathIsAbsolute)
             {
-                binaryPath = Path.Combine(analysisFolder, binaryPath);
+                pathToBinary = Path.Combine(analysisFolder, pathToBinary);
             }
-            if (!Path.HasExtension(binaryPath))
+            if (!Path.HasExtension(pathToBinary))
             {
-                binaryPath = $"{binaryPath}{defaultBinaryExtension}";
+                pathToBinary = $"{pathToBinary}{defaultBinaryExtension}";
             }
 
-            bool pathIsExists = File.Exists(binaryPath);
+            bool pathIsExists = File.Exists(pathToBinary);
             if (pathIsExists)
             {
                 return pathIsAbsolute ? BinarySearcherStatusCodes.BinaryExistsOnAbsolutePath : BinarySearcherStatusCodes.BinaryExistsOnSourcePath;

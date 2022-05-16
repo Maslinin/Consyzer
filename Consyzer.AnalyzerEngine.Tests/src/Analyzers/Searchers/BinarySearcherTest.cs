@@ -17,7 +17,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers.Searchers
 
             var statusCodeOverloadOneOptionOne = BinarySearcher.CheckBinaryExist(location, Environment.CurrentDirectory, ".dll");
             var statusCodeOverloadOneOptionTwo = BinarySearcher.CheckBinaryExist(location.Replace("\\", " ").Replace("/", " "), Environment.CurrentDirectory, ".dll");
-            var OverloadOneExceptionOne = Record.Exception(() => BinarySearcher.CheckBinaryExist(binaryPath: null, Environment.CurrentDirectory, ".dll"));
+            var OverloadOneExceptionOne = Record.Exception(() => BinarySearcher.CheckBinaryExist(pathToBinary: null, Environment.CurrentDirectory, ".dll"));
             var OverloadOneExceptionTwo = Record.Exception(() => BinarySearcher.CheckBinaryExist(location, null, ".dll"));
 
             Assert.Equal(BinarySearcherStatusCodes.BinaryExistsOnAbsolutePath, statusCodeOverloadOneOptionOne);

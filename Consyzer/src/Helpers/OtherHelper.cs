@@ -37,7 +37,7 @@ namespace Consyzer.Helpers
             var extensions = binaryExtensions.Split(',').Select(e => e.Trim());
             if (!extensions.All(e => Path.HasExtension(e)))
             {
-                throw new ArgumentException("One or more names are not extensions");
+                throw new ArgumentException("One or more names are not extensions.");
             }
 
             return binaryExtensions.Split(',').Select(e => e.Trim());
