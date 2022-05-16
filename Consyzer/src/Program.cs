@@ -36,7 +36,7 @@ namespace Consyzer
                 var unsuitableFiles = binaryFiles.GetFilesNotContainsMetadata();
                 if (unsuitableFiles.Any() is true)
                 {
-                    NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
+                    NLogger.Warn("The following files were excluded from analysis because they DO NOT contain metadata:");
                     unsuitableFiles.LoggingBaseFileInfo();
                 }
                 if (metadataFiles.Count() == unsuitableFiles.Count())
@@ -47,7 +47,7 @@ namespace Consyzer
                 unsuitableFiles = metadataFiles.GetNotMetadataAssemblyFiles();
                 if (unsuitableFiles.Any() is true)
                 {
-                    NLogger.Info("The following files were excluded from analysis because they are NOT assembly files:");
+                    NLogger.Warn("The following files were excluded from analysis because they are NOT assembly files:");
                     unsuitableFiles.LoggingBaseFileInfo();
                 }
                 if (metadataFiles.Count() == unsuitableFiles.Count())
