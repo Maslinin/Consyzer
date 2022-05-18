@@ -100,7 +100,7 @@ namespace Consyzer.AnalyzerEngine.Helpers
 
         public static IEnumerable<BinaryFileInfo> GetMetadataAssemblyFiles(this IEnumerable<BinaryFileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => f.IsAssembly);
+            return binaryFiles.Where(f => f.IsMetadataAssembly);
         }
 
         #endregion
@@ -119,7 +119,7 @@ namespace Consyzer.AnalyzerEngine.Helpers
 
         public static IEnumerable<BinaryFileInfo> GetNotMetadataAssemblyFiles(this IEnumerable<BinaryFileInfo> binaryFiles)
         {
-            return binaryFiles.Where(f => !f.IsAssembly);
+            return binaryFiles.Where(f => !f.IsMetadataAssembly);
         }
 
         #endregion

@@ -44,7 +44,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
             {
                 throw new MetadataFileNotSupportedException($"{binary.BaseFileInfo.FullName} is does not contain metadata.");
             }
-            if (!this.BinaryInfo.IsAssembly)
+            if (!this.BinaryInfo.IsMetadataAssembly)
             {
                 throw new AssemblyFileNotSupportedException($"{binary.BaseFileInfo.FullName} is contains metadata, but is not an assembly.");
             }
@@ -73,7 +73,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
             {
                 throw new MetadataFileNotSupportedException($"{nameof(pathToBinary)} is does not contain metadata.");
             }
-            if (!this.BinaryInfo.IsAssembly)
+            if (!this.BinaryInfo.IsMetadataAssembly)
             {
                 throw new AssemblyFileNotSupportedException($"{nameof(pathToBinary)} is contains metadata, but is not an assembly.");
             }

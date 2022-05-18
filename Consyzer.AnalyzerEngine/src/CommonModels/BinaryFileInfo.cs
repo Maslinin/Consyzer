@@ -19,9 +19,9 @@ namespace Consyzer.AnalyzerEngine.CommonModels
         /// </summary>
         public bool HasMetadata { get; }
         /// <summary>
-        /// Gets true if the binary is an assembly; otherwise false.
+        /// Gets true if the binary is a metadata assembly; otherwise false.
         /// </summary>
-        public bool IsAssembly { get; }
+        public bool IsMetadataAssembly { get; }
         /// <summary>
         /// Gets an instance of <b>HashFileInfo</b> containing information about the hash amounts of the current file.
         /// </summary>
@@ -46,7 +46,7 @@ namespace Consyzer.AnalyzerEngine.CommonModels
 
             this.BaseFileInfo = fileInfo;
             this.HasMetadata = CommonAnalyzersHelper.HasMetadata(fileInfo.FullName);
-            this.IsAssembly = CommonAnalyzersHelper.MetadataFileIsAssembly(fileInfo.FullName);
+            this.IsMetadataAssembly = CommonAnalyzersHelper.MetadataFileIsAssembly(fileInfo.FullName);
             this.HashInfo = HashFileInfo.Calculate(fileInfo);
         }
 
@@ -71,7 +71,7 @@ namespace Consyzer.AnalyzerEngine.CommonModels
 
             this.BaseFileInfo = info;
             this.HasMetadata = CommonAnalyzersHelper.HasMetadata(pathToBinary);
-            this.IsAssembly = CommonAnalyzersHelper.MetadataFileIsAssembly(pathToBinary);
+            this.IsMetadataAssembly = CommonAnalyzersHelper.MetadataFileIsAssembly(pathToBinary);
             this.HashInfo = HashFileInfo.Calculate(info);
         }
 

@@ -34,7 +34,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
             {
                 throw new MetadataFileNotSupportedException($"{binary.BaseFileInfo.FullName} is does not contain metadata.");
             }
-            if (!binary.IsAssembly)
+            if (!binary.IsMetadataAssembly)
             {
                 throw new AssemblyFileNotSupportedException($"{binary.BaseFileInfo.FullName} is contains metadata, but is not an assembly.");
             }
