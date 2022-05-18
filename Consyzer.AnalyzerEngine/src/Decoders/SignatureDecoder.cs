@@ -90,7 +90,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
 
             bool methodIsStatic = methodAttributes.Any(s => s == "Static");
 
-            List<SignatureBaseType> methodParameters = new List<SignatureBaseType>();
+            var methodParameters = new List<SignatureBaseType>();
             methodParameters.AddRange(signature.ParameterTypes.OfType<SignatureBaseType>());
 
             string methodImplAttributes = methodDef.ImplAttributes.ToString();

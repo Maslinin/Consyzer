@@ -17,7 +17,7 @@ namespace Consyzer.Helpers
         {
             foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
             {
-                NLogger.Info($"\t[{item.Index}]File: \'{item.File.BaseFileInfo.Name}\', Creation Time: {item.File.BaseFileInfo.CreationTime}.");
+                NLogger.Info($"\t[{item.Index}]File: '{item.File.BaseFileInfo.Name}', Creation Time: '{item.File.BaseFileInfo.CreationTime}'.");
             }
         }
 
@@ -25,8 +25,8 @@ namespace Consyzer.Helpers
         {
             foreach (var item in metadataAnalyzers.Select((File, Index) => (File, Index)))
             {
-                NLogger.Info($"\t[{item.Index}]File: \'{item.File.BinaryInfo.BaseFileInfo.Name}\', Creation Time: {item.File.BinaryInfo.BaseFileInfo.CreationTime}, " +
-                    $"SHA256 Hash Sum: {item.File.BinaryInfo.HashInfo.SHA256Sum}.");
+                NLogger.Info($"\t[{item.Index}]File: '{item.File.BinaryInfo.BaseFileInfo.Name}', Creation Time: '{item.File.BinaryInfo.BaseFileInfo.CreationTime}', " +
+                    $"SHA256 Hash Sum: '{item.File.BinaryInfo.HashInfo.SHA256Sum}'.");
             }
         }
 
@@ -67,7 +67,7 @@ namespace Consyzer.Helpers
             {
                 var importedMethods = item.File.GetImportedMethodsInfo().ToList();
 
-                NLogger.Info($"\t[{item.i}]File \'{item.File.BinaryInfo.BaseFileInfo.FullName}\': ");
+                NLogger.Info($"\t[{item.i}]File '{item.File.BinaryInfo.BaseFileInfo.FullName}': ");
                 if (importedMethods.Any())
                 {
                     LoggerHelper.LoggingImportedMethodsInfo(importedMethods);
@@ -83,10 +83,10 @@ namespace Consyzer.Helpers
         {
             foreach (var import in importedMethods.Select((Signature, i) => (Signature, i)))
             {
-                NLogger.Info($"\t\t[{import.i}]Method \'{import.Signature.SignatureInfo.GetMethodLocation()}\':");
-                NLogger.Info($"\t\t\tMethod Signature: {import.Signature.SignatureInfo.GetBaseMethodSignature()}");
-                NLogger.Info($"\t\t\tDLL Location: {import.Signature.DllLocation}");
-                NLogger.Info($"\t\t\tDLL Import Arguments: {import.Signature.DllImportArguments}");
+                NLogger.Info($"\t\t[{import.i}]Method '{import.Signature.SignatureInfo.GetMethodLocation()}':");
+                NLogger.Info($"\t\t\tMethod Signature: '{import.Signature.SignatureInfo.GetBaseMethodSignature()}',");
+                NLogger.Info($"\t\t\tDLL Location: '{import.Signature.DllLocation}',");
+                NLogger.Info($"\t\t\tDLL Import Arguments: '{import.Signature.DllImportArguments}'.");
             }
         }
 
