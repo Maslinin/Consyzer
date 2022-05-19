@@ -94,7 +94,7 @@ namespace Consyzer.Helpers
         {
             foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
             {
-                if (BinarySearcher.CheckBinaryExist(item.Location, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists)
+                if (BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(item.Location, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists)
                 {
                     NLogger.Error($"\t[{item.i}]{item.Location}: NOT exist!");
                 }

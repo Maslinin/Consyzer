@@ -27,17 +27,17 @@ namespace Consyzer.Helpers
 
         public static IEnumerable<string> GetExistsBinaries(this IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
-            return binaryLocations.Where(b => !(BinarySearcher.CheckBinaryExist(b, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists));
+            return binaryLocations.Where(b => !(BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists));
         }
 
         public static IEnumerable<string> GetNotExistsBinaries(this IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
-            return binaryLocations.Where(b => (BinarySearcher.CheckBinaryExist(b, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists));
+            return binaryLocations.Where(b => (BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists));
         }
 
         public static BinarySearcherStatusCodes GetTopBinarySearcherStatusAmongBinaries(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
-            return binaryLocations.Max(b => BinarySearcher.CheckBinaryExist(b, analysisFolder, defaultBinaryExtension));
+            return binaryLocations.Max(b => BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension));
         }
 
     }
