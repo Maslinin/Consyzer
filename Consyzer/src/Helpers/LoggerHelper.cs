@@ -107,7 +107,8 @@ namespace Consyzer.Helpers
 
         public static void LoggingBinaryExistsAndNonExistsCount(IEnumerable<string> binaryLocations, string analysisFolder)
         {
-            NLogger.Info($"Total: {binaryLocations.GetExistsBinaries(analysisFolder).Count()} exist, {binaryLocations.GetNotExistsBinaries(analysisFolder).Count()} do not exist.");
+            NLogger.Info($"Total: {AnalyzerHelper.GetExistsBinaries(binaryLocations, analysisFolder).Count()} exist, " +
+                $"{AnalyzerHelper.GetNotExistsBinaries(binaryLocations, analysisFolder).Count()} do not exist.");
         }
     }
 }

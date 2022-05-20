@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using Consyzer.AnalyzerEngine.Analyzers;
 using Consyzer.AnalyzerEngine.Analyzers.Searchers;
@@ -13,24 +14,24 @@ namespace Consyzer.Helpers
             return binaryFiles.Select(f => new MetadataAnalyzer(f.BaseFileInfo.FullName));
         }
 
-        public static IEnumerable<string> GetImportedBinariesLocations(this IEnumerable<MetadataAnalyzer> metadataAnalyzers)
+        public static IEnumerable<string> GetImportedBinariesLocations(this IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
         {
             var importedMethods = new List<string>();
 
             foreach (var method in metadataAnalyzers.Select(File => File ))
             {
-                importedMethods.AddRange(method.GetImportedMethodsInfo().Select(m => m.DllLocation));
+                importedMethods.AddRange(method.GetImportedMethodsInfo().Select(m => Path.HasExtension(m.DllLocation) ? m.DllLocation : $"{m.DllLocation}{defaultBinaryExtension}" ));
             }
 
             return importedMethods.Distinct();
         }
 
-        public static IEnumerable<string> GetExistsBinaries(this IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
+        public static IEnumerable<string> GetExistsBinaries(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
             return binaryLocations.Where(b => !(BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists));
         }
 
-        public static IEnumerable<string> GetNotExistsBinaries(this IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
+        public static IEnumerable<string> GetNotExistsBinaries(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
             return binaryLocations.Where(b => (BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists));
         }
