@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Collections.Generic;
 using Consyzer.Logger;
 using Consyzer.AnalyzerEngine.Analyzers;
@@ -42,7 +42,7 @@ namespace Consyzer.Helpers
             }
             if (unsuitableFiles.Any())
             {
-                NLogger.Warn("The following files were excluded from analysis because they DO NOT contain metadata:");
+                NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
                 LoggerHelper.LoggingBaseFileInfo(unsuitableFiles);
             }
 
@@ -54,7 +54,7 @@ namespace Consyzer.Helpers
             }
             if (unsuitableFiles.Any())
             {
-                NLogger.Warn("The following files were excluded from analysis because they are NOT assembly files:");
+                NLogger.Info("The following files were excluded from analysis because they are NOT assembly files:");
                 LoggerHelper.LoggingBaseFileInfo(unsuitableFiles);
             }
 
@@ -74,7 +74,7 @@ namespace Consyzer.Helpers
                 }
                 else
                 {
-                    NLogger.Info($"\t\tThere are no imported methods from other assemblies in the file.");
+                    NLogger.Info($"\t\tThere is no any imported methods from other assemblies in the file.");
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace Consyzer.Helpers
             {
                 if (BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(item.Location, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists)
                 {
-                    NLogger.Error($"\t[{item.i}]{item.Location}: NOT exist!");
+                    NLogger.Error($"\t[{item.i}]{item.Location}: does NOT exist!");
                 }
                 else
                 {
@@ -107,7 +107,7 @@ namespace Consyzer.Helpers
 
         public static void LoggingBinaryExistsAndNonExistsCount(IEnumerable<string> binaryLocations, string analysisFolder)
         {
-            NLogger.Info($"Total: {binaryLocations.GetExistsBinaries(analysisFolder).Count()} exists, {binaryLocations.GetNotExistsBinaries(analysisFolder).Count()} not exists.");
+            NLogger.Info($"Total: {binaryLocations.GetExistsBinaries(analysisFolder).Count()} exist, {binaryLocations.GetNotExistsBinaries(analysisFolder).Count()} do not exist.");
         }
     }
 }

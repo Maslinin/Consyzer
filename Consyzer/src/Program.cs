@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Consyzer.Logger;
 using Consyzer.Helpers;
@@ -16,7 +16,7 @@ namespace Consyzer
             try
             {
                 string analysisFolder = OtherHelper.GetDirectoryWithBinariesFromCommandLineArgs();
-                NLogger.Info($"Path for analyze: \"{analysisFolder}\".");
+                NLogger.Info($"Path for analysis: \"{analysisFolder}\".");
 
                 var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
                 NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions)}.");

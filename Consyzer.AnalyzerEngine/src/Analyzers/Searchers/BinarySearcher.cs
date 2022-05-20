@@ -128,7 +128,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
         }
 
         /// <summary>
-        /// 
+        /// Checks whether the binary file from which the specified method was imported exists in the <b>source analysis folder</b>, in the <b>absolute path</b>, or in the <b>system folder</b> <b>(windows only)</b>.<br/>
         /// 0 if the binary file <b>exists</b> in the specified folder;<br/>
         /// 1 if the binary file is <b>on an absolute path</b> or <b>on an system folder</b> <b>(windows only)</b>;<br/>
         /// 2 if the binary file <b>does not exist</b>.
@@ -150,7 +150,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
         }
 
         /// <summary>
-        /// 
+        /// Checks whether the binary file from which the specified method was imported exists in the <b>source analysis folder</b>, in the <b>absolute path</b>, or in the <b>system folder</b> <b>(windows only)</b>.<br/>
         /// 0 if the binary file <b>exists</b> in the specified folder;<br/>
         /// 1 if the binary file is <b>on an absolute path</b> or <b>on an system folder</b> <b>(windows only)</b>;<br/>
         /// 2 if the binary file <b>does not exist</b>.
