@@ -86,7 +86,6 @@ namespace Consyzer.Helpers
     {
         public static bool CheckAndLoggingFilesCorrect(IEnumerable<BinaryFileInfo> binaryFiles)
         {
-            var metadataFiles = binaryFiles.GetFilesContainsMetadata();
             var unsuitableFiles = binaryFiles.GetFilesNotContainsMetadata();
 
             if (unsuitableFiles.Any())
@@ -94,19 +93,19 @@ namespace Consyzer.Helpers
                 NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
                 LoggerHelper.LoggingBaseFileInfo(unsuitableFiles);
             }
-            if (metadataFiles.Count() == unsuitableFiles.Count())
+            if (binaryFiles.Count() == unsuitableFiles.Count())
             {
                 NLogger.Warn("All found files do NOT contain metadata.");
                 return false;
             }
 
-            unsuitableFiles = metadataFiles.GetNotMetadataAssemblyFiles();
+            unsuitableFiles = binaryFiles.GetNotMetadataAssemblyFiles();
             if (unsuitableFiles.Any())
             {
                 NLogger.Info("The following files were excluded from analysis because they are NOT assembly files:");
                 LoggerHelper.LoggingBaseFileInfo(unsuitableFiles);
             }
-            if (metadataFiles.Count() == unsuitableFiles.Count())
+            if (binaryFiles.Count() == unsuitableFiles.Count())
             {
                 NLogger.Warn("All found files contain metadata, but are NOT assembly files.");
                 return false;
