@@ -2,7 +2,7 @@
 {
     public enum WorkStatusCodes
     {
-        UndefinedBehavior = -1,
+        UnexpectedBehavior = -1,
         SuccessExit = 0
     }
 }

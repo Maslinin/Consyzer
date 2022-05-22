@@ -11,29 +11,22 @@ namespace Consyzer
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private static int Main()
         {
-            int exitCode = (int)WorkStatusCodes.UndefinedBehavior;
-
             try
             {
                 string analysisFolder = OtherHelper.GetDirectoryWithBinariesFromCommandLineArgs();
-                NLogger.Info($"Path for analysis: \"{analysisFolder}\".");
+                NLogger.Info($"Path for analysis: '{analysisFolder}'.");
 
                 var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
                 NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions)}.");
 
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions).ToList();
-                if(binaryFiles.Any() is false)
-                {
-                    NLogger.Warn("Binary files for analysis with the specified extensions were not found.");
-                    return exitCode;
-                }
+                if(LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles) is false)
+                    return (int)WorkStatusCodes.SuccessExit;
 
                 NLogger.Info("The following binary files with the specified extensions were found:");
                 LoggerHelper.LoggingBaseFileInfo(binaryFiles);
-                if (LoggerHelper.LoggingAnalyzedFilesValidityCheck(binaryFiles))
-                {
+                if (LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles) is false)
                     return (int)WorkStatusCodes.SuccessExit;
-                }
 
                 var sortedFilesAnalyzers = binaryFiles.GetMetadataAssemblyFiles().GetMetadataAnalyzersFromMetadataAssemblyFiles().ToList();
                 NLogger.Info("The following assembly binaries containing metadata were found:");
@@ -43,22 +36,19 @@ namespace Consyzer
                 LoggerHelper.LoggingImportedMethodsInfoForEachBinary(sortedFilesAnalyzers);
 
                 var binaryLocations = sortedFilesAnalyzers.GetImportedBinariesLocations();
-                if (binaryLocations.Any() is false)
-                {
-                    NLogger.Info("All files are missing imported methods from other assemblies.");
+                if (LoggerCheckerHelper.CheckAndLoggingDllLocationsExist(binaryLocations) is false)
                     return (int)WorkStatusCodes.SuccessExit;
-                }
 
                 NLogger.Info("The presence of binary files in the received locations:");
-                LoggerHelper.LoggingBinariesExistsStatus(binaryLocations, analysisFolder);
-                LoggerHelper.LoggingBinaryExistsAndNonExistsCount(binaryLocations, analysisFolder);
+                LoggerHelper.LoggingBinariesExistStatus(binaryLocations, analysisFolder);
+                LoggerHelper.LoggingBinaryExistAndNonExistCount(binaryLocations, analysisFolder);
 
-                return exitCode = (int)AnalyzerHelper.GetTopBinarySearcherStatusAmongBinaries(binaryLocations, analysisFolder);
+                return (int)AnalyzerHelper.GetTopBinarySearcherStatusAmongBinaries(binaryLocations, analysisFolder);
             }
             catch(Exception e)
             {
                 NLogger.Error(e.ToString());
-                return exitCode;
+                return (int)WorkStatusCodes.UnexpectedBehavior;
             }
         }
     }
