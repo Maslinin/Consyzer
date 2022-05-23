@@ -86,29 +86,32 @@ namespace Consyzer.Helpers
     {
         public static bool CheckAndLoggingFilesCorrect(IEnumerable<BinaryFileInfo> binaryFiles)
         {
-            var unsuitableFiles = binaryFiles.GetFilesNotContainsMetadata();
+            var notMetadataFiles = binaryFiles.GetFilesNotContainsMetadata();
 
-            if (unsuitableFiles.Any())
+            if (notMetadataFiles.Any())
             {
                 NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
-                LoggerHelper.LoggingBaseFileInfo(unsuitableFiles);
-            }
-            if (binaryFiles.Count() == unsuitableFiles.Count())
-            {
-                NLogger.Warn("All found files do NOT contain metadata.");
-                return false;
+                LoggerHelper.LoggingBaseFileInfo(notMetadataFiles);
+
+                if (binaryFiles.Count() == notMetadataFiles.Count())
+                {
+                    NLogger.Warn("All found files do NOT contain metadata.");
+                    return false;
+                }
             }
 
-            unsuitableFiles = binaryFiles.GetNotMetadataAssemblyFiles();
-            if (unsuitableFiles.Any())
+            var notMetadataAssemblyFiles = binaryFiles.GetNotMetadataAssemblyFiles();
+            var differentFiles = notMetadataFiles.Count() > notMetadataAssemblyFiles.Count() ? notMetadataFiles.Except(notMetadataAssemblyFiles) : notMetadataAssemblyFiles.Except(notMetadataFiles);
+            if (differentFiles.Any())
             {
                 NLogger.Info("The following files were excluded from analysis because they are NOT assembly files:");
-                LoggerHelper.LoggingBaseFileInfo(unsuitableFiles);
-            }
-            if (binaryFiles.Count() == unsuitableFiles.Count())
-            {
-                NLogger.Warn("All found files contain metadata, but are NOT assembly files.");
-                return false;
+                LoggerHelper.LoggingBaseFileInfo(differentFiles);
+
+                if (binaryFiles.Count() == differentFiles.Count())
+                {
+                    NLogger.Warn("All found files contain metadata, but are NOT assembly files.");
+                    return false;
+                }
             }
 
             return true;
