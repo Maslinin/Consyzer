@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Consyzer.Logger;
 using Consyzer.Helpers;
 using Consyzer.AnalyzerEngine.Helpers;
@@ -19,7 +18,7 @@ namespace Consyzer
                 var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
                 NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions)}.");
 
-                var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions).ToList();
+                var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions);
                 if(LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles) is false)
                     return (int)WorkStatusCodes.SuccessExit;
 
@@ -28,7 +27,7 @@ namespace Consyzer
                 if (LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles) is false)
                     return (int)WorkStatusCodes.SuccessExit;
 
-                var sortedFilesAnalyzers = binaryFiles.GetMetadataAssemblyFiles().GetMetadataAnalyzersFromMetadataAssemblyFiles().ToList();
+                var sortedFilesAnalyzers = binaryFiles.GetMetadataAssemblyFiles().GetMetadataAnalyzersFromMetadataAssemblyFiles();
                 NLogger.Info("The following assembly binaries containing metadata were found:");
                 LoggerHelper.LoggingBaseAndHashFileInfo(sortedFilesAnalyzers);
 
