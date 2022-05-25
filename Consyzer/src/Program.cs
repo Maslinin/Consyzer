@@ -19,7 +19,7 @@ namespace Consyzer
                 NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions)}.");
 
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions);
-                if(LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles) is false)
+                if (LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles) is false)
                     return (int)WorkStatusCodes.SuccessExit;
 
                 NLogger.Info("The following binary files with the specified extensions were found:");
