@@ -1,4 +1,3 @@
-using System;
 using Consyzer.Logger;
 using Consyzer.Helpers;
 using Consyzer.AnalyzerEngine.Helpers;
@@ -44,7 +43,7 @@ namespace Consyzer
 
                 return (int)AnalyzerHelper.GetTopBinarySearcherStatusAmongBinaries(binaryLocations, analysisFolder);
             }
-            catch(Exception e)
+            catch(System.Exception e)
             {
                 NLogger.Error(e.ToString());
                 return (int)WorkStatusCodes.UnexpectedBehavior;
