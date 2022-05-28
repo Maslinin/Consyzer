@@ -12,6 +12,11 @@ namespace Consyzer.Helpers
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class LoggerHelper
     {
+        public static void LoggingFileExtensionsForAnalysis(IEnumerable<string> filesExtensions)
+        {
+            NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions.Select(e => $"'{e}'"))}.");
+        }
+
 
         public static void LoggingBaseFileInfo(IEnumerable<BinaryFileInfo> binaryFiles)
         {

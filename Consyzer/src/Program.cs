@@ -15,7 +15,7 @@ namespace Consyzer
                 NLogger.Info($"Path for analysis: '{analysisFolder}'.");
 
                 var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
-                NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions)}.");
+                LoggerHelper.LoggingFileExtensionsForAnalysis(filesExtensions);
 
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions);
                 if (LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles) is false)
@@ -26,14 +26,14 @@ namespace Consyzer
                 if (LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles) is false)
                     return (int)WorkStatusCodes.SuccessExit;
 
-                var sortedFilesAnalyzers = binaryFiles.GetMetadataAssemblyFiles().GetMetadataAnalyzersFromMetadataAssemblyFiles();
+                var sortedFilesAnalyzers = AnalyzerHelper.GetMetadataAnalyzersFromMetadataAssemblyFiles(binaryFiles);
                 NLogger.Info("The following assembly binaries containing metadata were found:");
                 LoggerHelper.LoggingBaseAndHashFileInfo(sortedFilesAnalyzers);
 
                 NLogger.Info("Information about imported methods from other assemblies in the analyzed files:");
                 LoggerHelper.LoggingImportedMethodsInfoForEachBinary(sortedFilesAnalyzers);
 
-                var binaryLocations = sortedFilesAnalyzers.GetImportedBinariesLocations();
+                var binaryLocations = AnalyzerHelper.GetImportedBinariesLocations(sortedFilesAnalyzers);
                 if (LoggerCheckerHelper.CheckAndLoggingDllLocationsExist(binaryLocations) is false)
                     return (int)WorkStatusCodes.SuccessExit;
 

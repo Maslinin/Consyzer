@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using Consyzer.AnalyzerEngine.Helpers;
 using Consyzer.AnalyzerEngine.Analyzers;
 using Consyzer.AnalyzerEngine.Analyzers.Searchers;
 using Consyzer.AnalyzerEngine.CommonModels;
@@ -9,16 +10,16 @@ namespace Consyzer.Helpers
 {
     public static class AnalyzerHelper
     {
-        public static IEnumerable<MetadataAnalyzer> GetMetadataAnalyzersFromMetadataAssemblyFiles(this IEnumerable<BinaryFileInfo> binaryFiles)
+        public static IEnumerable<MetadataAnalyzer> GetMetadataAnalyzersFromMetadataAssemblyFiles(IEnumerable<BinaryFileInfo> binaryFiles)
         {
-            return binaryFiles.Select(f => new MetadataAnalyzer(f.BaseFileInfo.FullName));
+            return binaryFiles.GetMetadataAssemblyFiles().Select(f => new MetadataAnalyzer(f.BaseFileInfo.FullName));
         }
 
-        public static IEnumerable<string> GetImportedBinariesLocations(this IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
+        public static IEnumerable<string> GetImportedBinariesLocations(IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
         {
             var importedMethods = new List<string>();
 
-            foreach (var method in metadataAnalyzers.Select(File => File ))
+            foreach (var method in metadataAnalyzers)
             {
                 importedMethods.AddRange(method.GetImportedMethodsInfo().Select(m => Path.HasExtension(m.DllLocation) ? m.DllLocation : $"{m.DllLocation}{defaultBinaryExtension}" ));
             }
@@ -40,6 +41,5 @@ namespace Consyzer.Helpers
         {
             return binaryLocations.Max(b => BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension));
         }
-
     }
 }
