@@ -15,7 +15,7 @@ namespace Consyzer.Helpers
             return binaryFiles.GetMetadataAssemblyFiles().Select(f => new MetadataAnalyzer(f.BaseFileInfo.FullName));
         }
 
-        public static IEnumerable<string> GetImportedBinariesLocations(IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
+        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
         {
             var importedMethods = new List<string>();
 

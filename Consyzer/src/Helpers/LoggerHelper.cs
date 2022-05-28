@@ -12,7 +12,7 @@ namespace Consyzer.Helpers
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class LoggerHelper
     {
-        public static void LoggingFileExtensionsForAnalysis(IEnumerable<string> filesExtensions)
+        public static void LoggingFilesExtensionsForAnalysis(IEnumerable<string> filesExtensions)
         {
             Log.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions.Select(e => $"'{e}'"))}.");
         }
@@ -79,7 +79,7 @@ namespace Consyzer.Helpers
             }
         }
 
-        public static void LoggingBinaryExistAndNonExistCount(IEnumerable<string> binaryLocations, string analysisFolder)
+        public static void LoggingExistAndNonExistBinariesCount(IEnumerable<string> binaryLocations, string analysisFolder)
         {
             Log.Info($"Total: {AnalyzerHelper.GetExistsBinaries(binaryLocations, analysisFolder).Count()} exist, " +
                 $"{AnalyzerHelper.GetNotExistsBinaries(binaryLocations, analysisFolder).Count()} do not exist.");
@@ -131,7 +131,7 @@ namespace Consyzer.Helpers
             return false;
         }
 
-        public static bool CheckAndLoggingDllLocationsExist(IEnumerable<string> binaryLocations)
+        public static bool CheckAndLoggingAnyBinariesExist(IEnumerable<string> binaryLocations)
         {
             if (binaryLocations.Any())
                 return true;

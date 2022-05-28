@@ -23,7 +23,7 @@ namespace Consyzer.Tests.Helpers
         public void GetImportedBinariesLocations()
         {
             string location = Assembly.GetExecutingAssembly().Location;
-            var mdAnalyzers = AnalyzerHelper.GetImportedBinariesLocations(new MetadataAnalyzer[] { new MetadataAnalyzer(location) });
+            var mdAnalyzers = AnalyzerHelper.GetImportedMethodsLocations(new MetadataAnalyzer[] { new MetadataAnalyzer(location) });
             Assert.NotNull(mdAnalyzers);
         }
 

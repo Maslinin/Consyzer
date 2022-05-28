@@ -15,7 +15,7 @@ namespace Consyzer
                 Log.Info($"Path for analysis: '{analysisFolder}'.");
 
                 var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
-                LoggerHelper.LoggingFileExtensionsForAnalysis(filesExtensions);
+                LoggerHelper.LoggingFilesExtensionsForAnalysis(filesExtensions);
 
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions);
                 if (LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles) is false)
@@ -26,20 +26,20 @@ namespace Consyzer
                 if (LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles) is false)
                     return (int)WorkStatusCodes.SuccessExit;
 
-                var sortedFilesAnalyzers = AnalyzerHelper.GetMetadataAnalyzersFromMetadataAssemblyFiles(binaryFiles);
+                var metadataAnalyzers = AnalyzerHelper.GetMetadataAnalyzersFromMetadataAssemblyFiles(binaryFiles);
                 Log.Info("The following assembly binaries containing metadata were found:");
-                LoggerHelper.LoggingBaseAndHashFileInfo(sortedFilesAnalyzers);
+                LoggerHelper.LoggingBaseAndHashFileInfo(metadataAnalyzers);
 
                 Log.Info("Information about imported methods from other assemblies in the analyzed files:");
-                LoggerHelper.LoggingImportedMethodsInfoForEachBinary(sortedFilesAnalyzers);
+                LoggerHelper.LoggingImportedMethodsInfoForEachBinary(metadataAnalyzers);
 
-                var binaryLocations = AnalyzerHelper.GetImportedBinariesLocations(sortedFilesAnalyzers);
-                if (LoggerCheckerHelper.CheckAndLoggingDllLocationsExist(binaryLocations) is false)
+                var binaryLocations = AnalyzerHelper.GetImportedMethodsLocations(metadataAnalyzers);
+                if (LoggerCheckerHelper.CheckAndLoggingAnyBinariesExist(binaryLocations) is false)
                     return (int)WorkStatusCodes.SuccessExit;
 
                 Log.Info("The presence of binary files in the received locations:");
                 LoggerHelper.LoggingBinariesExistStatus(binaryLocations, analysisFolder);
-                LoggerHelper.LoggingBinaryExistAndNonExistCount(binaryLocations, analysisFolder);
+                LoggerHelper.LoggingExistAndNonExistBinariesCount(binaryLocations, analysisFolder);
 
                 return (int)AnalyzerHelper.GetTopBinarySearcherStatusAmongBinaries(binaryLocations, analysisFolder);
             }
