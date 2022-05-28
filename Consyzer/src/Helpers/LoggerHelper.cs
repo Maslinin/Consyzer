@@ -1,11 +1,11 @@
 using System.Linq;
 using System.Collections.Generic;
-using Consyzer.Logger;
 using Consyzer.AnalyzerEngine.Analyzers;
 using Consyzer.AnalyzerEngine.Analyzers.Searchers;
 using Consyzer.AnalyzerEngine.Analyzers.SyntaxModels;
 using Consyzer.AnalyzerEngine.CommonModels;
 using Consyzer.AnalyzerEngine.Helpers;
+using Log = Consyzer.Logger.NLogger;
 
 namespace Consyzer.Helpers
 {
@@ -14,7 +14,7 @@ namespace Consyzer.Helpers
     {
         public static void LoggingFileExtensionsForAnalysis(IEnumerable<string> filesExtensions)
         {
-            NLogger.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions.Select(e => $"'{e}'"))}.");
+            Log.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions.Select(e => $"'{e}'"))}.");
         }
 
 
@@ -22,7 +22,7 @@ namespace Consyzer.Helpers
         {
             foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
             {
-                NLogger.Info($"\t[{item.Index}]File: '{item.File.BaseFileInfo.Name}', Creation Time: '{item.File.BaseFileInfo.CreationTime}'.");
+                Log.Info($"\t[{item.Index}]File: '{item.File.BaseFileInfo.Name}', Creation Time: '{item.File.BaseFileInfo.CreationTime}'.");
             }
         }
 
@@ -30,7 +30,7 @@ namespace Consyzer.Helpers
         {
             foreach (var item in metadataAnalyzers.Select((File, Index) => (File, Index)))
             {
-                NLogger.Info($"\t[{item.Index}]File: '{item.File.BinaryInfo.BaseFileInfo.Name}', Creation Time: '{item.File.BinaryInfo.BaseFileInfo.CreationTime}', " +
+                Log.Info($"\t[{item.Index}]File: '{item.File.BinaryInfo.BaseFileInfo.Name}', Creation Time: '{item.File.BinaryInfo.BaseFileInfo.CreationTime}', " +
                     $"SHA256 Hash Sum: '{item.File.BinaryInfo.HashInfo.SHA256Sum}'.");
             }
         }
@@ -41,14 +41,14 @@ namespace Consyzer.Helpers
             {
                 var importedMethods = item.File.GetImportedMethodsInfo().ToList();
 
-                NLogger.Info($"\t[{item.i}]File '{item.File.BinaryInfo.BaseFileInfo.FullName}': ");
+                Log.Info($"\t[{item.i}]File '{item.File.BinaryInfo.BaseFileInfo.FullName}': ");
                 if (importedMethods.Any())
                 {
                     LoggerHelper.LoggingImportedMethodsInfo(importedMethods);
                 }
                 else
                 {
-                    NLogger.Info($"\t\tThere is no any imported methods from other assemblies in the file.");
+                    Log.Info($"\t\tThere is no any imported methods from other assemblies in the file.");
                 }
             }
         }
@@ -57,10 +57,10 @@ namespace Consyzer.Helpers
         {
             foreach (var import in importedMethods.Select((Signature, i) => (Signature, i)))
             {
-                NLogger.Info($"\t\t[{import.i}]Method '{import.Signature.SignatureInfo.GetMethodLocation()}':");
-                NLogger.Info($"\t\t\tMethod Signature: '{import.Signature.SignatureInfo.GetBaseMethodSignature()}',");
-                NLogger.Info($"\t\t\tDLL Location: '{import.Signature.DllLocation}',");
-                NLogger.Info($"\t\t\tDLL Import Arguments: '{import.Signature.DllImportArguments}'.");
+                Log.Info($"\t\t[{import.i}]Method '{import.Signature.SignatureInfo.GetMethodLocation()}':");
+                Log.Info($"\t\t\tMethod Signature: '{import.Signature.SignatureInfo.GetBaseMethodSignature()}',");
+                Log.Info($"\t\t\tDLL Location: '{import.Signature.DllLocation}',");
+                Log.Info($"\t\t\tDLL Import Arguments: '{import.Signature.DllImportArguments}'.");
             }
         }
 
@@ -70,18 +70,18 @@ namespace Consyzer.Helpers
             {
                 if (BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(item.Location, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists)
                 {
-                    NLogger.Error($"\t[{item.i}]File '{item.Location}': does NOT exist!");
+                    Log.Error($"\t[{item.i}]File '{item.Location}': does NOT exist!");
                 }
                 else
                 {
-                    NLogger.Info($"\t[{item.i}]File '{item.Location}': exist.");
+                    Log.Info($"\t[{item.i}]File '{item.Location}': exist.");
                 }
             }
         }
 
         public static void LoggingBinaryExistAndNonExistCount(IEnumerable<string> binaryLocations, string analysisFolder)
         {
-            NLogger.Info($"Total: {AnalyzerHelper.GetExistsBinaries(binaryLocations, analysisFolder).Count()} exist, " +
+            Log.Info($"Total: {AnalyzerHelper.GetExistsBinaries(binaryLocations, analysisFolder).Count()} exist, " +
                 $"{AnalyzerHelper.GetNotExistsBinaries(binaryLocations, analysisFolder).Count()} do not exist.");
         }
     }
@@ -95,12 +95,12 @@ namespace Consyzer.Helpers
 
             if (notMetadataFiles.Any())
             {
-                NLogger.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
+                Log.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
                 LoggerHelper.LoggingBaseFileInfo(notMetadataFiles);
 
                 if (binaryFiles.Count() == notMetadataFiles.Count())
                 {
-                    NLogger.Warn("All found files do NOT contain metadata.");
+                    Log.Warn("All found files do NOT contain metadata.");
                     return false;
                 }
             }
@@ -109,12 +109,12 @@ namespace Consyzer.Helpers
             var differentFiles = notMetadataFiles.Count() > notMetadataAssemblyFiles.Count() ? notMetadataFiles.Except(notMetadataAssemblyFiles) : notMetadataAssemblyFiles.Except(notMetadataFiles);
             if (differentFiles.Any())
             {
-                NLogger.Info("The following files were excluded from analysis because they are NOT assembly files:");
+                Log.Info("The following files were excluded from analysis because they are NOT assembly files:");
                 LoggerHelper.LoggingBaseFileInfo(differentFiles);
 
                 if (binaryFiles.Count() == differentFiles.Count())
                 {
-                    NLogger.Warn("All found files contain metadata, but are NOT assembly files.");
+                    Log.Warn("All found files contain metadata, but are NOT assembly files.");
                     return false;
                 }
             }
@@ -127,7 +127,7 @@ namespace Consyzer.Helpers
             if (binaryFiles.Any())
                 return true;
 
-            NLogger.Warn("Binary files for analysis with the specified extensions were not found.");
+            Log.Warn("Binary files for analysis with the specified extensions were not found.");
             return false;
         }
 
@@ -136,7 +136,7 @@ namespace Consyzer.Helpers
             if (binaryLocations.Any())
                 return true;
 
-            NLogger.Info("All files are missing imported methods from other assemblies.");
+            Log.Info("All files are missing imported methods from other assemblies.");
             return false;
         }
     }
