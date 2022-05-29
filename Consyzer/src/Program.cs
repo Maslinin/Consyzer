@@ -12,18 +12,18 @@ namespace Consyzer
             try
             {
                 string analysisFolder = OtherHelper.GetDirectoryWithBinariesFromCommandLineArgs();
-                Log.Info($"Path for analysis: '{analysisFolder}'.");
+                LoggerHelper.LoggingPathToBinariesForAnalysis(analysisFolder);
 
                 var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
                 LoggerHelper.LoggingFilesExtensionsForAnalysis(filesExtensions);
 
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions);
-                if (LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles) is false)
+                if (!LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles))
                     return (int)WorkStatusCodes.SuccessExit;
 
                 Log.Info("The following binary files with the specified extensions were found:");
                 LoggerHelper.LoggingBaseFileInfo(binaryFiles);
-                if (LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles) is false)
+                if (!LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles))
                     return (int)WorkStatusCodes.SuccessExit;
 
                 var metadataAnalyzers = AnalyzerHelper.GetMetadataAnalyzersFromMetadataAssemblyFiles(binaryFiles);
@@ -34,7 +34,7 @@ namespace Consyzer
                 LoggerHelper.LoggingImportedMethodsInfoForEachBinary(metadataAnalyzers);
 
                 var binaryLocations = AnalyzerHelper.GetImportedMethodsLocations(metadataAnalyzers);
-                if (LoggerCheckerHelper.CheckAndLoggingAnyBinariesExist(binaryLocations) is false)
+                if (!LoggerCheckerHelper.CheckAndLoggingAnyBinariesExist(binaryLocations))
                     return (int)WorkStatusCodes.SuccessExit;
 
                 Log.Info("The presence of binary files in the received locations:");

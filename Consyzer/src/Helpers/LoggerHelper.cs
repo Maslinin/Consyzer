@@ -12,6 +12,11 @@ namespace Consyzer.Helpers
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class LoggerHelper
     {
+        public static void LoggingPathToBinariesForAnalysis(string analysisFolder)
+        {
+            Log.Info($"Path for analysis: '{analysisFolder}'.");
+        }
+
         public static void LoggingFilesExtensionsForAnalysis(IEnumerable<string> filesExtensions)
         {
             Log.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions.Select(e => $"'{e}'"))}.");
@@ -70,11 +75,11 @@ namespace Consyzer.Helpers
             {
                 if (BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(item.Location, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists)
                 {
-                    Log.Error($"\t[{item.i}]File '{item.Location}': does NOT exist!");
+                    Log.Error($"\t[{item.i}]File '{item.Location}' does NOT exist!");
                 }
                 else
                 {
-                    Log.Info($"\t[{item.i}]File '{item.Location}': exist.");
+                    Log.Info($"\t[{item.i}]File '{item.Location}' exist.");
                 }
             }
         }
@@ -106,7 +111,7 @@ namespace Consyzer.Helpers
             }
 
             var notMetadataAssemblyFiles = binaryFiles.GetNotMetadataAssemblyFiles();
-            var differentFiles = notMetadataFiles.Count() > notMetadataAssemblyFiles.Count() ? notMetadataFiles.Except(notMetadataAssemblyFiles) : notMetadataAssemblyFiles.Except(notMetadataFiles);
+            var differentFiles = notMetadataFiles.Where(f => !notMetadataAssemblyFiles.Select(f => f.BaseFileInfo.FullName).Contains(f.BaseFileInfo.FullName));
             if (differentFiles.Any())
             {
                 Log.Info("The following files were excluded from analysis because they are NOT assembly files:");
