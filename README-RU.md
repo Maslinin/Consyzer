@@ -1,7 +1,7 @@
 [![Build Status](https://github.com/Maslinin/Consyzer/workflows/Build/badge.svg)](https://github.com/Maslinin/Consyzer/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Maslinin_Consyzer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Maslinin_Consyzer) [![GitHub license](https://badgen.net/github/license/Maslinin/Consyzer)](https://github.com/Maslinin/Consyzer/blob/master/LICENSE)
 
 # Описание
-*Consyzer* - это анализатор консистентности CIL файлов, предназначенный для предотвращения проблем, связанных с нарушением консистентностии развернутых в системе модулей приложения.
+**Consyzer** - это анализатор консистентности CIL файлов, предназначенный для предотвращения проблем, связанных с нарушением консистентностии развернутых в системе модулей приложения.
 
 ## Для чего?
 Допустим, что в исходном коде некоего приложения есть вызовы к функциям, находящимся в сторонних библиотеках динамической компоновки (DLL). Такие вызовы описываются с помощью инструкций **DllImport** в исходном коде программы и в последствии сохрананяются в метаданных модуля приложения.        
@@ -37,13 +37,13 @@ Consyzer был разработан специально для анализа 
    - Consyzer.AnalyzerEngine *[Project]*
      - System.Reflection.Metadata *[NuGet]*
 2. **Consyzer.Tests**
-   - *Consyzer*
+   - Consyzer *[Project]*
    - Microsoft.NET.Test.Sdk *[NuGet]*
    - xunit *[NuGet]*
    - xunit.runner.visualstudio *[NuGet]*
    - coverlet.collector *[NuGet]*
 3. **Consyzer.AnalyzerEngine.Tests**
-   - Consyzer.AnalyzerEngine
+   - Consyzer.AnalyzerEngine *[Project]*
    - Microsoft.NET.Test.Sdk *[NuGet]*
    - xunit *[NuGet]*
    - xunit.runner.visualstudio *[NuGet]*
