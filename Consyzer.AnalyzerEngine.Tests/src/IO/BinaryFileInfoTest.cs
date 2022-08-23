@@ -1,9 +1,9 @@
 ﻿using Xunit;
 using System.IO;
 using System.Reflection;
-using Consyzer.AnalyzerEngine.CommonModels;
+using Consyzer.AnalyzerEngine.IO;
 
-namespace Consyzer.AnalyzerEngine.Tests.CommonModels
+namespace Consyzer.AnalyzerEngine.Tests.IO
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class BinaryFileInfoTest
@@ -14,7 +14,7 @@ namespace Consyzer.AnalyzerEngine.Tests.CommonModels
             string location = Assembly.GetExecutingAssembly().Location;
 
             var exceptionOverloadOne = Record.Exception(() => new BinaryFileInfo(location));
-            var exceptionOverloadTwo = Record.Exception(() => new BinaryFileInfo(new FileInfo(location)));
+            var exceptionOverloadTwo = Record.Exception(() => new FileInfo(location));
 
             Assert.Null(exceptionOverloadOne);
             Assert.Null(exceptionOverloadTwo);

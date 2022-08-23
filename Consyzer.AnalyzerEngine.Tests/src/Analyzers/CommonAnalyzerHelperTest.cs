@@ -1,12 +1,12 @@
 ﻿using Xunit;
 using System.IO;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
-using System.Collections.Generic;
-using Consyzer.AnalyzerEngine.Helpers;
-using Consyzer.AnalyzerEngine.CommonModels;
+using Consyzer.AnalyzerEngine.Analyzers;
+using Consyzer.AnalyzerEngine.IO;
 
-namespace Consyzer.AnalyzerEngine.Tests.Helpers
+namespace Consyzer.AnalyzerEngine.Tests.Analyzers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class CommonAnalyzerHelperTest

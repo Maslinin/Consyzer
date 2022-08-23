@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using Consyzer.AnalyzerEngine.Helpers;
 using Consyzer.AnalyzerEngine.Analyzers;
 using Consyzer.AnalyzerEngine.Analyzers.Searchers;
-using Consyzer.AnalyzerEngine.CommonModels;
+using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer.Helpers
 {

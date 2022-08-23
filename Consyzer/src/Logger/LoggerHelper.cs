@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Consyzer.AnalyzerEngine.Analyzers;
 using Consyzer.AnalyzerEngine.Analyzers.Searchers;
 using Consyzer.AnalyzerEngine.Analyzers.SyntaxModels;
-using Consyzer.AnalyzerEngine.CommonModels;
-using Consyzer.AnalyzerEngine.Helpers;
 using Log = Consyzer.Logger.NLogger;
+using Consyzer.Helpers;
+using Consyzer.AnalyzerEngine.IO;
 
-namespace Consyzer.Helpers
+namespace Consyzer.Logger
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class LoggerHelper
@@ -49,7 +49,7 @@ namespace Consyzer.Helpers
                 Log.Info($"\t[{item.i}]File '{item.File.BinaryInfo.BaseFileInfo.FullName}': ");
                 if (importedMethods.Any())
                 {
-                    LoggerHelper.LoggingImportedMethodsInfo(importedMethods);
+                    LoggingImportedMethodsInfo(importedMethods);
                 }
                 else
                 {

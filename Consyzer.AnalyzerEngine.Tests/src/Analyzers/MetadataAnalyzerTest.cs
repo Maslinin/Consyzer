@@ -1,7 +1,7 @@
 using Xunit;
 using System.Reflection;
 using Consyzer.AnalyzerEngine.Analyzers;
-using Consyzer.AnalyzerEngine.CommonModels;
+using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer.AnalyzerEngine.Tests.Analyzers
 {

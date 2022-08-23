@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using Consyzer.AnalyzerEngine.Helpers;
 using Consyzer.AnalyzerEngine.Analyzers.SyntaxModels;
+using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
 {
@@ -20,7 +20,6 @@ namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
         /// <param name="pathToBinary"></param>
         /// <param name="analysisFolder"></param>
         /// <param name="defaultBinaryExtension"></param>
-        /// <returns>Binary existence status code.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static BinarySearcherStatusCodes CheckBinaryExist(string pathToBinary, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
@@ -63,7 +62,6 @@ namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
         /// <param name="importedMethod"></param>
         /// <param name="analysisFolder"></param>
         /// <param name="defaultBinaryExtension"></param>
-        /// <returns>Binary existence status code.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public static BinarySearcherStatusCodes CheckBinaryExist(ImportedMethodInfo importedMethod, string analysisFolder, string defaultBinaryExtension = ".dll")
@@ -87,7 +85,6 @@ namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
         /// </summary>
         /// <param name="binaryName"></param>
         /// <param name="defaultBinaryExtension"></param>
-        /// <returns>Binary existence status code.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static BinarySearcherStatusCodes CheckBinaryExistInSystemFolder(string binaryName, string defaultBinaryExtension = ".dll")
         {
@@ -136,7 +133,6 @@ namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
         /// <param name="pathToBinary"></param>
         /// <param name="analysisFolder"></param>
         /// <param name="defaultBinaryExtension"></param>
-        /// <returns>Binary existence status code.</returns>
         public static BinarySearcherStatusCodes CheckBinaryExistInSourceAndSystemFolder(string pathToBinary, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -158,7 +154,6 @@ namespace Consyzer.AnalyzerEngine.Analyzers.Searchers
         /// <param name="importedMethod"></param>
         /// <param name="analysisFolder"></param>
         /// <param name="defaultBinaryExtension"></param>
-        /// <returns>Binary existence status code.</returns>
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public static BinarySearcherStatusCodes CheckBinaryExistInSourceAndSystemFolder(ImportedMethodInfo importedMethod, string analysisFolder, string defaultBinaryExtension = ".dll")
         {

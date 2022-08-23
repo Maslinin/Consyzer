@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.AnalyzerEngine", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.AnalyzerEngine.Tests", "Consyzer.AnalyzerEngine.Tests\Consyzer.AnalyzerEngine.Tests.csproj", "{642E42AF-A2B2-4229-A93A-3CE26079B1D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consyzer.Tests", "Consyzer.Tests\Consyzer.Tests.csproj", "{897A0A9B-2526-41C1-AF1A-6F7AD92596A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.Tests", "Consyzer.Tests\Consyzer.Tests.csproj", "{897A0A9B-2526-41C1-AF1A-6F7AD92596A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

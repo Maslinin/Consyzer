@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using Consyzer.AnalyzerEngine.CommonModels;
 using Consyzer.AnalyzerEngine.Decoders.Providers;
 using Consyzer.AnalyzerEngine.Decoders.SyntaxModels;
+using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer.AnalyzerEngine.Decoders
 {

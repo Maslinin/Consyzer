@@ -2,9 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using Consyzer.AnalyzerEngine.CommonModels;
 
-namespace Consyzer.AnalyzerEngine.Helpers
+namespace Consyzer.AnalyzerEngine.IO
 {
     /// <summary>
     /// [Static] Contains auxiliary methods for interacting with the IO system.
@@ -16,7 +15,6 @@ namespace Consyzer.AnalyzerEngine.Helpers
         /// </summary>
         /// <param name="pathToBinaries"></param>
         /// <param name="binaryExtensions"></param>
-        /// <returns><b>BinaryFileInfo</b> Instance Collection</returns>
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="UnauthorizedAccessException"></exception>
         public static IEnumerable<BinaryFileInfo> GetBinaryFilesInfoFrom(string pathToBinaries, IEnumerable<string> binaryExtensions = null)
@@ -46,7 +44,6 @@ namespace Consyzer.AnalyzerEngine.Helpers
         /// Returns a Boolean value indicating whether the path is absolute or relative.
         /// </summary>
         /// <param name="path"></param>
-        /// <returns><b>true</b> if the path is absolute or relative; otherwise <b>false</b>.</returns>
         public static bool IsAbsolutePath(string path)
         {
             return Path.IsPathRooted(path);

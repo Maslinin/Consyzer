@@ -1,6 +1,7 @@
 using Consyzer.Helpers;
-using Consyzer.AnalyzerEngine.Helpers;
 using Log = Consyzer.Logger.NLogger;
+using Consyzer.Logger;
+using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer
 {

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Consyzer.AnalyzerEngine.Decoders;
 using Consyzer.AnalyzerEngine.Analyzers;
-using Consyzer.AnalyzerEngine.CommonModels;
+using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer.AnalyzerEngine.Tests.Decoders
 {

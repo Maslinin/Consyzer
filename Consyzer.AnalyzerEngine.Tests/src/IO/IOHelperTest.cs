@@ -1,9 +1,9 @@
 ﻿using Xunit;
 using System;
 using System.Reflection;
-using Consyzer.AnalyzerEngine.Helpers;
+using Consyzer.AnalyzerEngine.IO;
 
-namespace Consyzer.AnalyzerEngine.Tests.Helpers
+namespace Consyzer.AnalyzerEngine.Tests.IO
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class IOHelperTest

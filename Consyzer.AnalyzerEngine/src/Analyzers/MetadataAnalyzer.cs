@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using Consyzer.AnalyzerEngine.Decoders;
 using Consyzer.AnalyzerEngine.Analyzers.SyntaxModels;
-using Consyzer.AnalyzerEngine.CommonModels;
+using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer.AnalyzerEngine.Analyzers
 {
