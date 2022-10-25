@@ -49,7 +49,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
         public IEnumerable<SignatureInfo> GetDecodedSignatures(TypeDefinition typeDef)
         {
             var methodsDefsHandles = typeDef.GetMethods();
-            var methodsDefs = methodsDefsHandles.Select(m => this._mdReader.GetMethodDefinition(m));
+            var methodsDefs = methodsDefsHandles.Select(x => this._mdReader.GetMethodDefinition(x));
 
             return this.GetDecodedSignatures(methodsDefs);
         }

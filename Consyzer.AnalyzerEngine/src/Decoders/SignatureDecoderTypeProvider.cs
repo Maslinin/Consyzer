@@ -76,10 +76,10 @@ namespace Consyzer.AnalyzerEngine.Decoders
             else
             {
                 var parameterHandle = _methodDef.GetParameters().ElementAtOrDefault(_parameterIteration);
-                var parameter = _mdReader.GetParameter(parameterHandle);
+                var parameter = this._mdReader.GetParameter(parameterHandle);
 
                 attributes = parameter.Attributes.ToString() ?? BaseSignatureParameterType.AttributesDefaultValue;
-                name = _mdReader.GetString(parameter.Name) ?? BaseSignatureParameterType.NameDefaultValue;
+                name = this._mdReader.GetString(parameter.Name) ?? BaseSignatureParameterType.NameDefaultValue;
 
                 ++_parameterIteration;
             }

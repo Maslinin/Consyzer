@@ -62,7 +62,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// <param name="fileInfos"></param>
         public static IEnumerable<FileInfo> GetMetadataAssemblyFiles(IEnumerable<FileInfo> fileInfos)
         {
-            return fileInfos.Where(f => IsMetadataAssemblyFile(f));
+            return fileInfos.Where(x => IsMetadataAssemblyFile(x));
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// <param name="fileInfos"></param>
         public static IEnumerable<FileInfo> GetNotMetadataAssemblyFiles(IEnumerable<FileInfo> fileInfos)
         {
-            return fileInfos.Where(f => !IsMetadataAssemblyFile(f));
+            return fileInfos.Where(x => !IsMetadataAssemblyFile(x));
         }
 
         /// <summary>

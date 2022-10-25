@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Consyzer.Helpers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    internal class IOHelper
+    internal static class IOHelper
     {
         public static IEnumerable<FileInfo> GetBinaryFilesInfoFrom(string pathToFiles, IEnumerable<string> binaryExtensions = null)
         {

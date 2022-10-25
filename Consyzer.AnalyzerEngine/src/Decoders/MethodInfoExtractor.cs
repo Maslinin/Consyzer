@@ -40,10 +40,10 @@ namespace Consyzer.AnalyzerEngine.Decoders
             string methodAttributes = this.GetMethodAttributes(methodDef);
             var separatedMethodAttributes = methodAttributes.Split(',').Select(x => x.Trim());
 
-            string[] accessibilityModifiers = Enum.GetNames(typeof(CILAccessibilityModifiers));
+            string[] accessibilityModifiers = Enum.GetNames(typeof(MsilAccessibilityModifiers));
             var modifierAsString = separatedMethodAttributes.Intersect(accessibilityModifiers).First();
 
-            var parsedModifier = Enum.Parse(typeof(CILAccessibilityModifiers), modifierAsString);
+            var parsedModifier = Enum.Parse(typeof(MsilAccessibilityModifiers), modifierAsString);
             return (AccessibilityModifiers)(int)parsedModifier;
         }
 

@@ -35,7 +35,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
             foreach (var typeDef in GetTypesDefinitions())
             {
                 var methodDefsHandles = typeDef.GetMethods();
-                var defs = methodDefsHandles.Select(h => _mdReader.GetMethodDefinition(h));
+                var defs = methodDefsHandles.Select(h => this._mdReader.GetMethodDefinition(h));
 
                 methodsDefs.AddRange(defs);
             }
@@ -45,8 +45,8 @@ namespace Consyzer.AnalyzerEngine.Analyzers
 
         public IEnumerable<TypeDefinition> GetTypesDefinitions()
         {
-            var typeDefsHandles = _mdReader.TypeDefinitions;
-            var typesDefs = typeDefsHandles.Select(h => _mdReader.GetTypeDefinition(h));
+            var typeDefsHandles = this._mdReader.TypeDefinitions;
+            var typesDefs = typeDefsHandles.Select(h => this._mdReader.GetTypeDefinition(h));
 
             return typesDefs;
         }

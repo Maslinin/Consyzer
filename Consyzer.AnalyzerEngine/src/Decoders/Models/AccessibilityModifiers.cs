@@ -2,7 +2,7 @@
 
 namespace Consyzer.AnalyzerEngine.Decoders.Models
 {
-    internal enum CILAccessibilityModifiers
+    internal enum MsilAccessibilityModifiers
     {
         Private = MethodAttributes.Private,
         Public = MethodAttributes.Public,
@@ -17,11 +17,11 @@ namespace Consyzer.AnalyzerEngine.Decoders.Models
     /// </summary>
     public enum AccessibilityModifiers
     {
-        Private = CILAccessibilityModifiers.Private,
-        Public = CILAccessibilityModifiers.Public,
-        Internal = CILAccessibilityModifiers.Assembly,
-        Protected = CILAccessibilityModifiers.Family,
-        ProtectedInternal = CILAccessibilityModifiers.FamORAssem,
-        PrivateProtected = CILAccessibilityModifiers.FamANDAssem
+        Private = MsilAccessibilityModifiers.Private,
+        Public = MsilAccessibilityModifiers.Public,
+        Internal = MsilAccessibilityModifiers.Assembly,
+        Protected = MsilAccessibilityModifiers.Family,
+        ProtectedInternal = MsilAccessibilityModifiers.FamORAssem,
+        PrivateProtected = MsilAccessibilityModifiers.FamANDAssem
     }
 }

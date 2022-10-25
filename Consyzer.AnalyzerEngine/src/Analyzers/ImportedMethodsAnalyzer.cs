@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using Consyzer.AnalyzerEngine.Decoders;
 using Consyzer.AnalyzerEngine.Analyzers.Models;
+using System.Linq;
 
 namespace Consyzer.AnalyzerEngine.Analyzers
 {
@@ -18,15 +19,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// </summary>
         public IEnumerable<ImportedMethodInfo> GetImportedMethodsInfo()
         {
-            var dllImports = new List<ImportedMethodInfo>();
-
-            foreach (var methodDef in this.GetImportedMethodsDefinitions())
-            {
-                var importedMethodInfo = this.GetImportedMethodInfo(methodDef);
-                dllImports.Add(importedMethodInfo);
-            }
-
-            return dllImports;
+            return this.GetImportedMethodsDefinitions().Select(x => this.GetImportedMethodInfo(x));
         }
 
         /// <summary>
@@ -34,17 +27,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// </summary>
         public IEnumerable<MethodDefinition> GetImportedMethodsDefinitions()
         {
-            var importedMethods = new List<MethodDefinition>();
-
-            foreach (var methodDef in base.GetMethodsDefinitions())
-            {
-                if (this.IsImportedMethod(methodDef))
-                {
-                    importedMethods.Add(methodDef);
-                }
-            }
-
-            return importedMethods;
+            return base.GetMethodsDefinitions().Where(x => this.IsImportedMethod(x));
         }
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
