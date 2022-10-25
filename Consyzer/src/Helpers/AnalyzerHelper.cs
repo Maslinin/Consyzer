@@ -1,20 +1,15 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using Consyzer.Searchers;
 using Consyzer.AnalyzerEngine.Analyzers;
-using Consyzer.AnalyzerEngine.Analyzers.Searchers;
-using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer.Helpers
 {
-    public static class AnalyzerHelper
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    internal static class AnalyzerHelper
     {
-        public static IEnumerable<MetadataAnalyzer> GetMetadataAnalyzersFromMetadataAssemblyFiles(IEnumerable<BinaryFileInfo> binaryFiles)
-        {
-            return binaryFiles.GetMetadataAssemblyFiles().Select(f => new MetadataAnalyzer(f.BaseFileInfo.FullName));
-        }
-
-        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
+        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<ImportedMethodsAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
         {
             var importedMethods = new List<string>();
 
@@ -28,17 +23,17 @@ namespace Consyzer.Helpers
 
         public static IEnumerable<string> GetExistsBinaries(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
-            return binaryLocations.Where(b => !(BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists));
+            return binaryLocations.Where(b => !(new FileSearcher(analysisFolder).GetFileLocation(b, defaultBinaryExtension) is FileExistStatusCodes.FileNotExists));
         }
 
         public static IEnumerable<string> GetNotExistsBinaries(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
-            return binaryLocations.Where(b => (BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension) is BinarySearcherStatusCodes.BinaryNotExists));
+            return binaryLocations.Where(b => (new FileSearcher(analysisFolder).GetFileLocation(b, defaultBinaryExtension) is FileExistStatusCodes.FileNotExists));
         }
 
-        public static BinarySearcherStatusCodes GetTopBinarySearcherStatusAmongBinaries(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
+        public static FileExistStatusCodes GetTopBinarySearcherStatusAmongBinaries(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
-            return binaryLocations.Max(b => BinarySearcher.CheckBinaryExistInSourceAndSystemFolder(b, analysisFolder, defaultBinaryExtension));
+            return binaryLocations.Max(b => new FileSearcher(analysisFolder).GetFileLocation(b, defaultBinaryExtension));
         }
     }
 }

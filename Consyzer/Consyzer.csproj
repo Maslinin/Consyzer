@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Consyzer.AnalyzerEngine\Consyzer.AnalyzerEngine.csproj" />
+    <ProjectReference Include="..\Consyzer.Cryptography\Consyzer.Cryptography.csproj" />
   </ItemGroup>
 
 </Project>

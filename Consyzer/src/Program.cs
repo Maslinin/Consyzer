@@ -1,33 +1,33 @@
+using System;
+using Consyzer.Logging;
 using Consyzer.Helpers;
-using Log = Consyzer.Logger.NLogger;
-using Consyzer.Logger;
-using Consyzer.AnalyzerEngine.IO;
+using Consyzer.Contracts;
+using Log = Consyzer.Logging.NLogger;
 
 namespace Consyzer
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     static class Program
     {
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private static int Main()
         {
             try
             {
-                string analysisFolder = OtherHelper.GetDirectoryWithBinariesFromCommandLineArgs();
+                string analysisFolder = CmdArgsReceiver.GetDirectoryWithFilesForAnalysisFromCommandLineArgs();
                 LoggerHelper.LoggingPathToBinariesForAnalysis(analysisFolder);
-
-                var filesExtensions = OtherHelper.GetBinaryFilesExtensionsFromCommandLineArgs();
+                var filesExtensions = CmdArgsReceiver.GetFilesExtensionsFromCommandLineArgs();
                 LoggerHelper.LoggingFilesExtensionsForAnalysis(filesExtensions);
 
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions);
                 if (!LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles))
-                    return (int)WorkStatusCodes.SuccessExit;
+                    return (int)OperationStatusCodes.SuccessExit;
 
                 Log.Info("The following binary files with the specified extensions were found:");
                 LoggerHelper.LoggingBaseFileInfo(binaryFiles);
                 if (!LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles))
-                    return (int)WorkStatusCodes.SuccessExit;
+                    return (int)OperationStatusCodes.SuccessExit;
 
-                var metadataAnalyzers = AnalyzerHelper.GetMetadataAnalyzersFromMetadataAssemblyFiles(binaryFiles);
+                var metadataAnalyzers = binaryFiles.ToImportedMethodsAnalyzersFromMetadataAssemblyFiles();
                 Log.Info("The following assembly binaries containing metadata were found:");
                 LoggerHelper.LoggingBaseAndHashFileInfo(metadataAnalyzers);
 
@@ -36,7 +36,7 @@ namespace Consyzer
 
                 var binaryLocations = AnalyzerHelper.GetImportedMethodsLocations(metadataAnalyzers);
                 if (!LoggerCheckerHelper.CheckAndLoggingAnyBinariesExist(binaryLocations))
-                    return (int)WorkStatusCodes.SuccessExit;
+                    return (int)OperationStatusCodes.SuccessExit;
 
                 Log.Info("The presence of binary files in the received locations:");
                 LoggerHelper.LoggingBinariesExistStatus(binaryLocations, analysisFolder);
@@ -44,10 +44,10 @@ namespace Consyzer
 
                 return (int)AnalyzerHelper.GetTopBinarySearcherStatusAmongBinaries(binaryLocations, analysisFolder);
             }
-            catch(System.Exception e)
+            catch(Exception e)
             {
                 Log.Error(e.ToString());
-                return (int)WorkStatusCodes.UnexpectedBehavior;
+                return (int)OperationStatusCodes.UnexpectedBehavior;
             }
         }
     }

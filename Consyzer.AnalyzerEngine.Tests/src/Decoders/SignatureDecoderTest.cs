@@ -1,64 +1,71 @@
 ﻿using Xunit;
-using System.Linq;
-using System.Reflection;
+using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Consyzer.AnalyzerEngine.Decoders;
-using Consyzer.AnalyzerEngine.Analyzers;
-using Consyzer.AnalyzerEngine.IO;
 
 namespace Consyzer.AnalyzerEngine.Tests.Decoders
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureDecoderTest
     {
+        public TypeDefinition TestTypeDefinition => TestHelper.GetTypeDefinition();
+        public IEnumerable<TypeDefinition> AllTestTypesDefinitions => TestHelper.GetAllTypesDefinitions();
+        public MethodDefinition TestMethodDefinition => TestHelper.GetFirstMethodDefinition();
+        public IEnumerable<MethodDefinition> AllTestMethodsDefinitions => TestHelper.GetAllMethodsDefinitions();
 
-        [Fact(DisplayName = "Instance Creation")]
-        public void InstanceCreation()
+        [Fact]
+        public void InstanceCreation_ShouldNotThrowException()
         {
-            string location = Assembly.GetExecutingAssembly().Location;
-            var exceptionOverloadOne = Record.Exception(() => new SignatureDecoder(location));
-            var exceptionOverloadTwo = Record.Exception(() => new SignatureDecoder(new BinaryFileInfo(location)));
-            Assert.Null(exceptionOverloadOne);
-            Assert.Null(exceptionOverloadTwo);
+            var exception = Record.Exception(() => new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo));
+
+            Assert.Null(exception);
         }
 
-        [Fact(DisplayName = "Signature Decoding Check")]
-        public void GetDecodedSignature()
+        [Fact]
+        public void GetDecodedSignatures_ReceiveTypeDefinitionInstancesCollection_ShouldReturnNotNullCollection()
         {
-            string location = Assembly.GetExecutingAssembly().Location;
-            var mdAnalyzer = new MetadataAnalyzer(location);
-            var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
-            var methodHandle = mdAnalyzer.GetMethodsDefinitionsHandles().First();
+            var decoder = new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
 
-            var signatureOverloadOne = decoder.GetDecodedSignature(methodHandle);
-            var signatureOverloadTwo = decoder.GetDecodedSignature(mdAnalyzer.MdReader.GetMethodDefinition(methodHandle));
+            var decodedSignatures = decoder.GetDecodedSignatures(this.AllTestTypesDefinitions);
 
-            Assert.NotNull(signatureOverloadOne);
-            Assert.NotNull(signatureOverloadTwo);
+            Assert.NotNull(decodedSignatures);
         }
 
-        [Fact(DisplayName = "Signatures Decoding Check")]
-        public void GetDecodedSignatures()
+        [Fact]
+        public void GetDecodedSignatures_ReceiveTypeDefinitionInstance_ShouldReturnNotNullCollection()
         {
-            string location = Assembly.GetExecutingAssembly().Location;
-            var mdAnalyzer = new MetadataAnalyzer(location);
-            var decoder = new SignatureDecoder(mdAnalyzer.MdReader);
-            var typesHandles = mdAnalyzer.GetTypesDefinitionsHandles();
-            var methodHandles = typesHandles.Select(h => mdAnalyzer.MdReader.GetTypeDefinition(h)).First().GetMethods();
+            var decoder = new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
 
-            var signaturesOverloadOne = decoder.GetDecodedSignatures(typesHandles);
-            var signaturesOverloadTwo = decoder.GetDecodedSignatures(typesHandles.First());
-            var signaturesOverloadThree = decoder.GetDecodedSignatures(mdAnalyzer.MdReader.GetTypeDefinition(typesHandles.First()));
-            var signaturesOverloadFour = decoder.GetDecodedSignatures(typesHandles.Select(h => mdAnalyzer.MdReader.GetTypeDefinition(h)));
-            var signaturesOverloadFive = decoder.GetDecodedSignatures(methodHandles);
-            var signaturesOverloadSix = decoder.GetDecodedSignatures(methodHandles.Select(h => mdAnalyzer.MdReader.GetMethodDefinition(h)));
+            var decodedSignatures = decoder.GetDecodedSignatures(this.TestTypeDefinition);
 
-            Assert.NotNull(signaturesOverloadOne);
-            Assert.NotNull(signaturesOverloadTwo);
-            Assert.NotNull(signaturesOverloadThree);
-            Assert.NotNull(signaturesOverloadFour);
-            Assert.NotNull(signaturesOverloadFive);
-            Assert.NotNull(signaturesOverloadSix);
+            Assert.NotNull(decodedSignatures);
         }
 
+        [Fact]
+        public void GetDecodedSignatures_ReceiveMethodDefinitionInstancesCollection_ShouldReturnNotNullCollection()
+        {
+            var decoder = new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
+
+            var decodedSignatures = decoder.GetDecodedSignatures(this.AllTestMethodsDefinitions);
+
+            Assert.NotNull(decodedSignatures);
+        }
+
+        [Fact]
+        public void GetDecodedSignature_ReceiveMethodDefinitionInstance_ShouldReturnInstanceWithNotNullAndNotEmptyProperties()
+        {
+            var decoder = new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
+
+            var decodedSignature = decoder.GetDecodedSignature(this.TestMethodDefinition);
+
+            Assert.NotNull(decodedSignature);
+            Assert.NotEmpty(decodedSignature.Namespace);
+            Assert.NotEmpty(decodedSignature.ClassName);
+            Assert.NotEmpty(decodedSignature.MethodName);
+            Assert.NotNull(decodedSignature.ReturnType);
+            Assert.NotNull(decodedSignature.MethodArguments);
+            Assert.NotNull(decodedSignature.MethodAttributes);
+            Assert.NotNull(decodedSignature.MethodImplAttributes);
+        }
     }
 }
