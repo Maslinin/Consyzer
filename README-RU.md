@@ -72,58 +72,20 @@ C:\Consyzer.exe C:\AnalysisFolder ".exe, .dll"
 ```
 
 ## Сканирование нескольких проектов
-Вы можете использовать приведенный ниже сценарий *PowerShell* для сканирования выходных артефактов с помощью *Consyzer* для нескольких проектов сразу. 
-Например, это может пригодиться при сканировании артефактов решения в *конвейере CI*.
+Вы можете использовать сценарий *PowerShell*, находящийся по пути ```Consyzer\DevOps\Runner.ps1``` для сканирования выходных артефактов решения с помощью *Consyzer*. 
+Таким образом, данный сценарий позволяет провести сканирование артефактов сразу нескольких проектов.
+Это может быть полезно при сканировании артефактов решения в *конвейере CI/CD*.
 
-```
-$pathToConsyzer = 'C:\Consyzer.exe'; $fileExtensionsToAnalysis = '".exe, .dll"'; $solutionToAnalysis = 'C:\SolutionToAnalysis'; $buildConfiguration = 'Release'
+Сценарий сканирования принимает аргументы также, как если бы Вы запускали Consyzer из командной строки. 
+Для того, что бы запустить сценарий сканирования, используйте следующую команду:
 
-cd $solutionToAnalysis
+```Runner.ps1 C:\Consyzer.exe C:\SolutionForAnalysis ".exe, .dll" Release```, гдe         
+1) Runner.ps1 - имя сценария Powershell (или путь к нему),          
+2) C:\Consyzer.exe - путь к утилите Consyzer,       
+3) C:\SolutionForAnalysis - путь к сканируемому решению,        
+4) ".exe, .dll" - расширения бинарных файлов, подлежащих сканированию,        
+5) Release - конфигурация сборки решения.       
 
-#Артефакты проекта практически всегда содержат DLL; поэтому, во избежание дублирования найденных путей с артефактами, мы ищем только те пути, которые содержат DLL.
-#Если Вы твердо уверены в том, что Ваше приложение не содержит DLL, замените в следующей строке "*.dll" на "*.exe".
-$paths = $( Get-ChildItem -Path . -Include "*.dll"  -Recurse -Force )
 
-#Поиск артефактов для сканирования
-$pathsToAnalysisFiles = New-Object System.Collections.Generic.List[System.IO.FileInfo]
-foreach($file in $paths) {
-  if($file -match "bin" -and "$buildConfiguration" -and $file -notmatch "runtimes") {
-	$pathsToAnalysisFiles.Add($file)
-  }
-}
 
-if($pathsToAnalysisFiles.length -eq 0) {
-  Write-Host "Бинарные файлы для анализа не обнаружены."
-  Exit 0
-}
 
-#Получение выходных директорий с артефактами проектов для анализа
-$AnalysisFolders = New-Object System.Collections.Generic.List[System.String]
-foreach($file in $pathsToAnalysisFiles) {
-  $folder = $($file.DirectoryName)
-  $AnalysisFolders.Add($folder)
-}
-$AnalysisFolders = $AnalysisFolders | Select-Object -Unique
-
-#Сканирование проектов
-$exitCode = -1
-$AnalysisStatuses = New-Object System.Collections.Generic.List[System.String]
-foreach($folder in $AnalysisFolders) {
-  & $pathToConsyzer $folder $fileExtensionsToAnalysis
-  Write-Host "Consyzer run exit code: " $LastExitCode `n
-
-  if ( $LastExitCode -ge $exitcode ) {
-	  $exitcode = $LastExitCode
-  }
-  
-  #Опредение статуса сканирования
-  $Event = "Успешно:($folder): Проблем консистентности решения не обнаружено."
-  if ($LastExitCode -eq '-1') { $Event = "Ошибка|$folder-> Consyzer не смог проанализировать файлы, так как произошла внутренняя ошибка. Убедитесь, что аргументы были переданы правильно." }
-  if ($LastExitCode -eq '1' ) { $Event = "Предупреждение|$folder->  Одно или несколько используемых в проекте DLL компонентов находится на абсолютном или относительном пути." }
-  if ($LastExitCode -eq '2' ) { $Event = "Ошибка|$folder->  Одно или несколько используемых в проекте DLL компонентов не обнаружено на ожидаемом пути." }
-  $AnalysisStatuses.Add($Event)
-}
-
-foreach($status in $AnalysisStatuses) { Write-Host $status }
-Exit $exitCode
-```

@@ -1,9 +1,9 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using Consyzer.AnalyzerEngine.Decoders;
 using Consyzer.AnalyzerEngine.Analyzers.Models;
-using System.Linq;
 
 namespace Consyzer.AnalyzerEngine.Analyzers
 {
