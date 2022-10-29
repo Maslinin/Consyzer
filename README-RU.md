@@ -37,24 +37,6 @@ Consyzer был разработан специально для анализа 
 
 > Обратите внимание, что только последний из кодов возврата означает о нарушении консистентности приложения.
 
-# Зависимости проектов
-1. **Consyzer**
-   - Consyzer.AnalyzerEngine *[Project]*
-     - System.Reflection.Metadata *[NuGet]*
-2. **Consyzer.Cryptography** 
-3. **Consyzer.Cryptography.Tests**
-   - Consyzer.Cryptography *[Project]*
-   - Microsoft.NET.Test.Sdk *[NuGet]*
-   - xunit *[NuGet]*
-   - xunit.runner.visualstudio *[NuGet]*
-   - coverlet.collector *[NuGet]*
-4. **Consyzer.AnalyzerEngine.Tests**
-   - Consyzer.AnalyzerEngine *[Project]*
-   - Microsoft.NET.Test.Sdk *[NuGet]*
-   - xunit *[NuGet]*
-   - xunit.runner.visualstudio *[NuGet]*
-   - coverlet.collector *[NuGet]*
-
 # Запуск    
 В параметры командной строки утилите передается два параметра: 
 1. Директория, содержащая CIL файлы для анализа;
@@ -80,11 +62,11 @@ C:\Consyzer.exe C:\AnalysisFolder ".exe, .dll"
 Для того, что бы запустить сценарий сканирования, используйте следующую команду:
 
 ```Runner.ps1 C:\Consyzer.exe C:\SolutionForAnalysis ".exe, .dll" Release```, гдe         
-1) Runner.ps1 - имя сценария Powershell (или путь к нему),          
-2) C:\Consyzer.exe - путь к утилите Consyzer,       
-3) C:\SolutionForAnalysis - путь к сканируемому решению,        
-4) ".exe, .dll" - расширения бинарных файлов, подлежащих сканированию,        
-5) Release - конфигурация сборки решения.       
+1) *Runner.ps1* - имя сценария Powershell (или путь к нему),          
+2) *C:\Consyzer.exe* - путь к утилите Consyzer,       
+3) *C:\SolutionForAnalysis* - путь к сканируемому решению,        
+4) *".exe, .dll"* - расширения бинарных файлов, подлежащих сканированию,        
+5) *Release* - конфигурация сборки решения.       
 
 
 
