@@ -27,11 +27,11 @@ It is to prevent such incidents that the Consyzer was developed.
 4. *Consyzer* returns a specific analysis code to the operating system, which allows you to respond individually to each of the analysis incidents.
 
 ## What information does the Consyzer log about the imported function?
-> 0 - all the DLL files used by the application are located in the analyzed directory along with the application artifacts;
-> 1 - one or more DLL used in the CIL module of the application is on an absolute path;
-> 2 - one or more DLL used in the CIL module of the application is on a relative path;
-> 3 - one or more DLL used in the CIL module of the application is located in the system folder;
-> 4 - one or more DLLs used in the CIL module of the application are missing in the path specified in the module metadata.
+> 0 - all the DLL files used by the application are located in the analyzed directory along with the application artifacts;           
+> 1 - one or more DLL used in the CIL module of the application is on an absolute path;         
+> 2 - one or more DLL used in the CIL module of the application is on a relative path;        
+> 3 - one or more DLL used in the CIL module of the application is located in the system folder;         
+> 4 - one or more DLLs used in the CIL module of the application are missing in the path specified in the module metadata.          
 
 > Please note that only the last of the return codes indicates a violation of the consistency of the application.
 
