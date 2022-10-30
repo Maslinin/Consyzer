@@ -50,7 +50,7 @@ Example of running *Consyzer* from the CLI:
 C:\Consyzer.exe C:\folderToBeAnalyzed ".exe, .dll"
 ```
 
-## Scan multiple projects
+## Analysis of multiple projects
 You can use the *PowerShell* script located on the path ```Consyzer\DevOps\Runner.ps1``` to analyze the output artifacts of the entire solution using *Consyzer*.
 In other words, this script allows you to analyze the artifacts of all projects in the solution.
 For example, it can be useful in the *CI/CD pipeline*.
