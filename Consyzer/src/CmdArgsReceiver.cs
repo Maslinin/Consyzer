@@ -8,7 +8,6 @@ namespace Consyzer
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class CmdArgsReceiver
     {
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public static string GetDirectoryWithFilesForAnalysisFromCommandLineArgs()
         {
             string pathToAnalyze = Environment.GetCommandLineArgs().ElementAtOrDefault(1);
@@ -25,7 +24,6 @@ namespace Consyzer
             return pathToAnalyze;
         }
 
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         public static IEnumerable<string> GetFilesExtensionsFromCommandLineArgs()
         {
             string binaryExtensions = Environment.GetCommandLineArgs().ElementAtOrDefault(2);

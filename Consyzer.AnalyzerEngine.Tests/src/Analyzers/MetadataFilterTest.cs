@@ -5,7 +5,7 @@ using Consyzer.AnalyzerEngine.Analyzers;
 namespace Consyzer.AnalyzerEngine.Tests.Analyzers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public sealed class MetadataCheckerTest
+    public sealed class MetadataFilterTest
     {
         [Fact]
         public void GetMetadataFiles_ShouldReturnNotEmptyCollection()
@@ -13,7 +13,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
             var fileInfo = TestConstants.MetadataAssemblyFileInfo;
             var fileInfoList = new FileInfo[] { fileInfo };
 
-            var metadataFiles = MetadataChecker.GetMetadataFiles(fileInfoList);
+            var metadataFiles = MetadataFilter.GetMetadataFiles(fileInfoList);
 
             Assert.NotEmpty(metadataFiles);
         }
@@ -24,7 +24,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
             var fileInfo = TestConstants.NotMetadataAssemblyFileInfo;
             var fileInfoList = new FileInfo[] { fileInfo };
 
-            var metadataFiles = MetadataChecker.GetNotMetadataFiles(fileInfoList);
+            var metadataFiles = MetadataFilter.GetNotMetadataFiles(fileInfoList);
 
             Assert.NotEmpty(metadataFiles);
         }
@@ -34,7 +34,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
         {
             var fileInfo = TestConstants.MetadataAssemblyFileInfo;
 
-            bool isMetadataFile = MetadataChecker.IsMetadataFile(fileInfo);
+            bool isMetadataFile = MetadataFilter.IsMetadataFile(fileInfo);
 
             Assert.True(isMetadataFile);
         }
@@ -44,7 +44,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
         {
             var fileInfo = TestConstants.NotMetadataAssemblyFileInfo;
 
-            bool isNotMetadataFile = MetadataChecker.IsMetadataFile(fileInfo);
+            bool isNotMetadataFile = MetadataFilter.IsMetadataFile(fileInfo);
 
             Assert.False(isNotMetadataFile);
         }
@@ -55,7 +55,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
             var fileInfo = TestConstants.MetadataAssemblyFileInfo;
             var fileInfoList = new FileInfo[] { fileInfo };
 
-            var metadataFiles = MetadataChecker.GetMetadataAssemblyFiles(fileInfoList);
+            var metadataFiles = MetadataFilter.GetMetadataAssemblyFiles(fileInfoList);
 
             Assert.NotEmpty(metadataFiles);
         }
@@ -66,7 +66,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
             var fileInfo = TestConstants.NotMetadataAssemblyFileInfo;
             var fileInfoList = new FileInfo[] { fileInfo };
 
-            var metadataFiles = MetadataChecker.GetNotMetadataAssemblyFiles(fileInfoList);
+            var metadataFiles = MetadataFilter.GetNotMetadataAssemblyFiles(fileInfoList);
 
             Assert.NotEmpty(metadataFiles);
         }
@@ -76,7 +76,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
         {
             var fileInfo = TestConstants.MetadataAssemblyFileInfo;
 
-            bool isMetadataFile = MetadataChecker.IsMetadataAssemblyFile(fileInfo);
+            bool isMetadataFile = MetadataFilter.IsMetadataAssemblyFile(fileInfo);
 
             Assert.True(isMetadataFile);
         }
@@ -86,7 +86,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
         {
             var fileInfo = TestConstants.NotMetadataAssemblyFileInfo;
 
-            bool isNotMetadataFile = MetadataChecker.IsMetadataAssemblyFile(fileInfo);
+            bool isNotMetadataFile = MetadataFilter.IsMetadataAssemblyFile(fileInfo);
 
             Assert.False(isNotMetadataFile);
         }

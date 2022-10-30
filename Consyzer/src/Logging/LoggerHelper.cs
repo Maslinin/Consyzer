@@ -98,7 +98,7 @@ namespace Consyzer.Logging
     {
         public static bool CheckAndLoggingFilesCorrect(IEnumerable<FileInfo> binaryFiles)
         {
-            var notMetadataFiles = MetadataChecker.GetNotMetadataFiles(binaryFiles);
+            var notMetadataFiles = MetadataFilter.GetNotMetadataFiles(binaryFiles);
 
             if (notMetadataFiles.Any())
             {
@@ -112,7 +112,7 @@ namespace Consyzer.Logging
                 }
             }
 
-            var notMetadataAssemblyFiles = MetadataChecker.GetNotMetadataAssemblyFiles(binaryFiles);
+            var notMetadataAssemblyFiles = MetadataFilter.GetNotMetadataAssemblyFiles(binaryFiles);
             var differentFiles = notMetadataFiles.Where(f => !notMetadataAssemblyFiles.Select(f => f.FullName).Contains(f.FullName));
             if (differentFiles.Any())
             {

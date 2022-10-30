@@ -17,7 +17,7 @@ namespace Consyzer.AnalyzerEngine.Exceptions
         public static void ThrowExceptionIfFileIsNotMetadataAssembly(FileInfo fileInfo)
         {
             ThrowExceptionIfFileDoesNotContainMetadata(fileInfo);
-            if (!MetadataChecker.IsMetadataAssemblyFile(fileInfo))
+            if (!MetadataFilter.IsMetadataAssemblyFile(fileInfo))
             {
                 throw new AssemblyFileNotSupportedException($"{fileInfo.FullName} is contains metadata, but is not an assembly.");
             }
@@ -25,7 +25,7 @@ namespace Consyzer.AnalyzerEngine.Exceptions
 
         public static void ThrowExceptionIfFileDoesNotContainMetadata(FileInfo fileInfo)
         {
-            if (!MetadataChecker.IsMetadataFile(fileInfo))
+            if (!MetadataFilter.IsMetadataFile(fileInfo))
             {
                 throw new MetadataFileNotSupportedException($"{fileInfo.FullName} is does not contain metadata.");
             }

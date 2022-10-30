@@ -10,12 +10,12 @@ namespace Consyzer.Contracts
     {
         public static IEnumerable<MetadataAnalyzer> ToMetadataAnalyzersFromMetadataAssemblyFiles(this IEnumerable<FileInfo> fileInfos)
         {
-            return MetadataChecker.GetMetadataAssemblyFiles(fileInfos).Select(f => new MetadataAnalyzer(f));
+            return MetadataFilter.GetMetadataAssemblyFiles(fileInfos).Select(f => new MetadataAnalyzer(f));
         }
 
         public static IEnumerable<ImportedMethodsAnalyzer> ToImportedMethodsAnalyzersFromMetadataAssemblyFiles(this IEnumerable<FileInfo> fileInfos)
         {
-            return MetadataChecker.GetMetadataAssemblyFiles(fileInfos).Select(f => new ImportedMethodsAnalyzer(f));
+            return MetadataFilter.GetMetadataAssemblyFiles(fileInfos).Select(f => new ImportedMethodsAnalyzer(f));
         }
     }
 }

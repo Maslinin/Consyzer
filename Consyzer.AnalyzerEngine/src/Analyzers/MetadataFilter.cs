@@ -11,7 +11,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
     /// <summary>
     /// [Static] Contains general methods for determining the presence of metadata in binary files.
     /// </summary>
-    public static class MetadataChecker
+    public static class MetadataFilter
     {
         /// <summary>
         /// Returns a <b>IEnumerable<FileInfo></b> collection consisting of entities representing metadata files.
