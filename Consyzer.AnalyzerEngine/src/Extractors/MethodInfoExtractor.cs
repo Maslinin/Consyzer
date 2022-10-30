@@ -67,7 +67,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
 
         public ISignatureParameterType GetMethodReturnType(MethodDefinition methodDef)
         {
-            var signatureProvider = new SignatureDecoderTypeProvider(this._mdReader, methodDef);
+            var signatureProvider = new SignatureExtractorTypeProvider(this._mdReader, methodDef);
             var signature = methodDef.DecodeSignature(signatureProvider, new object());
 
             return signature.ReturnType;
@@ -75,7 +75,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
 
         public IEnumerable<ISignatureParameterType> GetMethodArguments(MethodDefinition methodDef)
         {
-            var signatureProvider = new SignatureDecoderTypeProvider(this._mdReader, methodDef);
+            var signatureProvider = new SignatureExtractorTypeProvider(this._mdReader, methodDef);
             var signature = methodDef.DecodeSignature(signatureProvider, new object());
 
             return signature.ParameterTypes;

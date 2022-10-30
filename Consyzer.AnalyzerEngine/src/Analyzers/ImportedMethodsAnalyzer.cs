@@ -40,7 +40,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private ImportedMethodInfo GetImportedMethodInfo(MethodDefinition methodDef)
         {
-            var signatureDecoder = new SignatureDecoder(base._mdReader);
+            var signatureDecoder = new SignatureExtractor(base._mdReader);
             var signatureInfo = signatureDecoder.GetDecodedSignature(methodDef);
 
             var import = methodDef.GetImport();

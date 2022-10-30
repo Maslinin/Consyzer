@@ -6,7 +6,7 @@ using Consyzer.AnalyzerEngine.Decoders;
 namespace Consyzer.AnalyzerEngine.Tests.Decoders
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public sealed class SignatureDecoderTest
+    public sealed class SignatureExtractorTest
     {
         public TypeDefinition TestTypeDefinition => TestHelper.GetTypeDefinition();
         public IEnumerable<TypeDefinition> AllTestTypesDefinitions => TestHelper.GetAllTypesDefinitions();
@@ -16,7 +16,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders
         [Fact]
         public void InstanceCreation_ShouldNotThrowException()
         {
-            var exception = Record.Exception(() => new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo));
+            var exception = Record.Exception(() => new SignatureExtractor(TestConstants.MetadataAssemblyFileInfo));
 
             Assert.Null(exception);
         }
@@ -24,7 +24,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders
         [Fact]
         public void GetDecodedSignatures_ReceiveTypeDefinitionInstancesCollection_ShouldReturnNotNullCollection()
         {
-            var decoder = new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
+            var decoder = new SignatureExtractor(TestConstants.MetadataAssemblyFileInfo);
 
             var decodedSignatures = decoder.GetDecodedSignatures(this.AllTestTypesDefinitions);
 
@@ -34,7 +34,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders
         [Fact]
         public void GetDecodedSignatures_ReceiveTypeDefinitionInstance_ShouldReturnNotNullCollection()
         {
-            var decoder = new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
+            var decoder = new SignatureExtractor(TestConstants.MetadataAssemblyFileInfo);
 
             var decodedSignatures = decoder.GetDecodedSignatures(this.TestTypeDefinition);
 
@@ -44,7 +44,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders
         [Fact]
         public void GetDecodedSignatures_ReceiveMethodDefinitionInstancesCollection_ShouldReturnNotNullCollection()
         {
-            var decoder = new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
+            var decoder = new SignatureExtractor(TestConstants.MetadataAssemblyFileInfo);
 
             var decodedSignatures = decoder.GetDecodedSignatures(this.AllTestMethodsDefinitions);
 
@@ -54,7 +54,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders
         [Fact]
         public void GetDecodedSignature_ReceiveMethodDefinitionInstance_ShouldReturnInstanceWithNotNullAndNotEmptyProperties()
         {
-            var decoder = new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
+            var decoder = new SignatureExtractor(TestConstants.MetadataAssemblyFileInfo);
 
             var decodedSignature = decoder.GetDecodedSignature(this.TestMethodDefinition);
 

@@ -36,7 +36,7 @@ namespace Consyzer.Logging
         {
             foreach (var item in fileInfos.Select((File, Index) => (File, Index)))
             {
-                var hashInfo = new FileHashInfo(item.File.FileInfo);
+                var hashInfo = FileHashInfo.CalculateHash(item.File.FileInfo);
                 Log.Info($"\t[{item.Index}]File: '{item.File.FileInfo.Name}', Creation Time: '{item.File.FileInfo.CreationTime}', " +
                     $"SHA256 Hash Sum: '{hashInfo.SHA256Sum}'.");
             }

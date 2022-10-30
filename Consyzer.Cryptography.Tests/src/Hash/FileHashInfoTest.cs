@@ -11,7 +11,7 @@ namespace Consyzer.Cryptography.Hash.Tests
         {
             var fileInfo = TestConstants.MetadataAssemblyFileInfo;
 
-            var hashInfo = new FileHashInfo(fileInfo);
+            var hashInfo = FileHashInfo.CalculateHash(fileInfo);
 
             Assert.NotEmpty(hashInfo.MD5Sum);
             Assert.NotEmpty(hashInfo.SHA256Sum);

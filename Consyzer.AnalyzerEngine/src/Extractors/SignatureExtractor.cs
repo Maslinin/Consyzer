@@ -11,11 +11,11 @@ namespace Consyzer.AnalyzerEngine.Decoders
     /// <summary>
     /// Contains tools for decoding a method signature.
     /// </summary>
-    public class SignatureDecoder : ISignatureDecoder
+    public class SignatureExtractor : ISignatureExtractor
     {
         private readonly MetadataReader _mdReader;
 
-        public SignatureDecoder(FileInfo fileInfo)
+        public SignatureExtractor(FileInfo fileInfo)
         {
             ExceptionThrower.ThrowExceptionIfFileDoesNotExists(fileInfo);
             ExceptionThrower.ThrowExceptionIfFileIsNotMetadataAssembly(fileInfo);
@@ -27,7 +27,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
         }
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        internal SignatureDecoder(MetadataReader mdReader)
+        internal SignatureExtractor(MetadataReader mdReader)
         {
             this._mdReader = mdReader;
         }

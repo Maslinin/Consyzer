@@ -7,7 +7,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders.Models
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureInfoTest
     {
-        public SignatureDecoder Decoder => new SignatureDecoder(TestConstants.MetadataAssemblyFileInfo);
+        public SignatureExtractor Decoder => new SignatureExtractor(TestConstants.MetadataAssemblyFileInfo);
 
         [Fact]
         public void GetMethodLocation_ShouldReturnNotEmptyString()

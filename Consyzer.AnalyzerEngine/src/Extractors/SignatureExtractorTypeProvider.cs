@@ -7,7 +7,7 @@ using Consyzer.AnalyzerEngine.Decoders.Models;
 namespace Consyzer.AnalyzerEngine.Decoders
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    internal sealed class SignatureDecoderTypeProvider : ISignatureTypeProvider<ISignatureParameterType, object>
+    internal sealed class SignatureExtractorTypeProvider : ISignatureTypeProvider<ISignatureParameterType, object>
     {
         private readonly MetadataReader _mdReader;
         private readonly MethodDefinition _methodDef;
@@ -16,7 +16,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
         private bool _isReturnType = false;
         private int _parameterIteration = 0;
 
-        public SignatureDecoderTypeProvider(MetadataReader mdReader, MethodDefinition methodDef)
+        public SignatureExtractorTypeProvider(MetadataReader mdReader, MethodDefinition methodDef)
         {
             _mdReader = mdReader;
             _methodDef = methodDef;

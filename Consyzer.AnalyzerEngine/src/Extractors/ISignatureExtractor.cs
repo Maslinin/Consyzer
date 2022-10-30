@@ -7,7 +7,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
     /// <summary>
     /// Provides methods for decoding signatures represented by the ECMA-355 standard.
     /// </summary>
-    public interface ISignatureDecoder
+    public interface ISignatureExtractor
     {
         /// <summary>
         /// Decodes the method signature and returns a <b>SignatureInfo</b> instance containing the decoded signature information.
