@@ -6,7 +6,7 @@ namespace Consyzer.AnalyzerEngine.Exceptions
 {
     internal static class ExceptionThrower
     {
-        public static void ThrowExceptionIfFileDoesNotExists(FileInfo fileInfo)
+        public static void ThrowExceptionIfFileDoesNotExist(FileInfo fileInfo)
         {
             if (fileInfo is null)
             {
@@ -19,7 +19,7 @@ namespace Consyzer.AnalyzerEngine.Exceptions
             ThrowExceptionIfFileDoesNotContainMetadata(fileInfo);
             if (!MetadataFilter.IsMetadataAssemblyFile(fileInfo))
             {
-                throw new AssemblyFileNotSupportedException($"{fileInfo.FullName} is contains metadata, but is not an assembly.");
+                throw new AssemblyFileNotSupportedException($"{fileInfo.FullName} contains metadata, but is not an assembly.");
             }
         }
 
@@ -27,7 +27,7 @@ namespace Consyzer.AnalyzerEngine.Exceptions
         {
             if (!MetadataFilter.IsMetadataFile(fileInfo))
             {
-                throw new MetadataFileNotSupportedException($"{fileInfo.FullName} is does not contain metadata.");
+                throw new MetadataFileNotSupportedException($"{fileInfo.FullName} does not contain metadata.");
             }
         }
     }

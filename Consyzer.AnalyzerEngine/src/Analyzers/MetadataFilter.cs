@@ -38,7 +38,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// <exception cref="UnauthorizedAccessException"></exception>
         public static bool IsMetadataFile(FileInfo fileInfo)
         {
-            ExceptionThrower.ThrowExceptionIfFileDoesNotExists(fileInfo);
+            ExceptionThrower.ThrowExceptionIfFileDoesNotExist(fileInfo);
 
             try
             {
@@ -81,7 +81,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// <exception cref="UnauthorizedAccessException"></exception>
         public static bool IsMetadataAssemblyFile(FileInfo fileInfo)
         {
-            ExceptionThrower.ThrowExceptionIfFileDoesNotExists(fileInfo);
+            ExceptionThrower.ThrowExceptionIfFileDoesNotExist(fileInfo);
 
             try
             {

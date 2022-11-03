@@ -12,7 +12,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Exceptions
         {
             FileInfo fileInfo = null;
 
-            var exception = Record.Exception(() => ExceptionThrower.ThrowExceptionIfFileDoesNotExists(fileInfo));
+            var exception = Record.Exception(() => ExceptionThrower.ThrowExceptionIfFileDoesNotExist(fileInfo));
 
             Assert.NotNull(exception);
         }

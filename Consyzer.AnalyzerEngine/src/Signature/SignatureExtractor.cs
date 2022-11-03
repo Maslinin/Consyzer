@@ -17,7 +17,7 @@ namespace Consyzer.AnalyzerEngine.Signature
 
         public SignatureExtractor(FileInfo fileInfo)
         {
-            ExceptionThrower.ThrowExceptionIfFileDoesNotExists(fileInfo);
+            ExceptionThrower.ThrowExceptionIfFileDoesNotExist(fileInfo);
             ExceptionThrower.ThrowExceptionIfFileIsNotMetadataAssembly(fileInfo);
 
             var fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
