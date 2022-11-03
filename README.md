@@ -17,7 +17,7 @@ static extern void HelloWorld();
 The application works correctly, without violating the integrity and security of the system, if all unmanaged DLLs are on the intended location according to the metadata; 
 but if at least one of the Dll is missing, the application will not only crash, but may also lead to a security breach of the entire system.
 
-Consyzer was designed specifically to prevent such incidents
+Consyzer was designed specifically to prevent such incidents.
 
 ## Benefits of Consyzer
 1. *Consyzer* is GUI independent and easy to run from *CLI*; 

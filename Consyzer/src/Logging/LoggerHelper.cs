@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Log = Consyzer.Logging.NLogger;
 using Consyzer.Helpers;
 using Consyzer.Searchers;
-using Consyzer.Cryptography.Hash;
+using Consyzer.Cryptography;
 using Consyzer.AnalyzerEngine.Analyzers;
 using Consyzer.AnalyzerEngine.Analyzers.Models;
 

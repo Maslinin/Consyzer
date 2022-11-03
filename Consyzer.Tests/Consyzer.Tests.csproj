@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Consyzer.Cryptography\Consyzer.Cryptography.csproj" />
+    <ProjectReference Include="..\Consyzer\Consyzer.csproj" />
   </ItemGroup>
 
 </Project>

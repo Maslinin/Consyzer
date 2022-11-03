@@ -1,7 +1,7 @@
 ﻿using Xunit;
-using Consyzer.Cryptography.Tests;
+using Consyzer.Cryptography;
 
-namespace Consyzer.Cryptography.Hash.Tests
+namespace Consyzer.Tests.Cryptography
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class FileHashInfoTest

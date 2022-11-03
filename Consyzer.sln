@@ -9,9 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.AnalyzerEngine", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.AnalyzerEngine.Tests", "Consyzer.AnalyzerEngine.Tests\Consyzer.AnalyzerEngine.Tests.csproj", "{642E42AF-A2B2-4229-A93A-3CE26079B1D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.Cryptography", "Consyzer.Cryptography\Consyzer.Cryptography.csproj", "{AA28D384-C977-4DAA-8DC4-9533A28A1189}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.Cryptography.Tests", "Consyzer.Cryptography.Tests\Consyzer.Cryptography.Tests.csproj", "{6E815C52-E65B-49B5-8A93-A59DCEB99A5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consyzer.Tests", "Consyzer.Tests\Consyzer.Tests.csproj", "{6AEE7021-1C2F-4886-8444-FEA124A810F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +29,10 @@ Global
 		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA28D384-C977-4DAA-8DC4-9533A28A1189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA28D384-C977-4DAA-8DC4-9533A28A1189}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA28D384-C977-4DAA-8DC4-9533A28A1189}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA28D384-C977-4DAA-8DC4-9533A28A1189}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E815C52-E65B-49B5-8A93-A59DCEB99A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E815C52-E65B-49B5-8A93-A59DCEB99A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E815C52-E65B-49B5-8A93-A59DCEB99A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E815C52-E65B-49B5-8A93-A59DCEB99A5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AEE7021-1C2F-4886-8444-FEA124A810F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AEE7021-1C2F-4886-8444-FEA124A810F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AEE7021-1C2F-4886-8444-FEA124A810F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AEE7021-1C2F-4886-8444-FEA124A810F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

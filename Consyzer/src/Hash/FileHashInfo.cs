@@ -1,10 +1,8 @@
 ﻿using System.IO;
+using Consyzer.Cryptography;
 
-namespace Consyzer.Cryptography.Hash
+namespace Consyzer.Cryptography
 {
-    /// <summary>
-    /// Provides information about the hash amounts of a file.
-    /// </summary>
     public class FileHashInfo : IHashInfo
     {
         public string MD5Sum { get; }

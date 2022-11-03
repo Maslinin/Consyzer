@@ -1,12 +1,14 @@
 ﻿using Xunit;
-using Consyzer.Cryptography.Tests;
-using System.IO;
+using Consyzer.Cryptography;
 
-namespace Consyzer.Cryptography.Hash.Tests
+namespace Consyzer.Tests.Cryptography
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class FileHashCalculatorTest
     {
+        private int MD5StandardHashLength => 32;
+        private int SHA256StandardHashLength => 64;
+
         [Fact]
         public void CalculateMD5_ShouldGenerateNotEmptyHashString()
         {
@@ -14,7 +16,7 @@ namespace Consyzer.Cryptography.Hash.Tests
 
             var hashString = FileHashCalculator.CalculateMD5(fileInfo);
 
-            Assert.Equal(32, hashString.Length);
+            Assert.Equal(this.MD5StandardHashLength, hashString.Length);
         }
 
         [Fact]
@@ -24,7 +26,7 @@ namespace Consyzer.Cryptography.Hash.Tests
 
             var hashString = FileHashCalculator.CalculateSHA256(fileInfo);
 
-            Assert.Equal(64, hashString.Length);
+            Assert.Equal(this.SHA256StandardHashLength, hashString.Length);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Consyzer.Cryptography.Hash
+﻿namespace Consyzer.Cryptography
 {
     /// <summary>
     /// Provides an interface for hashing interaction.

@@ -47,7 +47,7 @@ foreach($folder in $AnalysisFolders) {
   switch( $LastExitCode )
   {
       -1 { $Event = "Error|$folder-> Consyzer could not analyze the files because an internal error occurred. Make sure that the arguments were passed correctly." }
-      0 { $Event = "Successfully:($folder): No consistency problems were found." }
+      0 { $Event = "Successfully|$folder-> No consistency problems were found." }
       1 { $Event = "Warning|$folder->  One or more DLL components used in the project are on an absolute path." }
       2 { $Event = "Warning|$folder->  One or more DLL components used in the project are on a relative path." }
       3 { $Event = "Warning|$folder->  One or more DLL components used in the project are located on the system path." }
