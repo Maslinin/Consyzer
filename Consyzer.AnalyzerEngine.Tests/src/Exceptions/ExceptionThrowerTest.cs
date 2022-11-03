@@ -28,6 +28,16 @@ namespace Consyzer.AnalyzerEngine.Tests.Exceptions
         }
 
         [Fact]
+        public void ThrowExceptionIfFileIsNotMetadataAssembly_ShouldNotThrowAssemblyFileNotSupportedException()
+        {
+            FileInfo fileInfo = TestConstants.MetadataAssemblyFileInfo;
+
+            var exception = Record.Exception(() => ExceptionThrower.ThrowExceptionIfFileIsNotMetadataAssembly(fileInfo));
+
+            Assert.Null(exception);
+        }
+
+        [Fact]
         public void ThrowExceptionIfFileDoesNotContainMetadata_ShouldThrowMetadataFileNotSupportedException()
         {
             FileInfo fileInfo = TestConstants.NotMetadataAssemblyFileInfo;
