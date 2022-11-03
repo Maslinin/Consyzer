@@ -5,7 +5,7 @@ namespace Consyzer.Searchers
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class PathHelper
     {
-        public static string AddExtensionToFileIfItIsWithoutExtension(string filePath, string fileExtension)
+        public static string AddExtensionToFile(string filePath, string fileExtension)
         {
             if (!Path.HasExtension(filePath))
             {
@@ -15,7 +15,7 @@ namespace Consyzer.Searchers
             return filePath;
         }
 
-        public static string GetAbsolutePathIfItIsNotAbsolute(string folder, string filePath)
+        public static string ToAbsolutePath(string folder, string filePath)
         {
             if (!IsAbsolutePath(filePath))
             {

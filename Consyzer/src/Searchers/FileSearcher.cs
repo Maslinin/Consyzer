@@ -31,30 +31,30 @@ namespace Consyzer.Searchers
 
         public FileExistStatusCodes CheckFileExistAtAnalysisPath(string filePath, string fileExtension = _defaultFileExtension)
         {
-            string path = PathHelper.GetAbsolutePathIfItIsNotAbsolute(this._analysisFolder, filePath);
-            path = PathHelper.AddExtensionToFileIfItIsWithoutExtension(path, fileExtension);
+            string path = PathHelper.ToAbsolutePath(this._analysisFolder, filePath);
+            path = PathHelper.AddExtensionToFile(path, fileExtension);
 
             return File.Exists(path) ? FileExistStatusCodes.FileExistsAtAnalysisPath : FileExistStatusCodes.FileNotExists;
         }
 
         public FileExistStatusCodes CheckFileExistAtAbsolutePath(string filePath, string fileExtension = _defaultFileExtension)
         {
-            string path = PathHelper.AddExtensionToFileIfItIsWithoutExtension(filePath, fileExtension);
+            string path = PathHelper.AddExtensionToFile(filePath, fileExtension);
 
             return PathHelper.IsAbsolutePath(path) ? FileExistStatusCodes.FileExistsAtAbsolutePath : FileExistStatusCodes.FileNotExists;
         }
 
         public FileExistStatusCodes CheckFileExistAtRelativePath(string filePath, string fileExtension = _defaultFileExtension)
         {
-            string path = PathHelper.AddExtensionToFileIfItIsWithoutExtension(filePath, fileExtension);
+            string path = PathHelper.AddExtensionToFile(filePath, fileExtension);
 
             return PathHelper.IsRelativePath(path) ? FileExistStatusCodes.FileExistsAtRelativePath : FileExistStatusCodes.FileNotExists;
         }
 
         public FileExistStatusCodes CheckFileExistAtSystemFolder(string filePath, string defaultFileExtension = _defaultFileExtension) 
         {
-            string path = PathHelper.GetAbsolutePathIfItIsNotAbsolute(Environment.SystemDirectory, filePath);
-            path = PathHelper.AddExtensionToFileIfItIsWithoutExtension(path, defaultFileExtension);
+            string path = PathHelper.ToAbsolutePath(Environment.SystemDirectory, filePath);
+            path = PathHelper.AddExtensionToFile(path, defaultFileExtension);
 
             return File.Exists(path) ? FileExistStatusCodes.FileExistsAtSystemFolder : FileExistStatusCodes.FileNotExists;
         }

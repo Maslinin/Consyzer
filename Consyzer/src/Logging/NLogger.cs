@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using NLog;
 using NLog.Config;
@@ -12,22 +13,18 @@ namespace Consyzer.Logging
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class NLogger
     {
-        private readonly static ILogger _logger;
+        private readonly static ILogger _logger = Initialize();
         public static string LogDirPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
 
-        static NLogger()
+        private static ILogger Initialize()
         {
-            if (!Directory.Exists(LogDirPath))
-            {
-                Directory.CreateDirectory(LogDirPath);
-            }
+            ILogger logger;
 
             string logFilePath = Path.Combine(LogDirPath, $"{DateTime.Now:MM.dd.yyyy}.txt");
 
             var fileTarget = new FileTarget()
             {
                 FileName = logFilePath,
-                DeleteOldFileOnStartup = false,
                 Layout = "${message}"
             };
             var consoleTarget = new ConsoleTarget()
@@ -40,7 +37,9 @@ namespace Consyzer.Logging
             logConfig.AddRuleForAllLevels(consoleTarget);
             LogManager.Configuration = logConfig;
 
-            _logger = LogManager.GetLogger("ConsyzerLogger");
+            logger = LogManager.GetLogger("ConsyzerLogger");
+
+            return logger;
         }
 
         public static void Log(string message, LogLevel logLevel)
@@ -50,15 +49,11 @@ namespace Consyzer.Logging
 
         #region Logging methods by logging levels
 
-        public static void Trace(string message) => Log(message, LogLevel.Trace);
-
-        public static void Debug(string message) => Log(message, LogLevel.Debug);
-
-        public static void Info(string message) => Log(message, LogLevel.Info);
-
-        public static void Warn(string message) => Log(message, LogLevel.Warn);
-
         public static void Error(string message) => Log(message, LogLevel.Error);
+        public static void Warn(string message) => Log(message, LogLevel.Warn);
+        public static void Info(string message) => Log(message, LogLevel.Info);
+        public static void Debug(string message) => Log(message, LogLevel.Debug);
+        public static void Trace(string message) => Log(message, LogLevel.Trace);
 
         #endregion
 
