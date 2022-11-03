@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using Consyzer.AnalyzerEngine.Exceptions;
-using Consyzer.AnalyzerEngine.Decoders.Models;
+using Consyzer.AnalyzerEngine.Signature.Models;
 
-namespace Consyzer.AnalyzerEngine.Decoders
+namespace Consyzer.AnalyzerEngine.Signature
 {
     /// <summary>
     /// Contains tools for decoding a method signature.

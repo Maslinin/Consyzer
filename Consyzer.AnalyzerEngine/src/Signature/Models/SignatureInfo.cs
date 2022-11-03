@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Collections.Generic;
 
-namespace Consyzer.AnalyzerEngine.Decoders.Models
+namespace Consyzer.AnalyzerEngine.Signature.Models
 {
     /// <summary>
     /// [Sealed] Presents information about the signature of the method and contains tools for displaying it.
@@ -23,7 +23,7 @@ namespace Consyzer.AnalyzerEngine.Decoders.Models
         /// <summary>
         /// Gets method accessibility modifiers.
         /// </summary>
-        public AccessibilityModifiers Accessibility { get; internal set; }
+        public AccessibilityModifier Accessibility { get; internal set; }
         /// <summary>
         /// Gets a value indicating whether the method is static.
         /// </summary>
@@ -98,7 +98,7 @@ namespace Consyzer.AnalyzerEngine.Decoders.Models
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private void AddArgumentAttributeIfItExists(StringBuilder builder, ISignatureParameterType argument)
         {
-            if (argument.Attributes != BaseSignatureParameterType.AttributesDefaultValue)
+            if (argument.Attributes != ParametersTypes.AttributesDefaultValue)
             {
                 builder.Append($"{argument.Attributes} ");
             }

@@ -1,11 +1,11 @@
 ﻿namespace Consyzer.Searchers
 {
-    internal enum FileExistsStatusCodes
+    internal enum FileExistanceStatusCode
     {
         FileExistsAtAnalysisPath,
         FileExistsAtAbsolutePath,
         FileExistsAtRelativePath,
         FileExistsAtSystemFolder,
-        FileNotExists
+        FileDoesNotExists
     }
 }

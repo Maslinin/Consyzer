@@ -77,7 +77,7 @@ namespace Consyzer.Logging
 
             foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
             {
-                if (fileSearcher.GetFileLocation(item.Location, defaultBinaryExtension) is FileExistsStatusCodes.FileNotExists)
+                if (fileSearcher.GetFileLocation(item.Location, defaultBinaryExtension) is FileExistanceStatusCode.FileDoesNotExists)
                 {
                     Log.Error($"\t[{item.i}]File '{item.Location}' does NOT exist!");
                 }

@@ -1,4 +1,4 @@
-﻿using Consyzer.AnalyzerEngine.Decoders.Models;
+﻿using Consyzer.AnalyzerEngine.Signature.Models;
 
 namespace Consyzer.AnalyzerEngine.Analyzers.Models
 {

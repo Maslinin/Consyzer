@@ -1,6 +1,6 @@
 ﻿using Xunit;
 using System.Linq;
-using Consyzer.AnalyzerEngine.Decoders;
+using Consyzer.AnalyzerEngine.Signature;
 
 namespace Consyzer.AnalyzerEngine.Tests.Decoders.Models
 {

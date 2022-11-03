@@ -3,11 +3,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
-using Consyzer.AnalyzerEngine.Decoders.Models;
+using Consyzer.AnalyzerEngine.Signature.Models;
 
 [assembly: InternalsVisibleTo("Consyzer.AnalyzerEngine.Tests")]
 
-namespace Consyzer.AnalyzerEngine.Decoders
+namespace Consyzer.AnalyzerEngine.Signature
 {
     internal sealed class MethodInfoExtractor
     {
@@ -35,16 +35,16 @@ namespace Consyzer.AnalyzerEngine.Decoders
             return this._mdReader.GetString(methodDef.Name);
         }
 
-        public AccessibilityModifiers GetMethodAccessibilityModifier(MethodDefinition methodDef)
+        public AccessibilityModifier GetMethodAccessibilityModifier(MethodDefinition methodDef)
         {
             string methodAttributes = this.GetMethodAttributes(methodDef);
             var separatedMethodAttributes = methodAttributes.Split(',').Select(x => x.Trim());
 
-            string[] accessibilityModifiers = Enum.GetNames(typeof(MsilAccessibilityModifiers));
+            string[] accessibilityModifiers = Enum.GetNames(typeof(MsilAccessibilityModifier));
             var modifierAsString = separatedMethodAttributes.Intersect(accessibilityModifiers).First();
 
-            var parsedModifier = Enum.Parse(typeof(MsilAccessibilityModifiers), modifierAsString);
-            return (AccessibilityModifiers)(int)parsedModifier;
+            var parsedModifier = Enum.Parse(typeof(MsilAccessibilityModifier), modifierAsString);
+            return (AccessibilityModifier)(int)parsedModifier;
         }
 
         public bool IsStaticMethod(MethodDefinition methodDef)
@@ -67,7 +67,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
 
         public ISignatureParameterType GetMethodReturnType(MethodDefinition methodDef)
         {
-            var signatureProvider = new SignatureParameterTypeProvider(this._mdReader, methodDef);
+            var signatureProvider = new SignatureTypeProvider(this._mdReader, methodDef);
             var signature = methodDef.DecodeSignature(signatureProvider, new object());
 
             return signature.ReturnType;
@@ -75,7 +75,7 @@ namespace Consyzer.AnalyzerEngine.Decoders
 
         public IEnumerable<ISignatureParameterType> GetMethodArguments(MethodDefinition methodDef)
         {
-            var signatureProvider = new SignatureParameterTypeProvider(this._mdReader, methodDef);
+            var signatureProvider = new SignatureTypeProvider(this._mdReader, methodDef);
             var signature = methodDef.DecodeSignature(signatureProvider, new object());
 
             return signature.ParameterTypes;

@@ -1,4 +1,4 @@
-﻿namespace Consyzer.AnalyzerEngine.Decoders.Models
+﻿namespace Consyzer.AnalyzerEngine.Signature.Models
 {
     /// <summary>
     /// Represents the base implementation of a class implementing a type representation in a decoded method signature.

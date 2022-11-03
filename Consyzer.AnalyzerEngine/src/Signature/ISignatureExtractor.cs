@@ -1,8 +1,8 @@
-﻿using Consyzer.AnalyzerEngine.Decoders.Models;
+﻿using Consyzer.AnalyzerEngine.Signature.Models;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 
-namespace Consyzer.AnalyzerEngine.Decoders
+namespace Consyzer.AnalyzerEngine.Signature
 {
     /// <summary>
     /// Provides methods for decoding signatures represented by the ECMA-355 standard.

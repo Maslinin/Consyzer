@@ -20,12 +20,12 @@ namespace Consyzer
 
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions);
                 if (!LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles))
-                    return (int)ProgramStatusCodes.SuccessExit;
+                    return (int)ProgramStatusCode.SuccessExit;
 
                 Log.Info("The following binary files with the specified extensions were found:");
                 LoggerHelper.LoggingBaseFileInfo(binaryFiles);
                 if (!LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles))
-                    return (int)ProgramStatusCodes.SuccessExit;
+                    return (int)ProgramStatusCode.SuccessExit;
 
                 var metadataAnalyzers = binaryFiles.ToImportedMethodsAnalyzersFromMetadataAssemblyFiles();
                 Log.Info("The following assembly binaries containing metadata were found:");
@@ -36,7 +36,7 @@ namespace Consyzer
 
                 var binaryLocations = AnalyzerHelper.GetImportedMethodsLocations(metadataAnalyzers);
                 if (!LoggerCheckerHelper.CheckAndLoggingAnyBinariesExist(binaryLocations))
-                    return (int)ProgramStatusCodes.SuccessExit;
+                    return (int)ProgramStatusCode.SuccessExit;
 
                 Log.Info("The presence of binary files in the received locations:");
                 LoggerHelper.LoggingBinariesExistStatus(binaryLocations, analysisFolder);
@@ -47,7 +47,7 @@ namespace Consyzer
             catch(Exception e)
             {
                 Log.Error(e.ToString());
-                return (int)ProgramStatusCodes.UnexpectedBehavior;
+                return (int)ProgramStatusCode.UnexpectedBehavior;
             }
         }
     }

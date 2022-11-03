@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using Consyzer.AnalyzerEngine.Decoders;
+using Consyzer.AnalyzerEngine.Signature;
 using Consyzer.AnalyzerEngine.Analyzers.Models;
 
 namespace Consyzer.AnalyzerEngine.Analyzers

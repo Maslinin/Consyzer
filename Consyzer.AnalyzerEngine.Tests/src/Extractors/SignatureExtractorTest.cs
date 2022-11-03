@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using Consyzer.AnalyzerEngine.Decoders;
+using Consyzer.AnalyzerEngine.Signature;
 
 namespace Consyzer.AnalyzerEngine.Tests.Decoders
 {

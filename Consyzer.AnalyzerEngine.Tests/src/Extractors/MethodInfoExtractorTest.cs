@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using Consyzer.AnalyzerEngine.Decoders;
-using Consyzer.AnalyzerEngine.Decoders.Models;
+using Consyzer.AnalyzerEngine.Signature;
+using Consyzer.AnalyzerEngine.Signature.Models;
 
 namespace Consyzer.AnalyzerEngine.Tests.Decoders
 {
@@ -57,7 +57,7 @@ namespace Consyzer.AnalyzerEngine.Tests.Decoders
         {
             var extractor = new MethodInfoExtractor(this.MetadataReader);
 
-            var methodAccessibilityModifier = this.TestMethodsDefinitions.Any(x => extractor.GetMethodAccessibilityModifier(x) == AccessibilityModifiers.Public);
+            var methodAccessibilityModifier = this.TestMethodsDefinitions.Any(x => extractor.GetMethodAccessibilityModifier(x) == AccessibilityModifier.Public);
 
             Assert.True(methodAccessibilityModifier);
         }
