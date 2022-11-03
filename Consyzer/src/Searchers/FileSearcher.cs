@@ -16,7 +16,7 @@ namespace Consyzer.Searchers
             this._analysisFolder = analysisFolder;
         }
 
-        public FileExistStatusCodes GetFileLocation(string filePath, string fileExtension = _defaultFileExtension)
+        public FileExistsStatusCodes GetFileLocation(string filePath, string fileExtension = _defaultFileExtension)
         {
             var codes = new int[]
             {
@@ -26,37 +26,37 @@ namespace Consyzer.Searchers
                 (int)CheckFileExistAtSystemFolder(filePath, fileExtension),
             };
 
-            return (FileExistStatusCodes)codes.Max();
+            return (FileExistsStatusCodes)codes.Min();
         }
 
-        public FileExistStatusCodes CheckFileExistAtAnalysisPath(string filePath, string fileExtension = _defaultFileExtension)
+        public FileExistsStatusCodes CheckFileExistAtAnalysisPath(string filePath, string fileExtension = _defaultFileExtension)
         {
             string path = PathHelper.ToAbsolutePath(this._analysisFolder, filePath);
             path = PathHelper.AddExtensionToFile(path, fileExtension);
 
-            return File.Exists(path) ? FileExistStatusCodes.FileExistsAtAnalysisPath : FileExistStatusCodes.FileNotExists;
+            return File.Exists(path) ? FileExistsStatusCodes.FileExistsAtAnalysisPath : FileExistsStatusCodes.FileNotExists;
         }
 
-        public FileExistStatusCodes CheckFileExistAtAbsolutePath(string filePath, string fileExtension = _defaultFileExtension)
+        public FileExistsStatusCodes CheckFileExistAtAbsolutePath(string filePath, string fileExtension = _defaultFileExtension)
         {
             string path = PathHelper.AddExtensionToFile(filePath, fileExtension);
 
-            return PathHelper.IsAbsolutePath(path) ? FileExistStatusCodes.FileExistsAtAbsolutePath : FileExistStatusCodes.FileNotExists;
+            return PathHelper.IsAbsolutePath(path) ? FileExistsStatusCodes.FileExistsAtAbsolutePath : FileExistsStatusCodes.FileNotExists;
         }
 
-        public FileExistStatusCodes CheckFileExistAtRelativePath(string filePath, string fileExtension = _defaultFileExtension)
+        public FileExistsStatusCodes CheckFileExistAtRelativePath(string filePath, string fileExtension = _defaultFileExtension)
         {
             string path = PathHelper.AddExtensionToFile(filePath, fileExtension);
 
-            return PathHelper.IsRelativePath(path) ? FileExistStatusCodes.FileExistsAtRelativePath : FileExistStatusCodes.FileNotExists;
+            return PathHelper.IsRelativePath(path) ? FileExistsStatusCodes.FileExistsAtRelativePath : FileExistsStatusCodes.FileNotExists;
         }
 
-        public FileExistStatusCodes CheckFileExistAtSystemFolder(string filePath, string defaultFileExtension = _defaultFileExtension) 
+        public FileExistsStatusCodes CheckFileExistAtSystemFolder(string filePath, string defaultFileExtension = _defaultFileExtension) 
         {
             string path = PathHelper.ToAbsolutePath(Environment.SystemDirectory, filePath);
             path = PathHelper.AddExtensionToFile(path, defaultFileExtension);
 
-            return File.Exists(path) ? FileExistStatusCodes.FileExistsAtSystemFolder : FileExistStatusCodes.FileNotExists;
+            return File.Exists(path) ? FileExistsStatusCodes.FileExistsAtSystemFolder : FileExistsStatusCodes.FileNotExists;
         }
 
     }

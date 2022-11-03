@@ -73,9 +73,11 @@ namespace Consyzer.Logging
 
         public static void LoggingBinariesExistStatus(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
+            var fileSearcher = new FileSearcher(analysisFolder);
+
             foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
             {
-                if (new FileSearcher(analysisFolder).GetFileLocation(item.Location, defaultBinaryExtension) is FileExistStatusCodes.FileNotExists)
+                if (fileSearcher.GetFileLocation(item.Location, defaultBinaryExtension) is FileExistsStatusCodes.FileNotExists)
                 {
                     Log.Error($"\t[{item.i}]File '{item.Location}' does NOT exist!");
                 }
