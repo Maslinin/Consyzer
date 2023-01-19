@@ -44,7 +44,7 @@ namespace Consyzer.Logging
 
         public static void Log(string message, LogLevel logLevel)
         {
-            _logger.Log(logLevel, $"[{DateTime.Now:HH:mm:ss}::{logLevel.Name.ToUpper()}] {message}");
+            _logger.Log(logLevel, $"[{DateTime.Now:HH:mm:ss:fff}::{logLevel.Name.ToUpper()}] {message}");
         }
 
         #region Logging methods by logging levels
