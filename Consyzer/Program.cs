@@ -14,33 +14,33 @@ namespace Consyzer
             try
             {
                 string analysisFolder = CmdArgsReceiver.GetDirectoryWithFilesForAnalysisFromCommandLineArgs();
-                LoggerHelper.LoggingPathToBinariesForAnalysis(analysisFolder);
+                LogWriter.LoggingPathToBinariesForAnalysis(analysisFolder);
                 var filesExtensions = CmdArgsReceiver.GetFilesExtensionsFromCommandLineArgs();
-                LoggerHelper.LoggingFilesExtensionsForAnalysis(filesExtensions);
+                LogWriter.LoggingFilesExtensionsForAnalysis(filesExtensions);
 
                 var binaryFiles = IOHelper.GetBinaryFilesInfoFrom(analysisFolder, filesExtensions);
-                if (!LoggerCheckerHelper.CheckAndLoggingBinaryFilesExist(binaryFiles))
+                if (!LogWriter.CheckAndLoggingBinaryFilesExist(binaryFiles))
                     return (int)ProgramStatusCode.SuccessExit;
 
                 Log.Info("The following binary files with the specified extensions were found:");
-                LoggerHelper.LoggingBaseFileInfo(binaryFiles);
-                if (!LoggerCheckerHelper.CheckAndLoggingFilesCorrect(binaryFiles))
+                LogWriter.LoggingBaseFileInfo(binaryFiles);
+                if (!LogWriter.CheckAndLoggingFilesCorrect(binaryFiles))
                     return (int)ProgramStatusCode.SuccessExit;
 
                 var metadataAnalyzers = binaryFiles.ToImportedMethodsAnalyzersFromMetadataAssemblyFiles();
                 Log.Info("The following assembly binaries containing metadata were found:");
-                LoggerHelper.LoggingBaseAndHashFileInfo(metadataAnalyzers);
+                LogWriter.LoggingBaseAndHashFileInfo(metadataAnalyzers);
 
                 Log.Info("Information about imported methods from other assemblies in the analyzed files:");
-                LoggerHelper.LoggingImportedMethodsInfoForEachBinary(metadataAnalyzers);
+                LogWriter.LoggingImportedMethodsInfoForEachBinary(metadataAnalyzers);
 
                 var binaryLocations = AnalyzerHelper.GetImportedMethodsLocations(metadataAnalyzers);
-                if (!LoggerCheckerHelper.CheckAndLoggingAnyBinariesExist(binaryLocations))
+                if (!LogWriter.CheckAndLoggingAnyBinariesExist(binaryLocations))
                     return (int)ProgramStatusCode.SuccessExit;
 
                 Log.Info("The presence of binary files in the received locations:");
-                LoggerHelper.LoggingBinariesExistStatus(binaryLocations, analysisFolder);
-                LoggerHelper.LoggingExistAndNonExistBinariesCount(binaryLocations, analysisFolder);
+                LogWriter.LoggingBinariesExistStatus(binaryLocations, analysisFolder);
+                LogWriter.LoggingExistAndNonExistBinariesCount(binaryLocations, analysisFolder);
 
                 return (int)AnalyzerHelper.GetTopBinarySearcherStatusAmongBinaries(binaryLocations, analysisFolder);
             }

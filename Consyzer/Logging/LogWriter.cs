@@ -11,7 +11,7 @@ using Consyzer.AnalyzerEngine.Analyzers.Models;
 namespace Consyzer.Logging
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public static class LoggerHelper
+    public static class LogWriter
     {
         public static void LoggingPathToBinariesForAnalysis(string analysisFolder)
         {
@@ -93,11 +93,7 @@ namespace Consyzer.Logging
             Log.Info($"Total: {AnalyzerHelper.GetExistsBinaries(binaryLocations, analysisFolder).Count()} exist, " +
                 $"{AnalyzerHelper.GetNotExistsBinaries(binaryLocations, analysisFolder).Count()} do not exist.");
         }
-    }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public static class LoggerCheckerHelper
-    {
         public static bool CheckAndLoggingFilesCorrect(IEnumerable<FileInfo> binaryFiles)
         {
             var notMetadataFiles = MetadataFilter.GetNotMetadataFiles(binaryFiles);
@@ -105,7 +101,7 @@ namespace Consyzer.Logging
             if (notMetadataFiles.Any())
             {
                 Log.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
-                LoggerHelper.LoggingBaseFileInfo(notMetadataFiles);
+                LogWriter.LoggingBaseFileInfo(notMetadataFiles);
 
                 if (binaryFiles.Count() == notMetadataFiles.Count())
                 {
@@ -119,7 +115,7 @@ namespace Consyzer.Logging
             if (differentFiles.Any())
             {
                 Log.Info("The following files were excluded from analysis because they are NOT assembly files:");
-                LoggerHelper.LoggingBaseFileInfo(differentFiles);
+                LogWriter.LoggingBaseFileInfo(differentFiles);
 
                 if (binaryFiles.Count() == differentFiles.Count())
                 {
