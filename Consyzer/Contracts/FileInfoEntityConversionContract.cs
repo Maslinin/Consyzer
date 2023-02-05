@@ -13,9 +13,5 @@ namespace Consyzer.Contracts
             return MetadataFilter.GetMetadataAssemblyFiles(fileInfos).Select(f => new MetadataAnalyzer(f));
         }
 
-        public static IEnumerable<ImportedMethodsAnalyzer> ToImportedMethodsAnalyzersFromMetadataAssemblyFiles(this IEnumerable<FileInfo> fileInfos)
-        {
-            return MetadataFilter.GetMetadataAssemblyFiles(fileInfos).Select(f => new ImportedMethodsAnalyzer(f));
-        }
     }
 }

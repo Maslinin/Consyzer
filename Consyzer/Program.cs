@@ -27,7 +27,7 @@ namespace Consyzer
                 if (!LogWriter.CheckAndLoggingFilesCorrect(binaryFiles))
                     return (int)ProgramStatusCode.SuccessExit;
 
-                var metadataAnalyzers = binaryFiles.ToImportedMethodsAnalyzersFromMetadataAssemblyFiles();
+                var metadataAnalyzers = binaryFiles.ToMetadataAnalyzersFromMetadataAssemblyFiles();
                 Log.Info("The following assembly binaries containing metadata were found:");
                 LogWriter.LoggingBaseAndHashFileInfo(metadataAnalyzers);
 

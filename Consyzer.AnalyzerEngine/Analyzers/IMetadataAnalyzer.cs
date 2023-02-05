@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using Consyzer.AnalyzerEngine.Analyzers.Models;
 
 namespace Consyzer.AnalyzerEngine.Analyzers
 {
@@ -18,5 +19,13 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// Returns a collection of all methods definitions in an assembly.
         /// </summary>
         IEnumerable<MethodDefinition> GetMethodsDefinitions();
+        /// <summary>
+        /// Returns a collection <b>ImportedMethodInfo</b> containing detailed information about all methods in the assembly.
+        /// </summary>
+        IEnumerable<ImportedMethodInfo> GetImportedMethodsInfo();
+        /// <summary>
+        /// Returns a list of methods definitions imported from other assemblies.
+        /// </summary>
+        IEnumerable<MethodDefinition> GetImportedMethodsDefinitions();
     }
 }

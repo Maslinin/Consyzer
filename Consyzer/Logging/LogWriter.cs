@@ -42,7 +42,7 @@ namespace Consyzer.Logging
             }
         }
 
-        public static void LoggingImportedMethodsInfoForEachBinary(IEnumerable<ImportedMethodsAnalyzer> metadataAnalyzers)
+        public static void LoggingImportedMethodsInfoForEachBinary(IEnumerable<MetadataAnalyzer> metadataAnalyzers)
         {
             foreach (var item in metadataAnalyzers.Select((File, i) => (File, i)))
             {

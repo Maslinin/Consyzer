@@ -35,7 +35,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// Checks whether the binary contains ECMA-355 standard metadata.
         /// </summary>
         /// <param name="fileInfo"></param>
-        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="BadImageFormatException"></exception>
         public static bool IsMetadataFile(FileInfo fileInfo)
         {
             ExceptionThrower.ThrowExceptionIfFileDoesNotExist(fileInfo);
@@ -78,7 +78,7 @@ namespace Consyzer.AnalyzerEngine.Analyzers
         /// Checks whether the metadata file is an assembly.
         /// </summary>
         /// <param name="fileInfo"></param>
-        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="BadImageFormatException"></exception>
         public static bool IsMetadataAssemblyFile(FileInfo fileInfo)
         {
             ExceptionThrower.ThrowExceptionIfFileDoesNotExist(fileInfo);

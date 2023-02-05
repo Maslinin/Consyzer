@@ -9,7 +9,7 @@ namespace Consyzer.Helpers
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class AnalyzerHelper
     {
-        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<ImportedMethodsAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
+        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
         {
             var importedMethods = new List<string>();
 

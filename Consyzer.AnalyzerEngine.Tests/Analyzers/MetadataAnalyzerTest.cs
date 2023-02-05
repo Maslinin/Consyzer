@@ -37,5 +37,26 @@ namespace Consyzer.AnalyzerEngine.Tests.Analyzers
 
             Assert.NotEmpty(typesDefs);
         }
+
+        [Fact]
+        public void GetImportedMethodsInfo_ShouldReturnNotNullCollection()
+        {
+            var importedMethodsAnalyzer = new MetadataAnalyzer(TestConstants.MetadataAssemblyFileInfo);
+
+            var importedMethodsInfo = importedMethodsAnalyzer.GetImportedMethodsInfo();
+
+            Assert.NotNull(importedMethodsInfo);
+        }
+
+        [Fact]
+        public void GetImportedMethodsDefinitions_ShouldReturnNotEmptyCollectionIfThereAreImportedMethods()
+        {
+            var importedMethodsAnalyzer = new MetadataAnalyzer(TestConstants.MetadataAssemblyFileInfo);
+
+            var importedMethodsDefs = importedMethodsAnalyzer.GetImportedMethodsDefinitions();
+
+            Assert.NotEmpty(importedMethodsDefs);
+        }
+
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using Consyzer.AnalyzerEngine.Exceptions;
+using Consyzer.AnalyzerEngine.Analyzers.Models;
+using Consyzer.AnalyzerEngine.Signature;
 
 namespace Consyzer.AnalyzerEngine.Analyzers
 {
@@ -49,6 +51,42 @@ namespace Consyzer.AnalyzerEngine.Analyzers
             var typesDefs = typeDefsHandles.Select(h => this._mdReader.GetTypeDefinition(h));
 
             return typesDefs;
+        }
+
+        public IEnumerable<ImportedMethodInfo> GetImportedMethodsInfo()
+        {
+            return this.GetImportedMethodsDefinitions().Select(x => this.GetImportedMethodInfo(x));
+        }
+
+        public IEnumerable<MethodDefinition> GetImportedMethodsDefinitions()
+        {
+            return this.GetMethodsDefinitions().Where(x => this.IsImportedMethod(x));
+        }
+
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        private bool IsImportedMethod(MethodDefinition methodDef)
+        {
+            var import = methodDef.GetImport();
+            return !import.Name.IsNil && !import.Module.IsNil;
+        }
+
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        private ImportedMethodInfo GetImportedMethodInfo(MethodDefinition methodDef)
+        {
+            var signatureDecoder = new SignatureExtractor(this._mdReader);
+            var signatureInfo = signatureDecoder.GetDecodedSignature(methodDef);
+
+            var import = methodDef.GetImport();
+            var moduleReference = this._mdReader.GetModuleReference(import.Module);
+            var dllLocation = this._mdReader.GetString(moduleReference.Name);
+            var dllImportArguments = import.Attributes.ToString();
+
+            return new ImportedMethodInfo
+            {
+                SignatureInfo = signatureInfo,
+                DllLocation = dllLocation,
+                DllImportArguments = dllImportArguments
+            };
         }
 
     }
