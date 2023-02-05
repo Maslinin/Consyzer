@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Consyzer.Helpers;
 
 namespace Consyzer.Searchers
 {
@@ -31,30 +32,30 @@ namespace Consyzer.Searchers
 
         public FileExistanceStatusCode CheckFileExistAtAnalysisPath(string filePath, string fileExtension = _defaultFileExtension)
         {
-            string path = PathHelper.ToAbsolutePath(this._analysisFolder, filePath);
-            path = PathHelper.AddExtensionToFile(path, fileExtension);
+            string path = IOHelper.ToAbsolutePath(this._analysisFolder, filePath);
+            path = IOHelper.AddExtensionToFile(path, fileExtension);
 
             return File.Exists(path) ? FileExistanceStatusCode.FileExistsAtAnalysisPath : FileExistanceStatusCode.FileDoesNotExists;
         }
 
         public FileExistanceStatusCode CheckFileExistAtAbsolutePath(string filePath, string fileExtension = _defaultFileExtension)
         {
-            string path = PathHelper.AddExtensionToFile(filePath, fileExtension);
+            string path = IOHelper.AddExtensionToFile(filePath, fileExtension);
 
-            return PathHelper.IsAbsolutePath(path) ? FileExistanceStatusCode.FileExistsAtAbsolutePath : FileExistanceStatusCode.FileDoesNotExists;
+            return IOHelper.IsAbsolutePath(path) ? FileExistanceStatusCode.FileExistsAtAbsolutePath : FileExistanceStatusCode.FileDoesNotExists;
         }
 
         public FileExistanceStatusCode CheckFileExistAtRelativePath(string filePath, string fileExtension = _defaultFileExtension)
         {
-            string path = PathHelper.AddExtensionToFile(filePath, fileExtension);
+            string path = IOHelper.AddExtensionToFile(filePath, fileExtension);
 
-            return PathHelper.IsRelativePath(path) ? FileExistanceStatusCode.FileExistsAtRelativePath : FileExistanceStatusCode.FileDoesNotExists;
+            return IOHelper.IsRelativePath(path) ? FileExistanceStatusCode.FileExistsAtRelativePath : FileExistanceStatusCode.FileDoesNotExists;
         }
 
         public FileExistanceStatusCode CheckFileExistAtSystemFolder(string filePath, string defaultFileExtension = _defaultFileExtension) 
         {
-            string path = PathHelper.ToAbsolutePath(Environment.SystemDirectory, filePath);
-            path = PathHelper.AddExtensionToFile(path, defaultFileExtension);
+            string path = IOHelper.ToAbsolutePath(Environment.SystemDirectory, filePath);
+            path = IOHelper.AddExtensionToFile(path, defaultFileExtension);
 
             return File.Exists(path) ? FileExistanceStatusCode.FileExistsAtSystemFolder : FileExistanceStatusCode.FileDoesNotExists;
         }

@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Consyzer.AnalyzerEngine\Consyzer.AnalyzerEngine.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="NLog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

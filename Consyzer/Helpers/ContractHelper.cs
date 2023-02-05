@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using Consyzer.AnalyzerEngine.Analyzers;
+using Consyzer.Analyzers;
 
-namespace Consyzer.Contracts
+namespace Consyzer.Helpers
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    internal static class FileInfoEntityConversionContract
+    internal static class ContractHelper
     {
         public static IEnumerable<MetadataAnalyzer> ToMetadataAnalyzersFromMetadataAssemblyFiles(this IEnumerable<FileInfo> fileInfos)
         {

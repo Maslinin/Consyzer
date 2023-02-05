@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Consyzer.Searchers;
-using Consyzer.AnalyzerEngine.Analyzers;
+using Consyzer.Analyzers;
 
 namespace Consyzer.Helpers
 {

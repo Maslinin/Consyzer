@@ -5,11 +5,7 @@ VisualStudioVersion = 17.2.32317.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer", "Consyzer\Consyzer.csproj", "{DBF0FF63-7D39-473F-9EFC-ECF60BA08508}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.AnalyzerEngine", "Consyzer.AnalyzerEngine\Consyzer.AnalyzerEngine.csproj", "{33E2C4A7-AB8F-4BBC-9DF9-E2F2C9CAC76C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.AnalyzerEngine.Tests", "Consyzer.AnalyzerEngine.Tests\Consyzer.AnalyzerEngine.Tests.csproj", "{642E42AF-A2B2-4229-A93A-3CE26079B1D2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consyzer.Tests", "Consyzer.Tests\Consyzer.Tests.csproj", "{6AEE7021-1C2F-4886-8444-FEA124A810F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consyzer.Tests", "Consyzer.Tests\Consyzer.Tests.csproj", "{6AEE7021-1C2F-4886-8444-FEA124A810F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +17,6 @@ Global
 		{DBF0FF63-7D39-473F-9EFC-ECF60BA08508}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBF0FF63-7D39-473F-9EFC-ECF60BA08508}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBF0FF63-7D39-473F-9EFC-ECF60BA08508}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33E2C4A7-AB8F-4BBC-9DF9-E2F2C9CAC76C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33E2C4A7-AB8F-4BBC-9DF9-E2F2C9CAC76C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33E2C4A7-AB8F-4BBC-9DF9-E2F2C9CAC76C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33E2C4A7-AB8F-4BBC-9DF9-E2F2C9CAC76C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{642E42AF-A2B2-4229-A93A-3CE26079B1D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6AEE7021-1C2F-4886-8444-FEA124A810F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6AEE7021-1C2F-4886-8444-FEA124A810F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AEE7021-1C2F-4886-8444-FEA124A810F2}.Release|Any CPU.ActiveCfg = Release|Any CPU

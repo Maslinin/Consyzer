@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 
 namespace Consyzer.Tests
@@ -8,5 +9,7 @@ namespace Consyzer.Tests
     {
         public static string MetadataAssemblyLocation => Assembly.GetExecutingAssembly().Location;
         public static FileInfo MetadataAssemblyFileInfo => new FileInfo(MetadataAssemblyLocation);
+        public static string NotMetadataAssemblyLocation => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testhost.exe");
+        public static FileInfo NotMetadataAssemblyFileInfo => new FileInfo(NotMetadataAssemblyLocation);
     }
 }

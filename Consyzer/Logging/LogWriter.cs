@@ -5,13 +5,13 @@ using Log = Consyzer.Logging.NLogger;
 using Consyzer.Helpers;
 using Consyzer.Searchers;
 using Consyzer.Cryptography;
-using Consyzer.AnalyzerEngine.Analyzers;
-using Consyzer.AnalyzerEngine.Analyzers.Models;
+using Consyzer.Analyzers;
+using Consyzer.Analyzers.Models;
 
 namespace Consyzer.Logging
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public static class LogWriter
+    internal static class LogWriter
     {
         public static void LoggingPathToBinariesForAnalysis(string analysisFolder)
         {

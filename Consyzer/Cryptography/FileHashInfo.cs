@@ -3,7 +3,7 @@ using Consyzer.Cryptography;
 
 namespace Consyzer.Cryptography
 {
-    public class FileHashInfo : IHashInfo
+    internal class FileHashInfo : IHashInfo
     {
         public string MD5Sum { get; }
         public string SHA256Sum { get; }

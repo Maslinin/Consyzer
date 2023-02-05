@@ -1,7 +1,6 @@
 using System;
 using Consyzer.Logging;
 using Consyzer.Helpers;
-using Consyzer.Contracts;
 using Log = Consyzer.Logging.NLogger;
 
 namespace Consyzer
