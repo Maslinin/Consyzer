@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Consyzer.Cryptography;
 
 namespace Consyzer.Cryptography
 {
@@ -13,10 +12,12 @@ namespace Consyzer.Cryptography
             return new FileHashInfo(fileInfo);
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private FileHashInfo(FileInfo fileInfo)
         {
             this.MD5Sum = FileHashCalculator.CalculateMD5(fileInfo);
             this.SHA256Sum = FileHashCalculator.CalculateSHA256(fileInfo);
         }
+
     }
 }

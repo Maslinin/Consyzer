@@ -1,48 +1,48 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using Log = Consyzer.Logging.NLogger;
 using Consyzer.Helpers;
-using Consyzer.Searchers;
+using Consyzer.Metadata;
+using Consyzer.Metadata.Models;
 using Consyzer.Cryptography;
-using Consyzer.Analyzers;
-using Consyzer.Analyzers.Models;
+using Log = Consyzer.Logging.NLogger;
+using static Consyzer.Constants;
 
 namespace Consyzer.Logging
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class LogWriter
     {
-        public static void LoggingPathToBinariesForAnalysis(string analysisFolder)
+        public static void LogAnalysisParams(string analysisDirectory, IEnumerable<string> fileExtensions)
         {
-            Log.Info($"Path for analysis: '{analysisFolder}'.");
-        }
-
-        public static void LoggingFilesExtensionsForAnalysis(IEnumerable<string> filesExtensions)
-        {
-            Log.Info($"Specified binary file extensions for analysis: {string.Join(", ", filesExtensions.Select(e => $"'{e}'"))}.");
+            string separatedExtensions = string.Join(", ", fileExtensions.Select(e => $"'{e}'"));
+            Log.Debug($"Path for analysis: '{analysisDirectory}'.");
+            Log.Debug($"Specified binary file extensions for analysis: {separatedExtensions}.");
         }
 
 
-        public static void LoggingBaseFileInfo(IEnumerable<FileInfo> binaryFiles)
+        public static void LogBaseFileInfo(IEnumerable<FileInfo> binaryFiles)
         {
             foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
             {
-                Log.Info($"\t[{item.Index}]File: '{item.File.Name}', Creation Time: '{item.File.CreationTime}'.");
+                Log.Info($"\t[{item.Index}]File: '{item.File.Name}':");
+                Log.Info($"\t\tCreation Time: '{item.File.CreationTime}'.");
             }
         }
 
-        public static void LoggingBaseAndHashFileInfo(IEnumerable<MetadataAnalyzer> fileInfos)
+        public static void LogBaseAndHashFileInfo(IEnumerable<MetadataAnalyzer> fileInfos)
         {
             foreach (var item in fileInfos.Select((File, Index) => (File, Index)))
             {
                 var hashInfo = FileHashInfo.CalculateHash(item.File.FileInfo);
-                Log.Info($"\t[{item.Index}]File: '{item.File.FileInfo.Name}', Creation Time: '{item.File.FileInfo.CreationTime}', " +
-                    $"SHA256 Hash Sum: '{hashInfo.SHA256Sum}'.");
+
+                Log.Info($"\t[{item.Index}]File: '{item.File.FileInfo.Name}':");
+                Log.Info($"\t\tCreation Time: '{item.File.FileInfo.CreationTime}',");
+                Log.Info($"\t\tSHA256 Hash Sum: '{hashInfo.SHA256Sum}'.");
             }
         }
 
-        public static void LoggingImportedMethodsInfoForEachBinary(IEnumerable<MetadataAnalyzer> metadataAnalyzers)
+        public static void LogImportedMethodsInfoForEachFile(IEnumerable<MetadataAnalyzer> metadataAnalyzers)
         {
             foreach (var item in metadataAnalyzers.Select((File, i) => (File, i)))
             {
@@ -51,7 +51,7 @@ namespace Consyzer.Logging
                 Log.Info($"\t[{item.i}]File '{item.File.FileInfo.FullName}': ");
                 if (importedMethods.Any())
                 {
-                    LoggingImportedMethodsInfo(importedMethods);
+                    LogImportedMethodsInfo(importedMethods);
                 }
                 else
                 {
@@ -60,48 +60,47 @@ namespace Consyzer.Logging
             }
         }
 
-        public static void LoggingImportedMethodsInfo(IEnumerable<ImportedMethodInfo> importedMethods)
+        public static void LogImportedMethodsInfo(IEnumerable<ImportedMethodInfo> importedMethods)
         {
-            foreach (var import in importedMethods.Select((Signature, i) => (Signature, i)))
+            foreach (var import in importedMethods.Select((Info, I) => (Info, I)))
             {
-                Log.Info($"\t\t[{import.i}]Method '{import.Signature.SignatureInfo.GetMethodLocation()}':");
-                Log.Info($"\t\t\tMethod Signature: '{import.Signature.SignatureInfo.GetBaseMethodSignature()}',");
-                Log.Info($"\t\t\tDLL Location: '{import.Signature.DllLocation}',");
-                Log.Info($"\t\t\tDLL Import Arguments: '{import.Signature.DllImportArguments}'.");
+                Log.Info($"\t\t[{import.I}]Method '{import.Info.Signature.GetMethodLocation()}':");
+                Log.Info($"\t\t\tMethod Signature: '{import.Info.Signature.GetBaseMethodSignature()}',");
+                Log.Info($"\t\t\tDLL Location: '{import.Info.DllLocation}',");
+                Log.Info($"\t\t\tDLL Import Args: '{import.Info.DllImportArgs}'.");
             }
         }
 
-        public static void LoggingBinariesExistStatus(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
+        public static void LogFilesExistStatus(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
         {
             var fileSearcher = new FileSearcher(analysisFolder);
 
             foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
             {
-                if (fileSearcher.GetFileLocation(item.Location, defaultBinaryExtension) is FileExistanceStatusCode.FileDoesNotExists)
+                if (fileSearcher.GetMinFileExistanceStatusCode(item.Location, defaultBinaryExtension) is FileExistanceStatusCode.FileDoesNotExists)
                 {
                     Log.Error($"\t[{item.i}]File '{item.Location}' does NOT exist!");
                 }
                 else
                 {
-                    Log.Info($"\t[{item.i}]File '{item.Location}' exist.");
+                    Log.Info($"\t[{item.i}]File '{item.Location}' exists.");
                 }
             }
         }
 
-        public static void LoggingExistAndNonExistBinariesCount(IEnumerable<string> binaryLocations, string analysisFolder)
+        public static void LogExistAndNotExistFilesCount(IEnumerable<string> existFiles, IEnumerable<string> notExistFiles)
         {
-            Log.Info($"Total: {AnalyzerHelper.GetExistsBinaries(binaryLocations, analysisFolder).Count()} exist, " +
-                $"{AnalyzerHelper.GetNotExistsBinaries(binaryLocations, analysisFolder).Count()} do not exist.");
+            Log.Info($"{existFiles.Count()} exists, {notExistFiles.Count()} does not exist.");
         }
 
-        public static bool CheckAndLoggingFilesCorrect(IEnumerable<FileInfo> binaryFiles)
+        public static bool CheckAndLogCorrectFiles(IEnumerable<FileInfo> binaryFiles)
         {
-            var notMetadataFiles = MetadataFilter.GetNotMetadataFiles(binaryFiles);
+            var notMetadataFiles = MetadataFileFilter.GetNotMetadataFiles(binaryFiles);
 
             if (notMetadataFiles.Any())
             {
                 Log.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
-                LogWriter.LoggingBaseFileInfo(notMetadataFiles);
+                LogBaseFileInfo(notMetadataFiles);
 
                 if (binaryFiles.Count() == notMetadataFiles.Count())
                 {
@@ -110,12 +109,12 @@ namespace Consyzer.Logging
                 }
             }
 
-            var notMetadataAssemblyFiles = MetadataFilter.GetNotMetadataAssemblyFiles(binaryFiles);
+            var notMetadataAssemblyFiles = MetadataFileFilter.GetNotMetadataAssemblyFiles(binaryFiles);
             var differentFiles = notMetadataFiles.Where(f => !notMetadataAssemblyFiles.Select(f => f.FullName).Contains(f.FullName));
             if (differentFiles.Any())
             {
                 Log.Info("The following files were excluded from analysis because they are NOT assembly files:");
-                LogWriter.LoggingBaseFileInfo(differentFiles);
+                LogBaseFileInfo(differentFiles);
 
                 if (binaryFiles.Count() == differentFiles.Count())
                 {
@@ -127,22 +126,5 @@ namespace Consyzer.Logging
             return true;
         }
 
-        public static bool CheckAndLoggingBinaryFilesExist(IEnumerable<FileInfo> binaryFiles)
-        {
-            if (binaryFiles.Any())
-                return true;
-
-            Log.Warn("Binary files for analysis with the specified extensions were not found.");
-            return false;
-        }
-
-        public static bool CheckAndLoggingAnyBinariesExist(IEnumerable<string> binaryLocations)
-        {
-            if (binaryLocations.Any())
-                return true;
-
-            Log.Info("All files are missing imported methods from other assemblies.");
-            return false;
-        }
     }
 }

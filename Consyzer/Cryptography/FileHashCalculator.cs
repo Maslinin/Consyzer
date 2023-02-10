@@ -1,9 +1,6 @@
 ﻿using System.IO;
 using System.Text;
 using System.Security.Cryptography;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Consyzer.Tests")]
 
 namespace Consyzer.Cryptography
 {

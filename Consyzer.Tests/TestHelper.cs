@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
+using static Consyzer.Tests.TestConstants.FileLocation;
 
 namespace Consyzer.Tests
 {
@@ -24,24 +25,9 @@ namespace Consyzer.Tests
             return methodsDefinitionsHandles.Select(x => mdReader.GetMethodDefinition(x));
         }
 
-        public static TypeDefinition GetTypeDefinition()
-        {
-            //we take average element of collection because first definitions are technical
-            var typesDefs = GetAllTypesDefinitions();
-            int collectionLength = typesDefs.Count() / 2;
-            return typesDefs.ElementAt(collectionLength);
-        }
-
-        public static IEnumerable<TypeDefinition> GetAllTypesDefinitions()
-        {
-            var mdReader = GetMetadataReader();
-            var typesDefinitionsHandles = mdReader.TypeDefinitions;
-            return typesDefinitionsHandles.Select(x => mdReader.GetTypeDefinition(x));
-        }
-
         public static MetadataReader GetMetadataReader()
         {
-            var fileStream = new FileStream(TestConstants.MetadataAssemblyFileInfo.FullName, FileMode.Open, FileAccess.Read);
+            var fileStream = new FileStream(MetadataAssemblyFileInfo.FullName, FileMode.Open, FileAccess.Read);
             var peReader = new PEReader(fileStream, PEStreamOptions.Default);
 
             return peReader.GetMetadataReader();

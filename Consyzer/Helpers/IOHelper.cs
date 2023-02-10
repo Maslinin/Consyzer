@@ -8,45 +8,20 @@ namespace Consyzer.Helpers
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class IOHelper
     {
-        public static IEnumerable<FileInfo> GetBinaryFilesInfoFrom(string pathToFiles, IEnumerable<string> binaryExtensions = null)
+        public static IEnumerable<FileInfo> GetFilesFrom(string pathToFiles, IEnumerable<string> fileExtensions)
         {
-            if (!Directory.Exists(pathToFiles))
-            {
-                throw new DirectoryNotFoundException("The directory specified for the analysis does not exist.");
-            }
-            binaryExtensions ??= new List<string> { ".exe", ".dll" };
-
-            try
-            {
-                var dirInfo = new DirectoryInfo(pathToFiles);
-                var fileInfos = dirInfo.GetFiles().Where(f => binaryExtensions.Contains(f.Extension));
-
-                return fileInfos;
-            }
-            catch (Exception e)
-            {
-                throw new UnauthorizedAccessException($"You do not have read permissions in the specified folder: {pathToFiles}.", e);
-            }
+            var dirInfo = new DirectoryInfo(pathToFiles);
+            return dirInfo.GetFiles().Where(f => fileExtensions.Contains(f.Extension));
         }
 
         public static string AddExtensionToFile(string filePath, string fileExtension)
         {
-            if (!Path.HasExtension(filePath))
-            {
-                return $"{filePath}{fileExtension}";
-            }
-
-            return filePath;
+            return Path.HasExtension(filePath) ? filePath : Path.ChangeExtension(filePath, fileExtension);
         }
 
-        public static string ToAbsolutePath(string folder, string filePath)
+        public static string GetAbsolutePath(string folder, string filePath)
         {
-            if (!IsAbsolutePath(filePath))
-            {
-                return Path.Combine(folder, filePath);
-            }
-
-            return filePath;
+            return IsAbsolutePath(filePath) ? filePath : Path.Combine(folder, filePath);
         }
 
         public static bool IsAbsolutePath(string filePath)

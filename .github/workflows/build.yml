@@ -59,8 +59,3 @@ jobs:
         with:
           name: Consyzer
           path: Consyzer\bin\Release
-      - name: Upload Artifact - Consyzer.AnalyzerEngine
-        uses: actions/upload-artifact@v3
-        with:
-          name: Consyzer.AnalyzerEngine
-          path: Consyzer.AnalyzerEngine\bin\Release\netstandard2.0
