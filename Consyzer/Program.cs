@@ -52,12 +52,9 @@ namespace Consyzer
                 }
 
                 var searcher = new FileSearcher(analysisDirectory);
-                var existFiles =  fileLocations.Where(f => !(searcher.GetMinFileExistanceStatusCode(f) is FileExistanceStatusCode.FileDoesNotExists));
-                var notExistFiles = fileLocations.Where(f => searcher.GetMinFileExistanceStatusCode(f) is FileExistanceStatusCode.FileDoesNotExists);
 
                 Log.Info("The presence of binary files in the received locations:");
-                LogWriter.LogFilesExistStatus(fileLocations, analysisDirectory);
-                LogWriter.LogExistAndNotExistFilesCount(existFiles, notExistFiles);
+                LogWriter.LogFilesExistStatus(searcher, fileLocations);
 
                 return (int)searcher.GetMaxFileExistanceStatusCode(fileLocations);
             }
@@ -68,13 +65,15 @@ namespace Consyzer
             }
         }
 
-        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultBinaryExtension = ".dll")
+        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<IMetadataAnalyzer> metadataAnalyzers, string defaultFileExtension = ".dll")
         {
             var importedMethods = new List<string>();
 
             foreach (var method in metadataAnalyzers)
             {
-                importedMethods.AddRange(method.GetImportedMethodsInfo().Select(m => Path.HasExtension(m.DllLocation) ? m.DllLocation : $"{m.DllLocation}{defaultBinaryExtension}"));
+                var methods = method.GetImportedMethodsInfo()
+                    .Select(m => IOHelper.AddExtensionToFile(m.DllLocation, defaultFileExtension));
+                importedMethods.AddRange(methods);
             }
 
             return importedMethods.Distinct();

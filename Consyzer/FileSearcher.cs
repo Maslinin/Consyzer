@@ -10,6 +10,7 @@ namespace Consyzer
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class FileSearcher
     {
+
         private const string _defaultFileExtension = ".dll";
 
         private readonly string _analysisFolder;

@@ -9,7 +9,7 @@ namespace Consyzer.Metadata
 {
     internal sealed class MetadataAnalyzer : IMetadataAnalyzer
     {
-        protected readonly MetadataReader _mdReader;
+        private readonly MetadataReader _mdReader;
 
         public FileInfo FileInfo { get; }
 

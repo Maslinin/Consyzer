@@ -20,7 +20,6 @@ namespace Consyzer.Logging
             Log.Debug($"Specified binary file extensions for analysis: {separatedExtensions}.");
         }
 
-
         public static void LogBaseFileInfo(IEnumerable<FileInfo> binaryFiles)
         {
             foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
@@ -71,52 +70,51 @@ namespace Consyzer.Logging
             }
         }
 
-        public static void LogFilesExistStatus(IEnumerable<string> binaryLocations, string analysisFolder, string defaultBinaryExtension = ".dll")
+        public static void LogFilesExistStatus(FileSearcher fileSearcher, IEnumerable<string> binaryLocations, string defaultBinaryExtension = ".dll")
         {
-            var fileSearcher = new FileSearcher(analysisFolder);
+            int existingFiles = 0, nonExistingFiles = 0;
 
             foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
             {
-                if (fileSearcher.GetMinFileExistanceStatusCode(item.Location, defaultBinaryExtension) is FileExistanceStatusCode.FileDoesNotExists)
+                bool status = fileSearcher.GetMinFileExistanceStatusCode(item.Location, defaultBinaryExtension) is FileExistanceStatusCode.FileDoesNotExists;
+                if (!status)
                 {
-                    Log.Error($"\t[{item.i}]File '{item.Location}' does NOT exist!");
+                    Log.Info($"\t[{item.i}]File '{item.Location}' exists.");
+                    ++existingFiles;
                 }
                 else
                 {
-                    Log.Info($"\t[{item.i}]File '{item.Location}' exists.");
+                    Log.Error($"\t[{item.i}]File '{item.Location}' does NOT exist!");
+                    ++nonExistingFiles;
                 }
             }
+
+            Log.Info($"{existingFiles} exists, {nonExistingFiles} does not exist.");
         }
 
-        public static void LogExistAndNotExistFilesCount(IEnumerable<string> existFiles, IEnumerable<string> notExistFiles)
+        public static bool CheckAndLogCorrectFiles(IEnumerable<FileInfo> files)
         {
-            Log.Info($"{existFiles.Count()} exists, {notExistFiles.Count()} does not exist.");
-        }
-
-        public static bool CheckAndLogCorrectFiles(IEnumerable<FileInfo> binaryFiles)
-        {
-            var notMetadataFiles = MetadataFileFilter.GetNotMetadataFiles(binaryFiles);
-
+            var notMetadataFiles = MetadataFileFilter.GetNotMetadataFiles(files);
             if (notMetadataFiles.Any())
             {
                 Log.Info("The following files were excluded from analysis because they DO NOT contain metadata:");
                 LogBaseFileInfo(notMetadataFiles);
 
-                if (binaryFiles.Count() == notMetadataFiles.Count())
+                if (files.Count() == notMetadataFiles.Count())
                 {
                     Log.Warn("All found files do NOT contain metadata.");
                     return false;
                 }
             }
 
-            var notMetadataAssemblyFiles = MetadataFileFilter.GetNotMetadataAssemblyFiles(binaryFiles);
+            var notMetadataAssemblyFiles = MetadataFileFilter.GetNotMetadataAssemblyFiles(files);
             var differentFiles = notMetadataFiles.Where(f => !notMetadataAssemblyFiles.Select(f => f.FullName).Contains(f.FullName));
             if (differentFiles.Any())
             {
                 Log.Info("The following files were excluded from analysis because they are NOT assembly files:");
                 LogBaseFileInfo(differentFiles);
 
-                if (binaryFiles.Count() == differentFiles.Count())
+                if (files.Count() == differentFiles.Count())
                 {
                     Log.Warn("All found files contain metadata, but are NOT assembly files.");
                     return false;

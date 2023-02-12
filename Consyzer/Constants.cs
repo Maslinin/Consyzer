@@ -2,11 +2,7 @@
 {
     internal static class Constants
     {
-        public enum ProgramStatusCode
-        {
-            UnexpectedBehavior = -1,
-            SuccessExit = 0
-        }
+        public const string defaultFileExtension = ".dll";
 
         public enum FileExistanceStatusCode
         {
@@ -15,6 +11,12 @@
             FileExistsAtRelativePath,
             FileExistsAtSystemFolder,
             FileDoesNotExists
+        }
+
+        public enum ProgramStatusCode
+        {
+            UnexpectedBehavior = -1,
+            SuccessExit = 0
         }
 
         public static class ParameterType
