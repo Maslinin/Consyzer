@@ -1,7 +1,6 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using Consyzer.Helpers;
 using Consyzer.Metadata;
 using Consyzer.Metadata.Models;
 using Consyzer.Cryptography;
@@ -76,7 +75,7 @@ namespace Consyzer.Logging
 
             foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
             {
-                bool status = fileSearcher.GetMinFileExistanceStatusCode(item.Location, defaultBinaryExtension) is FileExistanceStatusCode.FileDoesNotExists;
+                bool status = fileSearcher.GetMinFileExistanceStatusCode(item.Location, defaultBinaryExtension) is FileSearcher.FileExistanceStatusCode.FileDoesNotExists;
                 if (!status)
                 {
                     Log.Info($"\t[{item.i}]File '{item.Location}' exists.");

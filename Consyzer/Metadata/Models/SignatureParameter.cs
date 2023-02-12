@@ -1,10 +1,11 @@
-﻿using static Consyzer.Constants.ParameterValue;
-
-namespace Consyzer.Metadata.Models
+﻿namespace Consyzer.Metadata.Models
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class SignatureParameter
     {
+        public const string AttributesDefaultValue = "None";
+        public const string NameDefaultValue = "None";
+
         public string Type { get; }
         public string Attributes { get; }
         public string Name { get; }
@@ -16,5 +17,6 @@ namespace Consyzer.Metadata.Models
             this.Attributes = Attributes;
             this.Name = Name;
         }
+
     }
 }

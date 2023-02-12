@@ -1,15 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using Consyzer.Helpers;
-using static Consyzer.Constants;
 
 namespace Consyzer
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class FileSearcher
     {
+        public enum FileExistanceStatusCode
+        {
+            FileExistsAtAnalysisPath,
+            FileExistsAtAbsolutePath,
+            FileExistsAtRelativePath,
+            FileExistsAtSystemFolder,
+            FileDoesNotExists
+        }
 
         private const string _defaultFileExtension = ".dll";
 

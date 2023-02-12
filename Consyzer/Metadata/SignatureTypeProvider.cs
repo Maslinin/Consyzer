@@ -3,8 +3,6 @@ using System.Text;
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
 using Consyzer.Metadata.Models;
-using static Consyzer.Constants.ParameterType;
-using static Consyzer.Constants.ParameterValue;
 
 namespace Consyzer.Metadata
 {
@@ -69,7 +67,7 @@ namespace Consyzer.Metadata
 
         public SignatureParameter GetPrimitiveType(PrimitiveTypeCode typeCode)
         {
-            string attributes = AttributesDefaultValue, name = NameDefaultValue;
+            string attributes = SignatureParameter.AttributesDefaultValue, name = SignatureParameter.NameDefaultValue;
 
             if (!this._isReturnType) //Always return method type is first defined
             {
@@ -80,8 +78,8 @@ namespace Consyzer.Metadata
                 var parameterHandle = this._methodDef.GetParameters().ElementAtOrDefault(this._parameterIteration);
                 var parameter = this._mdReader.GetParameter(parameterHandle);
 
-                attributes = parameter.Attributes.ToString() ?? AttributesDefaultValue;
-                name = this._mdReader.GetString(parameter.Name) ?? NameDefaultValue;
+                attributes = parameter.Attributes.ToString() ?? SignatureParameter.AttributesDefaultValue;
+                name = this._mdReader.GetString(parameter.Name) ?? SignatureParameter.NameDefaultValue;
 
                 ++this._parameterIteration;
             }
@@ -164,6 +162,30 @@ namespace Consyzer.Metadata
                 _ => new SignatureParameter(NotSupported, attributes, name),
             };
         }
+
+        #endregion
+
+        #region Used Constants
+
+        public const string NotSupported = "!notsupported";
+        public const string Boolean = "bool";
+        public const string Byte = "byte";
+        public const string SByte = "sbyte";
+        public const string Char = "char";
+        public const string Short = "short";
+        public const string UShort = "ushort";
+        public const string Int = "int";
+        public const string UInt = "uint";
+        public const string Long = "long";
+        public const string ULong = "ulong";
+        public const string Float = "float";
+        public const string Double = "double";
+        public const string IntPtr = "IntPtr";
+        public const string UIntPtr = "UIntPtr";
+        public const string String = "string";
+        public const string Object = "object";
+        public const string Void = "void";
+        public const string TypedReference = "typedref";
 
         #endregion
     }

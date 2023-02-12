@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Collections.Generic;
-using static Consyzer.Constants.ParameterValue;
 
 namespace Consyzer.Metadata.Models
 {
@@ -52,7 +51,7 @@ namespace Consyzer.Metadata.Models
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private void AddArgumentAttributeIfItExists(StringBuilder builder, SignatureParameter argument)
         {
-            if (argument.Attributes != AttributesDefaultValue)
+            if (argument.Attributes != SignatureParameter.AttributesDefaultValue)
             {
                 builder.Append($"{argument.Attributes} ");
             }
