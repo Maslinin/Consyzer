@@ -20,10 +20,10 @@ but if at least one of the Dll is missing, the application will not only crash, 
 Consyzer was designed specifically to prevent such incidents.
 
 ## Benefits of Consyzer
-1. *Consyzer* is GUI independent and easy to run from *CLI*; 
-2. *Consyzer* can be easily integrated into *CI/CD pipeline*;
-3. *Consyzer* logs detailed information about each imported function, up to its signature;
-4. *Consyzer* returns a specific analysis code to the operating system, which allows you to respond individually to each of the analysis incidents.
+1. Consyzer is GUI independent and easy to run from *CLI*; 
+2. Consyzer can be easily integrated into *CI/CD pipeline*;
+3. Consyzer logs detailed information about each imported function, up to its signature;
+4. Consyzer returns a specific analysis code to the operating system, which allows you to respond individually to each of the analysis incidents.
 
 ## What information does the Consyzer log about the imported function?
 > 0 - all the DLL files used by the application are located in the analyzed directory along with the application artifacts;           
