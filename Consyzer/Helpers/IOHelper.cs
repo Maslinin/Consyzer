@@ -19,19 +19,5 @@ namespace Consyzer.Helpers
             return Path.HasExtension(filePath) ? filePath : Path.ChangeExtension(filePath, fileExtension);
         }
 
-        public static string GetAbsolutePath(string folder, string filePath)
-        {
-            return IsAbsolutePath(filePath) ? filePath : Path.Combine(folder, filePath);
-        }
-
-        public static bool IsAbsolutePath(string filePath)
-        {
-            return Path.IsPathFullyQualified(filePath);
-        }
-
-        public static bool IsRelativePath(string filePath)
-        {
-            return Path.IsPathRooted(filePath);
-        }
     }
 }

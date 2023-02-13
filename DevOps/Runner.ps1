@@ -2,7 +2,7 @@
     [Parameter()]
     [String]$pathToConsyzer,
     [String]$solutionForAnalysis,
-    [String]$fileExtensionsForAnalysis,
+    [String]$fileExtensions,
     [String]$buildConfiguration
 )
 
@@ -37,7 +37,7 @@ $AnalysisFolders = $AnalysisFolders | Select-Object -Unique
 $finalExitCode = -1
 $AnalysisStatuses = New-Object System.Collections.Generic.List[System.String]
 foreach($folder in $AnalysisFolders) {
-  & $pathToConsyzer $folder $fileExtensionsForAnalysis
+  & $pathToConsyzer $folder $fileExtensions
   if ( $LastExitCode -ge $exitcode ) {
 	$finalExitCode = $LastExitCode
   }

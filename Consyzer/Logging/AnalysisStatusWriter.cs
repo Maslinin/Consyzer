@@ -5,12 +5,11 @@ using Consyzer.Metadata;
 using Consyzer.Metadata.Models;
 using Consyzer.Cryptography;
 using Log = Consyzer.Logging.NLogger;
-using static Consyzer.Constants;
 
 namespace Consyzer.Logging
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    internal static class LogWriter
+    internal static class AnalysisStatusWriter
     {
         public static void LogAnalysisParams(string analysisDirectory, IEnumerable<string> fileExtensions)
         {

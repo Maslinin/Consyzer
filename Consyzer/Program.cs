@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Consyzer.Logging;
 using Consyzer.Helpers;
 using Consyzer.Metadata;
 using Log = Consyzer.Logging.NLogger;
 using static Consyzer.Constants;
-using System.Collections.Generic;
 
 [assembly: InternalsVisibleTo("Consyzer.Tests")]
 
@@ -20,7 +20,7 @@ namespace Consyzer
             try
             {
                 var(analysisDirectory, fileExtensions) = CmdArgsParser.GetAnalysisParams();
-                LogWriter.LogAnalysisParams(analysisDirectory, fileExtensions);
+                AnalysisStatusWriter.LogAnalysisParams(analysisDirectory, fileExtensions);
 
                 var files = IOHelper.GetFilesFrom(analysisDirectory, fileExtensions);
                 if (!files.Any())
@@ -30,18 +30,18 @@ namespace Consyzer
                 }
 
                 Log.Info("The following binary files with the specified extensions were found:");
-                LogWriter.LogBaseFileInfo(files);
+                AnalysisStatusWriter.LogBaseFileInfo(files);
 
-                if (!LogWriter.CheckAndLogCorrectFiles(files))
+                if (!AnalysisStatusWriter.CheckAndLogCorrectFiles(files))
                     return (int)ProgramStatusCode.SuccessExit;
 
                 var metadataAnalyzers = MetadataFileFilter.GetMetadataAssemblyFiles(files)
                     .Select(f => new MetadataAnalyzer(f));
                 Log.Info("The following assembly binaries containing metadata were found:");
-                LogWriter.LogBaseAndHashFileInfo(metadataAnalyzers);
+                AnalysisStatusWriter.LogBaseAndHashFileInfo(metadataAnalyzers);
 
                 Log.Info("Information about imported methods from other assemblies in the analyzed files:");
-                LogWriter.LogImportedMethodsInfoForEachFile(metadataAnalyzers);
+                AnalysisStatusWriter.LogImportedMethodsInfoForEachFile(metadataAnalyzers);
 
                 var fileLocations = GetImportedMethodsLocations(metadataAnalyzers);
                 if (!fileLocations.Any())
@@ -53,7 +53,7 @@ namespace Consyzer
                 var searcher = new FileSearcher(analysisDirectory);
 
                 Log.Info("The presence of binary files in the received locations:");
-                LogWriter.LogFilesExistStatus(searcher, fileLocations);
+                AnalysisStatusWriter.LogFilesExistStatus(searcher, fileLocations);
 
                 return (int)searcher.GetMaxFileExistanceStatusCode(fileLocations);
             }
@@ -64,7 +64,7 @@ namespace Consyzer
             }
         }
 
-        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<IMetadataAnalyzer> metadataAnalyzers, string defaultFileExtension = ".dll")
+        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<IMetadataAnalyzer> metadataAnalyzers, string defaultFileExtension = DefaultFileExtension)
         {
             var importedMethods = new List<string>();
 
