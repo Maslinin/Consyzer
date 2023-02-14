@@ -22,7 +22,7 @@ namespace Consyzer.Tests
         {
             var mdReader = GetMetadataReader();
             var methodsDefinitionsHandles = mdReader.MethodDefinitions;
-            return methodsDefinitionsHandles.Select(x => mdReader.GetMethodDefinition(x));
+            return methodsDefinitionsHandles.Select(m => mdReader.GetMethodDefinition(m));
         }
 
         public static MetadataReader GetMetadataReader()

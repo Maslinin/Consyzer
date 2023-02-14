@@ -35,7 +35,7 @@ namespace Consyzer.Metadata
         public AccessModifier GetMethodAccessibilityModifier(MethodDefinition methodDef)
         {
             string methodAttributes = this.GetMethodAttributes(methodDef);
-            var separatedMethodAttributes = methodAttributes.Split(',').Select(x => x.Trim());
+            var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodAttributes);
 
             string[] accessibilityModifiers = Enum.GetNames(typeof(MsilAccessModifier));
             var modifierAsString = separatedMethodAttributes.Intersect(accessibilityModifiers).First();
@@ -47,7 +47,7 @@ namespace Consyzer.Metadata
         public bool IsStaticMethod(MethodDefinition methodDef)
         {
             var methodAttributes = this.GetMethodAttributes(methodDef);
-            var separatedMethodAttributes = methodAttributes.Split(',').Select(x => x.Trim());
+            var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodAttributes);
 
             return separatedMethodAttributes.Any(s => s == "Static");
         }
@@ -76,6 +76,11 @@ namespace Consyzer.Metadata
             var signature = methodDef.DecodeSignature(signatureProvider, new object());
 
             return signature.ParameterTypes;
+        }
+
+        private IEnumerable<string> GetSeparatedMethodAttributes(string methodAttributes)
+        {
+            return methodAttributes.Split(',').Select(a => a.Trim());
         }
     }
 }

@@ -24,7 +24,8 @@ namespace Consyzer.Tests.Metadata.Models
         public void GetFullMethodSignature_ShouldReturnNotEmptyStringWithStaticModifier()
         {
             var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
-            var methodDef = TestHelper.GetAllMethodsDefinitions().Where(x => extractor.IsStaticMethod(x)).First();
+            var methodDef = TestHelper.GetAllMethodsDefinitions()
+                .Where(m => extractor.IsStaticMethod(m)).First();
             var signatureInfo = this.Decoder.GetDecodedSignature(methodDef);
 
             var methodSignature = signatureInfo.GetFullMethodSignature();
@@ -37,7 +38,8 @@ namespace Consyzer.Tests.Metadata.Models
         public void GetFullMethodSignature_ShouldReturnNotEmptyStringWithoutStaticModifier()
         {
             var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
-            var methodDef = TestHelper.GetAllMethodsDefinitions().Where(x => !extractor.IsStaticMethod(x)).First();
+            var methodDef = TestHelper.GetAllMethodsDefinitions()
+                .Where(m => !extractor.IsStaticMethod(m)).First();
             var signatureInfo = this.Decoder.GetDecodedSignature(methodDef);
 
             var methodSignature = signatureInfo.GetFullMethodSignature();
@@ -60,7 +62,8 @@ namespace Consyzer.Tests.Metadata.Models
         public void GetMethodArgsAsString_ShouldReturnEmptyStringIfMethodDoesNotContainArguments()
         {
             var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
-            var methodDefWithoutArguments = TestHelper.GetAllMethodsDefinitions().Where(x => !extractor.GetMethodArguments(x).Any()).First();
+            var methodDefWithoutArguments = TestHelper.GetAllMethodsDefinitions()
+                .Where(m => !extractor.GetMethodArguments(m).Any()).First();
             var signatureInfo = this.Decoder.GetDecodedSignature(methodDefWithoutArguments);
 
             var methodArgs = signatureInfo.GetMethodArgsAsString();
@@ -72,7 +75,8 @@ namespace Consyzer.Tests.Metadata.Models
         public void GetMethodArgsAsString_ShouldReturnNotEmptyStringIfMethodContainsArguments()
         {
             var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
-            var methodDefWithArguments = TestHelper.GetAllMethodsDefinitions().Where(x => extractor.GetMethodArguments(x).Any()).First();
+            var methodDefWithArguments = TestHelper.GetAllMethodsDefinitions()
+                .Where(m => extractor.GetMethodArguments(m).Any()).First();
             var signatureInfo = this.Decoder.GetDecodedSignature(methodDefWithArguments);
 
             var methodArgs = signatureInfo.GetMethodArgsAsString();

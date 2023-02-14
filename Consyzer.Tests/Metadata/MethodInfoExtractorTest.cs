@@ -57,7 +57,7 @@ namespace Consyzer.Tests.Metadata
         {
             var extractor = new MethodInfoExtractor(this.MetadataReader);
 
-            var methodAccessibilityModifier = this.TestMethodsDefinitions.Any(x => extractor.GetMethodAccessibilityModifier(x) == AccessModifier.Public);
+            var methodAccessibilityModifier = this.TestMethodsDefinitions.Any(m => extractor.GetMethodAccessibilityModifier(m) == AccessModifier.Public);
 
             Assert.True(methodAccessibilityModifier);
         }
@@ -67,7 +67,7 @@ namespace Consyzer.Tests.Metadata
         {
             var extractor = new MethodInfoExtractor(this.MetadataReader);
 
-            var isStatic = this.TestMethodsDefinitions.Any(x => extractor.IsStaticMethod(x));
+            var isStatic = this.TestMethodsDefinitions.Any(m => extractor.IsStaticMethod(m));
 
             Assert.True(isStatic);
         }

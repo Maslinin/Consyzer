@@ -28,13 +28,13 @@ namespace Consyzer.Metadata
         public IEnumerable<ImportedMethodInfo> GetImportedMethodsInfo()
         {
             var importedMethodDefs = this.GetImportedMethodDefinitions();
-            return importedMethodDefs.Select(x => this.GetImportedMethodInfo(x));
+            return importedMethodDefs.Select(m => this.GetImportedMethodInfo(m));
         }
 
         public IEnumerable<MethodDefinition> GetImportedMethodDefinitions()
         {
             var methodDefs = this.GetMethodDefinitions();
-            return methodDefs.Where(x => this.IsImportedMethod(x));
+            return methodDefs.Where(m => this.IsImportedMethod(m));
         }
 
         public IEnumerable<MethodDefinition> GetMethodDefinitions()
