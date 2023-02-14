@@ -2,11 +2,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Consyzer.File;
 using Consyzer.Logging;
-using Consyzer.Helpers;
 using Consyzer.Metadata;
 using Log = Consyzer.Logging.NLogger;
 using static Consyzer.Constants;
+using static Consyzer.Constants.File;
 
 [assembly: InternalsVisibleTo("Consyzer.Tests")]
 
@@ -22,7 +23,7 @@ namespace Consyzer
                 var(analysisDirectory, fileExtensions) = CmdArgsParser.GetAnalysisParams();
                 AnalysisStatusWriter.LogAnalysisParams(analysisDirectory, fileExtensions);
 
-                var files = IOHelper.GetFilesFrom(analysisDirectory, fileExtensions);
+                var files = FileHelper.GetFilesFrom(analysisDirectory, fileExtensions);
                 if (!files.Any())
                 {
                     Log.Warn("Binary files for analysis with the specified extensions were not found.");
@@ -71,7 +72,7 @@ namespace Consyzer
             foreach (var method in metadataAnalyzers)
             {
                 var methods = method.GetImportedMethodsInfo()
-                    .Select(m => IOHelper.AddExtensionToFile(m.DllLocation, defaultFileExtension));
+                    .Select(m => FileHelper.AddExtensionToFile(m.DllLocation, defaultFileExtension));
                 importedMethods.AddRange(methods);
             }
 

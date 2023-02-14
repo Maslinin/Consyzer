@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Consyzer.File;
 using Consyzer.Metadata;
 
 namespace Consyzer

@@ -2,7 +2,10 @@
 {
     internal static class Constants
     {
-        public const string DefaultFileExtension = ".dll";
+        public static class File
+        {
+            public const string DefaultFileExtension = ".dll";
+        }
 
         public enum ProgramStatusCode
         {

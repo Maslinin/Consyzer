@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using Consyzer.File;
 using Consyzer.Metadata;
 using Consyzer.Metadata.Models;
 using Consyzer.Cryptography;
@@ -106,7 +107,7 @@ namespace Consyzer.Logging
             }
 
             var notMetadataAssemblyFiles = MetadataFileFilter.GetNotMetadataAssemblyFiles(files);
-            var differentFiles = notMetadataFiles.Where(f => !notMetadataAssemblyFiles.Select(f => f.FullName).Contains(f.FullName));
+            var differentFiles = notMetadataFiles.Except(notMetadataAssemblyFiles, new FileInfoEqualityComparer());
             if (differentFiles.Any())
             {
                 Log.Info("The following files were excluded from analysis because they are NOT assembly files:");

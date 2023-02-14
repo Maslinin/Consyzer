@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Consyzer
+namespace Consyzer.File
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [Serializable]
