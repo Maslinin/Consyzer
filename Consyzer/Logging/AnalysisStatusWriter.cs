@@ -16,7 +16,7 @@ namespace Consyzer.Logging
         {
             string separatedExtensions = string.Join(", ", fileExtensions.Select(e => $"'{e}'"));
             Log.Debug($"Path for analysis: '{analysisDirectory}'.");
-            Log.Debug($"Specified binary file extensions for analysis: {separatedExtensions}.");
+            Log.Debug($"Specified file extensions for analysis: {separatedExtensions}.");
         }
 
         public static void LogBaseFileInfo(IEnumerable<FileInfo> binaryFiles)

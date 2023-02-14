@@ -26,11 +26,11 @@ namespace Consyzer
                 var files = FileHelper.GetFilesFrom(analysisDirectory, fileExtensions);
                 if (!files.Any())
                 {
-                    Log.Warn("Binary files for analysis with the specified extensions were not found.");
+                    Log.Warn("Files for analysis with the specified extensions were not found.");
                     return (int)ProgramStatusCode.SuccessExit;
                 }
 
-                Log.Info("The following binary files with the specified extensions were found:");
+                Log.Info("The following files with the specified extensions were found:");
                 AnalysisStatusWriter.LogBaseFileInfo(files);
 
                 if (!AnalysisStatusWriter.CheckAndLogCorrectFiles(files))
@@ -38,7 +38,7 @@ namespace Consyzer
 
                 var metadataAnalyzers = MetadataFileFilter.GetMetadataAssemblyFiles(files)
                     .Select(f => new MetadataAnalyzer(f));
-                Log.Info("The following assembly binaries containing metadata were found:");
+                Log.Info("The following assembly files containing metadata were found:");
                 AnalysisStatusWriter.LogBaseAndHashFileInfo(metadataAnalyzers);
 
                 Log.Info("Information about imported methods from other assemblies in the analyzed files:");
@@ -53,7 +53,7 @@ namespace Consyzer
 
                 var searcher = new FileSearcher(analysisDirectory);
 
-                Log.Info("The presence of binary files in the received locations:");
+                Log.Info("The presence of files in the received locations:");
                 AnalysisStatusWriter.LogFilesExistStatus(searcher, fileLocations);
 
                 return (int)searcher.GetMaxFileExistanceStatusCode(fileLocations);

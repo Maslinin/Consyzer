@@ -78,6 +78,7 @@ namespace Consyzer.Metadata
             return signature.ParameterTypes;
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private IEnumerable<string> GetSeparatedMethodAttributes(string methodAttributes)
         {
             return methodAttributes.Split(',').Select(a => a.Trim());
