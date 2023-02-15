@@ -2,7 +2,7 @@
 
 namespace Consyzer.Metadata.Models
 {
-    internal enum MsilAccessModifier
+    internal enum MsilAccessModifier //for access modifier parse
     {
         Private = MethodAttributes.Private,
         Public = MethodAttributes.Public,
@@ -12,7 +12,7 @@ namespace Consyzer.Metadata.Models
         FamANDAssem = MethodAttributes.FamANDAssem
     }
 
-    internal enum AccessModifier
+    internal enum AccessModifier //for convert msil access modifier names to understandable names
     {
         Private = MsilAccessModifier.Private,
         Public = MsilAccessModifier.Public,

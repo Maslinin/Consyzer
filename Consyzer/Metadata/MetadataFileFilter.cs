@@ -21,8 +21,6 @@ namespace Consyzer.Metadata
 
         public static bool IsMetadataFile(FileInfo fileInfo)
         {
-            ExceptionChecker.ThrowExceptionIfFileDoesNotExist(fileInfo);
-
             try
             {
                 using var fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
@@ -47,8 +45,6 @@ namespace Consyzer.Metadata
 
         public static bool IsMetadataAssemblyFile(FileInfo fileInfo)
         {
-            ExceptionChecker.ThrowExceptionIfFileDoesNotExist(fileInfo);
-
             try
             {
                 using var fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);

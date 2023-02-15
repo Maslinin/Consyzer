@@ -88,7 +88,7 @@ namespace Consyzer.Logging
                 }
             }
 
-            Log.Info($"{existingFiles} exists, {nonExistingFiles} does not exist.");
+            Log.Info($"TOTAL: {existingFiles} exists, {nonExistingFiles} does not exist.");
         }
 
         public static bool CheckAndLogCorrectFiles(IEnumerable<FileInfo> files)

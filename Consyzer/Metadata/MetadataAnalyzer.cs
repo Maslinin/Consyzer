@@ -15,9 +15,6 @@ namespace Consyzer.Metadata
 
         public MetadataAnalyzer(FileInfo fileInfo)
         {
-            ExceptionChecker.ThrowExceptionIfFileDoesNotExist(fileInfo);
-            ExceptionChecker.ThrowExceptionIfFileIsNotMetadataAssembly(fileInfo);
-
             var fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
             this.FileInfo = fileInfo;
 
