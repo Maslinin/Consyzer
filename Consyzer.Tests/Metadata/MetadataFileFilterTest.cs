@@ -6,7 +6,7 @@ using static Consyzer.Tests.TestConstants.FileLocation;
 namespace Consyzer.Tests.Metadata
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public sealed class FileInfoFilterTest
+    public sealed class MetadataFileFilterTest
     {
         [Fact]
         public void GetMetadataFiles_ShouldReturnNotEmptyCollection()
@@ -35,7 +35,7 @@ namespace Consyzer.Tests.Metadata
         //{
         //    var fileInfo = MetadataAssemblyFileInfo;
 
-        //    bool isMetadataFile = FileInfoFilter.IsMetadataFile(fileInfo);
+        //    bool isMetadataFile = MetadataFileFilter.IsMetadataFile(fileInfo);
 
         //    Assert.True(isMetadataFile);
         //}
@@ -45,7 +45,7 @@ namespace Consyzer.Tests.Metadata
         //{
         //    var fileInfo = NotMetadataAssemblyFileInfo;
 
-        //    bool isNotMetadataFile = FileInfoFilter.IsMetadataFile(fileInfo);
+        //    bool isNotMetadataFile = MetadataFileFilter.IsMetadataFile(fileInfo);
 
         //    Assert.False(isNotMetadataFile);
         //}

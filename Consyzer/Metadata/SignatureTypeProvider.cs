@@ -7,10 +7,8 @@ using Consyzer.Metadata.Models;
 namespace Consyzer.Metadata
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    internal sealed class SignatureTypeProvider : ISignatureTypeProvider<SignatureParameter, object>
+    internal sealed class SignatureParameterTypeProvider : ISignatureTypeProvider<SignatureParameter, object>
     {
-        private const string NotSupported = "!notsupported";
-
         private readonly MetadataReader _mdReader;
         private readonly MethodDefinition _methodDef;
 
@@ -18,7 +16,7 @@ namespace Consyzer.Metadata
         private bool _isReturnType = false;
         private int _parameterIteration = 0;
 
-        public SignatureTypeProvider(MetadataReader mdReader, MethodDefinition methodDef)
+        public SignatureParameterTypeProvider(MetadataReader mdReader, MethodDefinition methodDef)
         {
             this._mdReader = mdReader;
             this._methodDef = methodDef;
@@ -95,6 +93,8 @@ namespace Consyzer.Metadata
         }
 
         #region NotSupported
+
+        private const string NotSupported = "!notsupported";
 
         //.NET only support SZAray
         public SignatureParameter GetArrayType(SignatureParameter elementType, ArrayShape shape)

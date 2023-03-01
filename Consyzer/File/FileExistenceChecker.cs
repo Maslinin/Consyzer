@@ -5,6 +5,15 @@ using System.Collections.Generic;
 
 namespace Consyzer.File
 {
+    internal enum FileExistenceStatus
+    {
+        FileExistsAtAnalysisPath,
+        FileExistsAtAbsolutePath,
+        FileExistsAtRelativePath,
+        FileExistsAtSystemFolder,
+        FileDoesNotExist
+    }
+
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class FileExistenceChecker
     {

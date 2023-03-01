@@ -6,7 +6,25 @@
     [String]$buildConfiguration
 )
 
-cd $solutionForAnalysis
+switch ($null) {
+    $pathToConsyzer { 
+        Write-Host "Missing pathToConsyzer parameter. Script will exit."
+        Exit -1
+    }
+    $solutionForAnalysis {
+        Write-Host "Missing solutionForAnalysis parameter. Script will exit."
+        Exit -1
+    }
+    $fileExtensions {
+        Write-Host "Missing fileExtensions parameter. Script will use default value."
+        $fileExtensions = ".dll"
+    }
+    $buildConfiguration {
+        Write-Host "Missing buildConfiguration parameter. Script will use default value."
+        $buildConfiguration = "Debug"
+    }
+}
+
 
 #Project artifacts almost always contain DLL files; therefore, in order to avoid duplication of found paths containing artifacts, we are looking only for those paths that contain DLL files.
 #If you are firmly convinced that your application does not contain a DLL, replace "*.dll" with "*.exe" in the next line.
@@ -38,6 +56,10 @@ $finalExitCode = -1
 $AnalysisStatuses = New-Object System.Collections.Generic.List[System.String]
 foreach($folder in $AnalysisFolders) {
   & $pathToConsyzer $folder $fileExtensions
+  if ( $LastExitCode -eq $exitcode ) {
+	Write-Host "Error|$folder-> Consyzer could not analyze the files because an internal error occurred. Make sure that the arguments were passed correctly."
+  }
+  
   if ( $LastExitCode -ge $exitcode ) {
 	$finalExitCode = $LastExitCode
   }
@@ -46,7 +68,6 @@ foreach($folder in $AnalysisFolders) {
   #Determining the status of scanning project artifacts
   switch( $LastExitCode )
   {
-      -1 { $Event = "Error|$folder-> Consyzer could not analyze the files because an internal error occurred. Make sure that the arguments were passed correctly." }
       0 { $Event = "Successfully|$folder-> No consistency problems were found." }
       1 { $Event = "Warning|$folder->  One or more DLL components used in the project are on an absolute path." }
       2 { $Event = "Warning|$folder->  One or more DLL components used in the project are on a relative path." }

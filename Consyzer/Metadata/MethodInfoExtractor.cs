@@ -78,7 +78,7 @@ namespace Consyzer.Metadata
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private MethodSignature<SignatureParameter> DecodeSignature(MethodDefinition methodDef)
         {
-            var signatureProvider = new SignatureTypeProvider(this._mdReader, methodDef);
+            var signatureProvider = new SignatureParameterTypeProvider(this._mdReader, methodDef);
             return methodDef.DecodeSignature(signatureProvider, new object());
         }
 
