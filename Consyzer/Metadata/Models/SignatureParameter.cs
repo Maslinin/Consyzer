@@ -6,17 +6,9 @@
         public const string AttributesDefaultValue = "None";
         public const string NameDefaultValue = "None";
 
-        public string Type { get; }
-        public string Attributes { get; }
-        public string Name { get; }
-
-
-        internal SignatureParameter(string Type, string Attributes = AttributesDefaultValue, string Name = NameDefaultValue)
-        {
-            this.Type = Type;
-            this.Attributes = Attributes;
-            this.Name = Name;
-        }
+        public string Type { get; set; }
+        public string Attributes { get; set; } = AttributesDefaultValue;
+        public string Name { get; set; } = NameDefaultValue;
 
     }
 }

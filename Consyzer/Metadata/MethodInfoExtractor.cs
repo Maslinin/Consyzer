@@ -76,16 +76,17 @@ namespace Consyzer.Metadata
         }
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        private IEnumerable<string> GetSeparatedMethodAttributes(string methodAttributes)
+        {
+            return methodAttributes.Split(',').Select(a => a.Trim());
+        }
+
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private MethodSignature<SignatureParameter> DecodeSignature(MethodDefinition methodDef)
         {
             var signatureProvider = new SignatureParameterTypeProvider(this._mdReader, methodDef);
             return methodDef.DecodeSignature(signatureProvider, new object());
         }
 
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        private IEnumerable<string> GetSeparatedMethodAttributes(string methodAttributes)
-        {
-            return methodAttributes.Split(',').Select(a => a.Trim());
-        }
     }
 }

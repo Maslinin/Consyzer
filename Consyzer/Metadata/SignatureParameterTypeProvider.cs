@@ -3,6 +3,8 @@ using System.Text;
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
 using Consyzer.Metadata.Models;
+using System.Xml.Linq;
+using System;
 
 namespace Consyzer.Metadata
 {
@@ -24,7 +26,12 @@ namespace Consyzer.Metadata
 
         public SignatureParameter GetByReferenceType(SignatureParameter elementType)
         {
-            return new SignatureParameter($"{elementType.Type}&", elementType.Attributes, elementType.Name);
+            return new SignatureParameter
+            {
+                Type = $"{elementType.Type}&",
+                Attributes = elementType.Attributes,
+                Name = elementType.Name
+            };
         }
 
         public SignatureParameter GetFunctionPointerType(MethodSignature<SignatureParameter> signature)
@@ -34,7 +41,7 @@ namespace Consyzer.Metadata
                 .AppendJoin(", ", signature.ParameterTypes.Skip(1).Select(p => p.Type))
                 .Append(")");
 
-            return new SignatureParameter(type.ToString());
+            return new SignatureParameter { Type = type.ToString() };
         }
 
         public SignatureParameter GetGenericInstantiation(SignatureParameter genericType, ImmutableArray<SignatureParameter> typeArguments)
@@ -44,7 +51,12 @@ namespace Consyzer.Metadata
                 .AppendJoin(", ", typeArguments.Skip(1).Select(p => p.Type))
                 .Append(">");
 
-            return new SignatureParameter(type.ToString(), genericType.Attributes, genericType.Name);
+            return new SignatureParameter
+            {
+                Type = type.ToString(),
+                Attributes = genericType.Attributes,
+                Name = genericType.Name
+            };
         }
 
         public SignatureParameter GetModifiedType(SignatureParameter modifier, SignatureParameter unmodifiedType, bool isRequired)
@@ -54,7 +66,12 @@ namespace Consyzer.Metadata
 
         public SignatureParameter GetPointerType(SignatureParameter elementType)
         {
-            return new SignatureParameter($"{elementType.Type}*", elementType.Attributes, elementType.Name);
+            return new SignatureParameter
+            {
+                Type = $"{elementType.Type}*",
+                Attributes = elementType.Attributes,
+                Name = elementType.Name
+            };
         }
 
         public SignatureParameter GetPrimitiveType(PrimitiveTypeCode typeCode)
@@ -76,12 +93,22 @@ namespace Consyzer.Metadata
                 this._isReturnType = true;
             }
 
-            return new SignatureParameter(typeCode.ToString(), attributes, name); ;
+            return new SignatureParameter
+            {
+                Type = typeCode.ToString(),
+                Attributes = attributes,
+                Name = name
+            };
         }
 
         public SignatureParameter GetSZArrayType(SignatureParameter elementType)
         {
-            return new SignatureParameter($"{elementType.Type}[]", elementType.Attributes, elementType.Name);
+            return new SignatureParameter
+            {
+                Type = $"{elementType.Type}[]",
+                Attributes = elementType.Attributes,
+                Name = elementType.Name
+            };
         }
 
         public SignatureParameter GetTypeFromSpecification(MetadataReader reader, object genericContext, TypeSpecificationHandle handle, byte rawTypeKind)
@@ -99,32 +126,32 @@ namespace Consyzer.Metadata
         //.NET only support SZAray
         public SignatureParameter GetArrayType(SignatureParameter elementType, ArrayShape shape)
         {
-            return new SignatureParameter(NotSupported);
+            return new SignatureParameter { Type = NotSupported };
         }
 
         public SignatureParameter GetGenericMethodParameter(object genericContext, int index)
         {
-            return new SignatureParameter(NotSupported);
+            return new SignatureParameter { Type = NotSupported };
         }
 
         public SignatureParameter GetGenericTypeParameter(object genericContext, int index)
         {
-            return new SignatureParameter(NotSupported);
+            return new SignatureParameter { Type = NotSupported };
         }
 
         public SignatureParameter GetPinnedType(SignatureParameter elementType)
         {
-            return new SignatureParameter(NotSupported);
+            return new SignatureParameter { Type = NotSupported };
         }
 
         public SignatureParameter GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind)
         {
-            return new SignatureParameter(NotSupported);
+            return new SignatureParameter { Type = NotSupported };
         }
 
         public SignatureParameter GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind)
         {
-            return new SignatureParameter(NotSupported);
+            return new SignatureParameter { Type = NotSupported };
         }
 
         #endregion

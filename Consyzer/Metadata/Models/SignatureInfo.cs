@@ -28,6 +28,6 @@ namespace Consyzer.Metadata.Models
         private string GetArgumentString(SignatureParameter argument) =>
             $"{(argument.Attributes != SignatureParameter.AttributesDefaultValue ? $"{argument.Attributes} " : string.Empty)}{argument.Type} {argument.Name}";
 
-        public override string ToString() => FullMethodSignature;
+        public override string ToString() => BaseMethodSignature;
     }
 }
