@@ -4,7 +4,6 @@ using static Consyzer.Tests.TestConstants.FileLocation;
 
 namespace Consyzer.Tests.Metadata
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class MetadataAnalyzerTest
     {
         [Fact]

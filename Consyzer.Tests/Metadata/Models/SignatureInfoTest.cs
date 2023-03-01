@@ -4,7 +4,6 @@ using Consyzer.Metadata;
 
 namespace Consyzer.Tests.Metadata.Models
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureInfoTest
     {
         private SignatureExtractor Decoder => new SignatureExtractor(TestHelper.GetMetadataReader());

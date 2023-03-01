@@ -7,7 +7,6 @@ using Consyzer.Metadata.Models;
 
 namespace Consyzer.Tests.Metadata
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class MethodInfoExtractorTest
     {
         public MetadataReader MetadataReader => TestHelper.GetMetadataReader();

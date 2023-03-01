@@ -4,7 +4,6 @@ using static Consyzer.Tests.TestConstants.FileLocation;
 
 namespace Consyzer.Tests.Cryptography
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class FileHashCalculatorTest
     {
         private int MD5StandardHashLength => 32;
