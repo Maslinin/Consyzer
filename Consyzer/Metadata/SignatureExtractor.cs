@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Reflection.Metadata;
 using Consyzer.Metadata.Models;
 
@@ -15,14 +16,7 @@ namespace Consyzer.Metadata
 
         public IEnumerable<SignatureInfo> GetDecodedSignatures(IEnumerable<MethodDefinition> methodsDefs)
         {
-            var decodedSignatures = new List<SignatureInfo>();
-
-            foreach (var methodDef in methodsDefs)
-            {
-                decodedSignatures.Add(this.GetDecodedSignature(methodDef));
-            }
-
-            return decodedSignatures;
+            return methodsDefs.Select(m => this.GetDecodedSignature(m));
         }
 
         public SignatureInfo GetDecodedSignature(MethodDefinition methodDef)

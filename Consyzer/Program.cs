@@ -51,12 +51,12 @@ namespace Consyzer
                     return (int)ProgramStatusCode.SuccessExit;
                 }
 
-                var searcher = new FileSearcher(analysisDirectory);
+                var searcher = new FileExistenceChecker(analysisDirectory);
 
                 Log.Info("The presence of files in the received locations:");
                 AnalysisStatusWriter.LogFilesExistStatus(searcher, fileLocations);
 
-                return (int)searcher.GetMaxFileExistanceStatusCode(fileLocations);
+                return (int)searcher.GetMaxFileExistanceStatus(fileLocations);
             }
             catch(Exception e)
             {
@@ -65,7 +65,7 @@ namespace Consyzer
             }
         }
 
-        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<IMetadataAnalyzer> metadataAnalyzers, string defaultFileExtension = DefaultFileExtension)
+        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultFileExtension = DefaultFileExtension)
         {
             var importedMethods = new List<string>();
 

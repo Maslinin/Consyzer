@@ -62,20 +62,20 @@ namespace Consyzer.Logging
         {
             foreach (var import in importedMethods.Select((Info, I) => (Info, I)))
             {
-                Log.Info($"\t\t[{import.I}]Method '{import.Info.Signature.GetMethodLocation()}':");
-                Log.Info($"\t\t\tMethod Signature: '{import.Info.Signature.GetBaseMethodSignature()}',");
+                Log.Info($"\t\t[{import.I}]Method '{import.Info.Signature.MethodLocation}':");
+                Log.Info($"\t\t\tMethod Signature: '{import.Info.Signature.BaseMethodSignature}',");
                 Log.Info($"\t\t\tDLL Location: '{import.Info.DllLocation}',");
                 Log.Info($"\t\t\tDLL Import Args: '{import.Info.DllImportArgs}'.");
             }
         }
 
-        public static void LogFilesExistStatus(FileSearcher fileSearcher, IEnumerable<string> binaryLocations, string defaultBinaryExtension = ".dll")
+        public static void LogFilesExistStatus(FileExistenceChecker fileSearcher, IEnumerable<string> binaryLocations)
         {
             int existingFiles = 0, nonExistingFiles = 0;
 
             foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
             {
-                bool status = fileSearcher.GetMinFileExistanceStatusCode(item.Location, defaultBinaryExtension) is FileSearcher.FileExistanceStatusCode.FileDoesNotExists;
+                bool status = fileSearcher.GetMinFileExistanceStatus(item.Location) is FileExistenceStatus.FileDoesNotExist;
                 if (!status)
                 {
                     Log.Info($"\t[{item.i}]File '{item.Location}' exists.");

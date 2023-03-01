@@ -11,39 +11,25 @@ namespace Consyzer.Metadata
     {
         public static IEnumerable<FileInfo> GetMetadataFiles(IEnumerable<FileInfo> fileInfos)
         {
-            return fileInfos.Where(f => IsMetadataFile(f));
+            return fileInfos.Where(f => IsMetadataFile(f, false));
         }
 
         public static IEnumerable<FileInfo> GetNotMetadataFiles(IEnumerable<FileInfo> fileInfos)
         {
-            return fileInfos.Where(f => !IsMetadataFile(f));
-        }
-
-        public static bool IsMetadataFile(FileInfo fileInfo)
-        {
-            try
-            {
-                using var fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
-                using var peReader = new PEReader(fileStream, PEStreamOptions.Default);
-                return peReader.HasMetadata;
-            }
-            catch (BadImageFormatException)
-            {
-                return false;
-            }
+            return fileInfos.Where(f => !IsMetadataFile(f, false));
         }
 
         public static IEnumerable<FileInfo> GetMetadataAssemblyFiles(IEnumerable<FileInfo> fileInfos)
         {
-            return fileInfos.Where(f => IsMetadataAssemblyFile(f));
+            return fileInfos.Where(f => IsMetadataFile(f, true));
         }
 
         public static IEnumerable<FileInfo> GetNotMetadataAssemblyFiles(IEnumerable<FileInfo> fileInfos)
         {
-            return fileInfos.Where(f => !IsMetadataAssemblyFile(f));
+            return fileInfos.Where(f => !IsMetadataFile(f, true));
         }
 
-        public static bool IsMetadataAssemblyFile(FileInfo fileInfo)
+        public static bool IsMetadataFile(FileInfo fileInfo, bool checkAssembly)
         {
             try
             {
@@ -52,7 +38,9 @@ namespace Consyzer.Metadata
                 if (!peReader.HasMetadata) return false;
 
                 var mdReader = peReader.GetMetadataReader();
-                return mdReader.IsAssembly;
+                if (checkAssembly) return mdReader.IsAssembly;
+
+                return true;
             }
             catch (BadImageFormatException)
             {

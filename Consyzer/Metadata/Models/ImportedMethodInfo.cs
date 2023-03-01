@@ -3,8 +3,8 @@
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class ImportedMethodInfo
     {
-        public SignatureInfo Signature { get; internal set; }
-        public string DllLocation { get; internal set; }
-        public string DllImportArgs { get; internal set; }
+        public SignatureInfo Signature { get; set; }
+        public string DllLocation { get; set; }
+        public string DllImportArgs { get; set; }
     }
 }

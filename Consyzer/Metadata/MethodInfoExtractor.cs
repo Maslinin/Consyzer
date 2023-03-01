@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Metadata;
 using Consyzer.Metadata.Models;
 
@@ -49,7 +50,7 @@ namespace Consyzer.Metadata
             var methodAttributes = this.GetMethodAttributes(methodDef);
             var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodAttributes);
 
-            return separatedMethodAttributes.Any(s => s == "Static");
+            return separatedMethodAttributes.Any(s => s == nameof(MethodAttributes.Static));
         }
 
         public string GetMethodAttributes(MethodDefinition methodDef)
@@ -64,18 +65,21 @@ namespace Consyzer.Metadata
 
         public SignatureParameter GetMethodReturnType(MethodDefinition methodDef)
         {
-            var signatureProvider = new SignatureTypeProvider(this._mdReader, methodDef);
-            var signature = methodDef.DecodeSignature(signatureProvider, new object());
-
+            var signature = DecodeSignature(methodDef);
             return signature.ReturnType;
         }
 
         public IEnumerable<SignatureParameter> GetMethodArguments(MethodDefinition methodDef)
         {
-            var signatureProvider = new SignatureTypeProvider(this._mdReader, methodDef);
-            var signature = methodDef.DecodeSignature(signatureProvider, new object());
-
+            var signature = DecodeSignature(methodDef);
             return signature.ParameterTypes;
+        }
+
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+        private MethodSignature<SignatureParameter> DecodeSignature(MethodDefinition methodDef)
+        {
+            var signatureProvider = new SignatureTypeProvider(this._mdReader, methodDef);
+            return methodDef.DecodeSignature(signatureProvider, new object());
         }
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]

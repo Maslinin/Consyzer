@@ -7,7 +7,7 @@ using Consyzer.Metadata.Models;
 
 namespace Consyzer.Metadata
 {
-    internal sealed class MetadataAnalyzer : IMetadataAnalyzer
+    internal sealed class MetadataAnalyzer
     {
         private readonly MetadataReader _mdReader;
 

@@ -6,7 +6,7 @@ using static Consyzer.Tests.TestConstants.FileLocation;
 namespace Consyzer.Tests.Metadata
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public sealed class MetadataFileFilterTest
+    public sealed class FileInfoFilterTest
     {
         [Fact]
         public void GetMetadataFiles_ShouldReturnNotEmptyCollection()
@@ -30,25 +30,25 @@ namespace Consyzer.Tests.Metadata
             Assert.NotEmpty(metadataFiles);
         }
 
-        [Fact]
-        public void IsMetadataFile_ShouldReturnTrueIfFileDoesContainMetadata()
-        {
-            var fileInfo = MetadataAssemblyFileInfo;
+        //[Fact]
+        //public void IsMetadataFile_ShouldReturnTrueIfFileDoesContainMetadata()
+        //{
+        //    var fileInfo = MetadataAssemblyFileInfo;
 
-            bool isMetadataFile = MetadataFileFilter.IsMetadataFile(fileInfo);
+        //    bool isMetadataFile = FileInfoFilter.IsMetadataFile(fileInfo);
 
-            Assert.True(isMetadataFile);
-        }
+        //    Assert.True(isMetadataFile);
+        //}
 
-        [Fact]
-        public void IsMetadataFile_ShouldReturnFalseIfFileDoesNotContainMetadata()
-        {
-            var fileInfo = NotMetadataAssemblyFileInfo;
+        //[Fact]
+        //public void IsMetadataFile_ShouldReturnFalseIfFileDoesNotContainMetadata()
+        //{
+        //    var fileInfo = NotMetadataAssemblyFileInfo;
 
-            bool isNotMetadataFile = MetadataFileFilter.IsMetadataFile(fileInfo);
+        //    bool isNotMetadataFile = FileInfoFilter.IsMetadataFile(fileInfo);
 
-            Assert.False(isNotMetadataFile);
-        }
+        //    Assert.False(isNotMetadataFile);
+        //}
 
         [Fact]
         public void GetMetadataAssemblyFiles_ShouldReturnNotEmptyCollection()
@@ -72,24 +72,5 @@ namespace Consyzer.Tests.Metadata
             Assert.NotEmpty(metadataFiles);
         }
 
-        [Fact]
-        public void IsMetadataAssemblyFile_ShouldReturnTrueIfFileIsMetadataAssembly()
-        {
-            var fileInfo = MetadataAssemblyFileInfo;
-
-            bool isMetadataFile = MetadataFileFilter.IsMetadataAssemblyFile(fileInfo);
-
-            Assert.True(isMetadataFile);
-        }
-
-        [Fact]
-        public void IsMetadataAssemblyFile_ShouldReturnFalseIfFileIsMetadataAssembly()
-        {
-            var fileInfo = NotMetadataAssemblyFileInfo;
-
-            bool isNotMetadataFile = MetadataFileFilter.IsMetadataAssemblyFile(fileInfo);
-
-            Assert.False(isNotMetadataFile);
-        }
     }
 }

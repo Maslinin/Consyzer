@@ -9,6 +9,8 @@ namespace Consyzer.Metadata
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class SignatureTypeProvider : ISignatureTypeProvider<SignatureParameter, object>
     {
+        private const string NotSupported = "!notsupported";
+
         private readonly MetadataReader _mdReader;
         private readonly MethodDefinition _methodDef;
 
@@ -29,28 +31,20 @@ namespace Consyzer.Metadata
 
         public SignatureParameter GetFunctionPointerType(MethodSignature<SignatureParameter> signature)
         {
-            var type = new StringBuilder();
-
-            type.Append($"{signature.ReturnType} *({signature.ParameterTypes[0].Type}");
-            for (int i = 1; i < signature.ParameterTypes.Length; ++i)
-            {
-                type.Append($", {signature.ParameterTypes[i].Type}");
-            }
-            type.Append(')');
+            var type = new StringBuilder()
+                .Append($"{signature.ReturnType} *({signature.ParameterTypes[0].Type}")
+                .AppendJoin(", ", signature.ParameterTypes.Skip(1).Select(p => p.Type))
+                .Append(")");
 
             return new SignatureParameter(type.ToString());
         }
 
         public SignatureParameter GetGenericInstantiation(SignatureParameter genericType, ImmutableArray<SignatureParameter> typeArguments)
         {
-            var type = new StringBuilder();
-
-            type.Append($"{genericType.Type} <{typeArguments[0].Type}");
-            for (int i = 1; i < typeArguments.Length; ++i)
-            {
-                type.Append($", {typeArguments[i].Type}");
-            }
-            type.Append('>');
+            var type = new StringBuilder()
+                .Append($"{genericType.Type} <{typeArguments[0].Type}")
+                .AppendJoin(", ", typeArguments.Skip(1).Select(p => p.Type))
+                .Append(">");
 
             return new SignatureParameter(type.ToString(), genericType.Attributes, genericType.Name);
         }
@@ -69,11 +63,7 @@ namespace Consyzer.Metadata
         {
             string attributes = SignatureParameter.AttributesDefaultValue, name = SignatureParameter.NameDefaultValue;
 
-            if (!this._isReturnType) //Always return method type is first defined
-            {
-                this._isReturnType = true;
-            }
-            else
+            if(this._isReturnType)
             {
                 var parameterHandle = this._methodDef.GetParameters().ElementAtOrDefault(this._parameterIteration);
                 var parameter = this._mdReader.GetParameter(parameterHandle);
@@ -83,8 +73,12 @@ namespace Consyzer.Metadata
 
                 ++this._parameterIteration;
             }
+            else //Always return method type is first defined
+            {
+                this._isReturnType = true;
+            }
 
-            return GetParameter(typeCode, attributes, name);
+            return new SignatureParameter(typeCode.ToString(), attributes, name); ;
         }
 
         public SignatureParameter GetSZArrayType(SignatureParameter elementType)
@@ -135,58 +129,5 @@ namespace Consyzer.Metadata
 
         #endregion
 
-        #region Helper Methods
-
-        private static SignatureParameter GetParameter(PrimitiveTypeCode typeCode, string attributes, string name)
-        {
-            return typeCode switch
-            {
-                PrimitiveTypeCode.Boolean => new SignatureParameter(Boolean, attributes, name),
-                PrimitiveTypeCode.Byte => new SignatureParameter(Byte, attributes, name),
-                PrimitiveTypeCode.SByte => new SignatureParameter(SByte, attributes, name),
-                PrimitiveTypeCode.Char => new SignatureParameter(Char, attributes, name),
-                PrimitiveTypeCode.Int16 => new SignatureParameter(Short, attributes, name),
-                PrimitiveTypeCode.UInt16 => new SignatureParameter(UShort, attributes, name),
-                PrimitiveTypeCode.Int32 => new SignatureParameter(Int, attributes, name),
-                PrimitiveTypeCode.UInt32 => new SignatureParameter(UInt, attributes, name),
-                PrimitiveTypeCode.Int64 => new SignatureParameter(Long, attributes, name),
-                PrimitiveTypeCode.UInt64 => new SignatureParameter(ULong, attributes, name),
-                PrimitiveTypeCode.Single => new SignatureParameter(Float, attributes, name),
-                PrimitiveTypeCode.Double => new SignatureParameter(Double, attributes, name),
-                PrimitiveTypeCode.IntPtr => new SignatureParameter(IntPtr, attributes, name),
-                PrimitiveTypeCode.UIntPtr => new SignatureParameter(UIntPtr, attributes, name),
-                PrimitiveTypeCode.String => new SignatureParameter(String, attributes, name),
-                PrimitiveTypeCode.Object => new SignatureParameter(Object, attributes, name),
-                PrimitiveTypeCode.TypedReference => new SignatureParameter(TypedReference, attributes, name),
-                PrimitiveTypeCode.Void => new SignatureParameter(Void, attributes, name),
-                _ => new SignatureParameter(NotSupported, attributes, name),
-            };
-        }
-
-        #endregion
-
-        #region Used Constants
-
-        public const string NotSupported = "!notsupported";
-        public const string Boolean = "bool";
-        public const string Byte = "byte";
-        public const string SByte = "sbyte";
-        public const string Char = "char";
-        public const string Short = "short";
-        public const string UShort = "ushort";
-        public const string Int = "int";
-        public const string UInt = "uint";
-        public const string Long = "long";
-        public const string ULong = "ulong";
-        public const string Float = "float";
-        public const string Double = "double";
-        public const string IntPtr = "IntPtr";
-        public const string UIntPtr = "UIntPtr";
-        public const string String = "string";
-        public const string Object = "object";
-        public const string Void = "void";
-        public const string TypedReference = "typedref";
-
-        #endregion
     }
 }

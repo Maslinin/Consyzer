@@ -9,38 +9,41 @@ namespace Consyzer
     public static class CmdArgsParser
     {
         private const char _argsDelimiter = ',';
-        private readonly static IEnumerable<string> _args = Environment.GetCommandLineArgs();
+        private static readonly string[] _args = Environment.GetCommandLineArgs();
 
-        public static (string AnalysisDirectory, IEnumerable<string> FileExtensions) GetAnalysisParams()
+        public static (string analysisDirectory, IEnumerable<string> fileExtensions) GetAnalysisParams()
         {
-            return (GetAnalysisDirectory(), GetFileExtensions());
+            var analysisDirectory = GetArgument(1, "No command line parameter was passed that contains the location of the catalog to analyze.");
+            var fileExtensions = GetArgument(2, "No command line parameter containing binary file extensions for analysis was passed.")
+                .Split(_argsDelimiter)
+                .Select(e => e.Trim());
+
+            ValidateDirectory(analysisDirectory);
+            ValidateExtensions(fileExtensions);
+
+            return (analysisDirectory, fileExtensions);
         }
 
-        private static string GetAnalysisDirectory()
+        private static string GetArgument(int index, string errorMessage)
         {
-            string analysisDirectory = _args.ElementAtOrDefault(1) 
-                ?? throw new ArgumentException("No command line parameter was passed that contains the location of the catalog to analyze.");
+            var argument = _args.ElementAtOrDefault(index);
+            return argument ?? throw new ArgumentException(errorMessage);
+        }
 
-            if (!Directory.Exists(analysisDirectory))
+        private static void ValidateDirectory(string directoryPath)
+        {
+            if (!Directory.Exists(directoryPath))
             {
                 throw new DirectoryNotFoundException("The directory path for the analysis does not exist or is incorrect.");
             }
-
-            return analysisDirectory;
         }
 
-        private static IEnumerable<string> GetFileExtensions()
+        private static void ValidateExtensions(IEnumerable<string> extensions)
         {
-            string fileExtensions = _args.ElementAtOrDefault(2) 
-                ?? throw new ArgumentException("No command line parameter containing binary file extensions for analysis was passed.");
-
-            var extensions = fileExtensions.Split(_argsDelimiter).Select(e => e.Trim());
             if (extensions.Any(e => !Path.HasExtension(e)))
             {
                 throw new ArgumentException("One or more names are not extensions.");
             }
-
-            return extensions;
         }
     }
 }

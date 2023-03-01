@@ -15,7 +15,7 @@ namespace Consyzer.Tests.Metadata.Models
         {
             var signatureInfo = this.Decoder.GetDecodedSignature(TestHelper.GetFirstMethodDefinition());
 
-            var methodLocation = signatureInfo.GetMethodLocation();
+            var methodLocation = signatureInfo.MethodLocation;
 
             Assert.NotEmpty(methodLocation);
         }
@@ -28,7 +28,7 @@ namespace Consyzer.Tests.Metadata.Models
                 .Where(m => extractor.IsStaticMethod(m)).First();
             var signatureInfo = this.Decoder.GetDecodedSignature(methodDef);
 
-            var methodSignature = signatureInfo.GetFullMethodSignature();
+            var methodSignature = signatureInfo.FullMethodSignature;
 
             Assert.NotEmpty(methodSignature);
             Assert.Contains(StaticModifier, methodSignature);
@@ -42,7 +42,7 @@ namespace Consyzer.Tests.Metadata.Models
                 .Where(m => !extractor.IsStaticMethod(m)).First();
             var signatureInfo = this.Decoder.GetDecodedSignature(methodDef);
 
-            var methodSignature = signatureInfo.GetFullMethodSignature();
+            var methodSignature = signatureInfo.FullMethodSignature;
 
             Assert.NotEmpty(methodSignature);
             Assert.DoesNotContain(StaticModifier, methodSignature);
@@ -53,35 +53,10 @@ namespace Consyzer.Tests.Metadata.Models
         {
             var signatureInfo = this.Decoder.GetDecodedSignature(TestHelper.GetFirstMethodDefinition());
 
-            var methodLocation = signatureInfo.GetBaseMethodSignature();
+            var methodLocation = signatureInfo.BaseMethodSignature;
 
             Assert.NotEmpty(methodLocation);
         }
 
-        [Fact]
-        public void GetMethodArgsAsString_ShouldReturnEmptyStringIfMethodDoesNotContainArguments()
-        {
-            var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
-            var methodDefWithoutArguments = TestHelper.GetAllMethodsDefinitions()
-                .Where(m => !extractor.GetMethodArguments(m).Any()).First();
-            var signatureInfo = this.Decoder.GetDecodedSignature(methodDefWithoutArguments);
-
-            var methodArgs = signatureInfo.GetMethodArgsAsString();
-
-            Assert.Empty(methodArgs);
-        }
-
-        [Fact]
-        public void GetMethodArgsAsString_ShouldReturnNotEmptyStringIfMethodContainsArguments()
-        {
-            var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
-            var methodDefWithArguments = TestHelper.GetAllMethodsDefinitions()
-                .Where(m => extractor.GetMethodArguments(m).Any()).First();
-            var signatureInfo = this.Decoder.GetDecodedSignature(methodDefWithArguments);
-
-            var methodArgs = signatureInfo.GetMethodArgsAsString();
-
-            Assert.NotEmpty(methodArgs);
-        }
     }
 }
