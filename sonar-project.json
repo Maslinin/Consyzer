@@ -1,0 +1,6 @@
+{
+  "sonar.projectKey": "Maslinin_Consyzer",
+  "sonar.projectName": "Consyzer",
+  "sonar.projectVersion": "1.0",
+  "sonar.coverage.exclusions": "**/Consyzer.Tests/**"
+}
