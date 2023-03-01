@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 
 namespace Consyzer.Tests
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class TestConstants
     {
         public static class FileLocation

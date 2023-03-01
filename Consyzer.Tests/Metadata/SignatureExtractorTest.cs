@@ -5,7 +5,6 @@ using Consyzer.Metadata;
 
 namespace Consyzer.Tests.Metadata
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class SignatureExtractorTest
     {
         private MethodDefinition TestMethodDefinition => TestHelper.GetFirstMethodDefinition();

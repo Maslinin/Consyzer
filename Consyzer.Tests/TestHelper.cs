@@ -7,7 +7,6 @@ using static Consyzer.Tests.TestConstants.FileLocation;
 
 namespace Consyzer.Tests
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class TestHelper
     {
         public static MethodDefinition GetFirstMethodDefinition()
