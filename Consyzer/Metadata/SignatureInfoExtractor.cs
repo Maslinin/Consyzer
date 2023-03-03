@@ -7,11 +7,11 @@ using Consyzer.Metadata.Models;
 
 namespace Consyzer.Metadata
 {
-    internal sealed class MethodInfoExtractor
+    internal sealed class SignatureInfoExtractor
     {
         private readonly MetadataReader _mdReader;
         
-        public MethodInfoExtractor(MetadataReader mdReader)
+        public SignatureInfoExtractor(MetadataReader mdReader)
         {
             this._mdReader = mdReader;
         }

@@ -25,7 +25,7 @@ namespace Consyzer.Metadata
         public IEnumerable<ImportedMethodInfo> GetImportedMethodsInfo()
         {
             var importedMethodDefs = this.GetImportedMethodDefinitions();
-            return importedMethodDefs.Select(m => this.GetImportedMethodInfo(m));
+            return importedMethodDefs.Select(m => this.GetImportedSignatureInfo(m));
         }
 
         public IEnumerable<MethodDefinition> GetImportedMethodDefinitions()
@@ -48,10 +48,10 @@ namespace Consyzer.Metadata
         }
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        private ImportedMethodInfo GetImportedMethodInfo(MethodDefinition methodDef)
+        private ImportedMethodInfo GetImportedSignatureInfo(MethodDefinition methodDef)
         {
             var import = methodDef.GetImport();
-            var signatureDecoder = new MethodInfoExtractor(this._mdReader);
+            var signatureDecoder = new SignatureInfoExtractor(this._mdReader);
 
             var signatureInfo = signatureDecoder.GetSignatureInfo(methodDef);
             var moduleReference = this._mdReader.GetModuleReference(import.Module);

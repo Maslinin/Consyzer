@@ -3,14 +3,14 @@ using System.Linq;
 using System.Collections.Generic;
 using Consyzer.File;
 using Consyzer.Metadata;
-using Consyzer.Metadata.Models;
 using Consyzer.Cryptography;
-using Log = Consyzer.Logging.NLogger;
+using Consyzer.Metadata.Models;
+using Log = Consyzer.Logging.LogService;
 
 namespace Consyzer.Logging
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    internal static class AnalysisStatusWriter
+    internal static class AnalysisStatusLogger
     {
         public static void LogAnalysisParams(string analysisDirectory, IEnumerable<string> fileExtensions)
         {
@@ -21,32 +21,32 @@ namespace Consyzer.Logging
 
         public static void LogBaseFileInfo(IEnumerable<FileInfo> binaryFiles)
         {
-            foreach (var item in binaryFiles.Select((File, Index) => (File, Index)))
+            foreach ((FileInfo file, int index) in binaryFiles.Select((f, i) => (f, i)))
             {
-                Log.Info($"\t[{item.Index}]File: '{item.File.Name}':");
-                Log.Info($"\t\tCreation Time: '{item.File.CreationTime}'.");
+                Log.Info($"\t[{index}]File: '{file.Name}':");
+                Log.Info($"\t\tCreation Time: '{file.CreationTime}'.");
             }
         }
 
         public static void LogBaseAndHashFileInfo(IEnumerable<MetadataAnalyzer> fileInfos)
         {
-            foreach (var item in fileInfos.Select((File, Index) => (File, Index)))
+            foreach ((MetadataAnalyzer file, int index) in fileInfos.Select((f, i) => (f, i)))
             {
-                var hashInfo = FileHashInfo.CalculateHash(item.File.FileInfo);
+                var hashInfo = FileHashInfo.CalculateHash(file.FileInfo);
 
-                Log.Info($"\t[{item.Index}]File: '{item.File.FileInfo.Name}':");
-                Log.Info($"\t\tCreation Time: '{item.File.FileInfo.CreationTime}',");
+                Log.Info($"\t[{index}]File: '{file.FileInfo.Name}':");
+                Log.Info($"\t\tCreation Time: '{file.FileInfo.CreationTime}',");
                 Log.Info($"\t\tSHA256 Hash Sum: '{hashInfo.SHA256Sum}'.");
             }
         }
 
         public static void LogImportedMethodsInfoForEachFile(IEnumerable<MetadataAnalyzer> metadataAnalyzers)
         {
-            foreach (var item in metadataAnalyzers.Select((File, i) => (File, i)))
+            foreach ((MetadataAnalyzer file, int index) in metadataAnalyzers.Select((f, i) => (f, i)))
             {
-                var importedMethods = item.File.GetImportedMethodsInfo().ToList();
+                var importedMethods = file.GetImportedMethodsInfo();
 
-                Log.Info($"\t[{item.i}]File '{item.File.FileInfo.FullName}': ");
+                Log.Info($"\t[{index}]File '{file.FileInfo.FullName}': ");
                 if (importedMethods.Any())
                 {
                     LogImportedMethodsInfo(importedMethods);
@@ -60,12 +60,12 @@ namespace Consyzer.Logging
 
         public static void LogImportedMethodsInfo(IEnumerable<ImportedMethodInfo> importedMethods)
         {
-            foreach (var import in importedMethods.Select((Info, I) => (Info, I)))
+            foreach ((ImportedMethodInfo info, int index) in importedMethods.Select((m, i) => (m, i)))
             {
-                Log.Info($"\t\t[{import.I}]Method '{import.Info.Signature.MethodLocation}':");
-                Log.Info($"\t\t\tMethod Signature: '{import.Info.Signature.BaseMethodSignature}',");
-                Log.Info($"\t\t\tDLL Location: '{import.Info.DllLocation}',");
-                Log.Info($"\t\t\tDLL Import Args: '{import.Info.DllImportArgs}'.");
+                Log.Info($"\t\t[{index}]Method '{info.Signature.MethodLocation}':");
+                Log.Info($"\t\t\tMethod Signature: '{info.Signature.BaseMethodSignature}',");
+                Log.Info($"\t\t\tDLL Location: '{info.DllLocation}',");
+                Log.Info($"\t\t\tDLL Import Args: '{info.DllImportArgs}'.");
             }
         }
 
@@ -73,18 +73,18 @@ namespace Consyzer.Logging
         {
             int existingFiles = 0, nonExistingFiles = 0;
 
-            foreach (var item in binaryLocations.Select((Location, i) => (Location, i)))
+            foreach ((string location, int index) in binaryLocations.Select((l, i) => (l, i)))
             {
-                bool status = fileSearcher.GetMinFileExistanceStatus(item.Location) is FileExistenceStatus.FileDoesNotExist;
-                if (!status)
+                bool notExists = fileSearcher.GetMinFileExistanceStatus(location) is FileExistenceStatus.FileDoesNotExist;
+                if (notExists)
                 {
-                    Log.Info($"\t[{item.i}]File '{item.Location}' exists.");
-                    ++existingFiles;
+                    Log.Error($"\t[{index}]File '{location}' does NOT exist!");
+                    ++nonExistingFiles;
                 }
                 else
                 {
-                    Log.Error($"\t[{item.i}]File '{item.Location}' does NOT exist!");
-                    ++nonExistingFiles;
+                    Log.Info($"\t[{index}]File '{location}' exists.");
+                    ++existingFiles;
                 }
             }
 

@@ -4,7 +4,7 @@ using NLog;
 namespace Consyzer.Logging
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public static class NLogger
+    public static class LogService
     {
         private readonly static ILogger _logger = LogManager
             .Setup()

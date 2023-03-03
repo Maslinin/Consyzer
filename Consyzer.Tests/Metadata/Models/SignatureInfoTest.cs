@@ -7,7 +7,7 @@ namespace Consyzer.Tests.Metadata.Models
 {
     public sealed class SignatureInfoTest
     {
-        private MethodInfoExtractor Decoder => new MethodInfoExtractor(TestHelper.GetMetadataReader());
+        private SignatureInfoExtractor Decoder => new SignatureInfoExtractor(TestHelper.GetMetadataReader());
         private string StaticModifier => nameof(MethodAttributes.Static);
 
         [Fact]
@@ -23,7 +23,7 @@ namespace Consyzer.Tests.Metadata.Models
         [Fact]
         public void GetFullMethodSignature_ShouldReturnNotEmptyStringWithStaticModifier()
         {
-            var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
+            var extractor = new SignatureInfoExtractor(TestHelper.GetMetadataReader());
             var methodDef = TestHelper.GetAllMethodsDefinitions()
                 .Where(m => extractor.IsStaticMethod(m)).First();
             var signatureInfo = this.Decoder.GetSignatureInfo(methodDef);
@@ -37,7 +37,7 @@ namespace Consyzer.Tests.Metadata.Models
         [Fact]
         public void GetFullMethodSignature_ShouldReturnNotEmptyStringWithoutStaticModifier()
         {
-            var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
+            var extractor = new SignatureInfoExtractor(TestHelper.GetMetadataReader());
             var methodDef = TestHelper.GetAllMethodsDefinitions()
                 .Where(m => !extractor.IsStaticMethod(m)).First();
             var signatureInfo = this.Decoder.GetSignatureInfo(methodDef);

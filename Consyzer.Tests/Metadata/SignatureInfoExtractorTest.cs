@@ -7,7 +7,7 @@ using Consyzer.Metadata.Models;
 
 namespace Consyzer.Tests.Metadata
 {
-    public sealed class MethodInfoExtractorTest
+    public sealed class SignatureInfoExtractorTest
     {
         public MetadataReader MetadataReader => TestHelper.GetMetadataReader();
         public MethodDefinition TestMethodDefinition => TestHelper.GetFirstMethodDefinition();
@@ -16,7 +16,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void InstanceCreation_ShouldNotThrowException()
         {
-            var exception = Record.Exception(() => new MethodInfoExtractor(this.MetadataReader));
+            var exception = Record.Exception(() => new SignatureInfoExtractor(this.MetadataReader));
 
             Assert.Null(exception);
         }
@@ -24,7 +24,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void GetSignatureInfo_ReceiveMethodDefinitionInstance_ShouldReturnInstanceWithNotNullAndNotEmptyProperties()
         {
-            var decoder = new MethodInfoExtractor(MetadataReader);
+            var decoder = new SignatureInfoExtractor(MetadataReader);
 
             var decodedSignature = decoder.GetSignatureInfo(this.TestMethodDefinition);
 
@@ -39,7 +39,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void GetNamespace_ShouldReturnNotEmptyString()
         {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
+            var extractor = new SignatureInfoExtractor(this.MetadataReader);
 
             var rootNamespace = extractor.GetNamespace(this.TestMethodDefinition);
 
@@ -49,7 +49,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void GetClassName_ShouldReturnNotEmptyString()
         {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
+            var extractor = new SignatureInfoExtractor(this.MetadataReader);
 
             var className = extractor.GetClassName(this.TestMethodDefinition);
 
@@ -59,7 +59,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void GetMethodName_ShouldReturnNotEmptyString()
         {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
+            var extractor = new SignatureInfoExtractor(this.MetadataReader);
 
             var methodName = extractor.GetMethodName(this.TestMethodDefinition);
 
@@ -69,7 +69,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void GetMethodAccessibilityModifier_ShouldReturnPublicModifier()
         {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
+            var extractor = new SignatureInfoExtractor(this.MetadataReader);
 
             var methodAccessibilityModifier = this.TestMethodsDefinitions.Any(m => extractor.GetMethodAccessibilityModifier(m) == AccessModifier.Public);
 
@@ -79,7 +79,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void IsStaticMethod_ShouldReturnTrue()
         {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
+            var extractor = new SignatureInfoExtractor(this.MetadataReader);
 
             var isStatic = this.TestMethodsDefinitions.Any(m => extractor.IsStaticMethod(m));
 
@@ -89,7 +89,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void GetMethodReturnType_ShouldReturnSignatureParameterInstanceWithNotEmptyProperties()
         {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
+            var extractor = new SignatureInfoExtractor(this.MetadataReader);
 
             var methodReturnType = extractor.GetMethodReturnType(this.TestMethodDefinition);
 
@@ -101,7 +101,7 @@ namespace Consyzer.Tests.Metadata
         [Fact]
         public void GetMethodArguments_ShouldReturnNotNullCollection()
         {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
+            var extractor = new SignatureInfoExtractor(this.MetadataReader);
 
             var methodArguments = extractor.GetMethodArguments(this.TestMethodDefinition);
 
