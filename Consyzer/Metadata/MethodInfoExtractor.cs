@@ -50,16 +50,6 @@ namespace Consyzer.Metadata
             return separatedMethodAttributes.Any(s => s == nameof(MethodAttributes.Static));
         }
 
-        public MethodAttributes GetMethodAttributes(MethodDefinition methodDef)
-        {
-            return methodDef.Attributes;
-        }
-
-        public MethodImplAttributes GetMethodImplAttributes(MethodDefinition methodDef)
-        {
-            return methodDef.ImplAttributes;
-        }
-
         public SignatureParameter GetMethodReturnType(MethodDefinition methodDef)
         {
             var signature = DecodeSignature(methodDef);
@@ -75,7 +65,7 @@ namespace Consyzer.Metadata
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private IEnumerable<string> GetSeparatedMethodAttributes(MethodDefinition methodDef)
         {
-            string methodAttributes = this.GetMethodAttributes(methodDef).ToString();
+            string methodAttributes = methodDef.Attributes.ToString();
             return methodAttributes.Split(',').Select(a => a.Trim());
         }
 

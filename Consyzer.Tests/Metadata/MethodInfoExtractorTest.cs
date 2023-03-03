@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using Consyzer.Metadata;
 using Consyzer.Metadata.Models;
-using System.Reflection;
 
 namespace Consyzer.Tests.Metadata
 {
@@ -70,26 +69,6 @@ namespace Consyzer.Tests.Metadata
             var isStatic = this.TestMethodsDefinitions.Any(m => extractor.IsStaticMethod(m));
 
             Assert.True(isStatic);
-        }
-
-        [Fact]
-        public void GetMethodAttributes_ShouldReturnMethodAttributesEnum()
-        {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
-
-            var methodAttributes = extractor.GetMethodAttributes(this.TestMethodDefinition);
-
-            Assert.IsType<MethodAttributes>(methodAttributes);
-        }
-
-        [Fact]
-        public void GetMethodImplAttributes_ShouldReturnMethodImplAttributesEnum()
-        {
-            var extractor = new MethodInfoExtractor(this.MetadataReader);
-
-            var methodImplAttributes = extractor.GetMethodImplAttributes(this.TestMethodDefinition);
-
-            Assert.IsType<MethodImplAttributes>(methodImplAttributes);
         }
 
         [Fact]

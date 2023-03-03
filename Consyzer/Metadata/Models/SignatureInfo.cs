@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Reflection;
 using System.Collections.Generic;
 
 namespace Consyzer.Metadata.Models
@@ -13,8 +12,6 @@ namespace Consyzer.Metadata.Models
         public bool IsStatic { get; set; }
         public SignatureParameter ReturnType { get; set; }
         public IEnumerable<SignatureParameter> MethodArguments { get; set; }
-        public MethodAttributes MethodAttributes { get; set; }
-        public MethodImplAttributes MethodImplAttributes { get; set; }
 
         public string MethodLocation =>
             $"{this.Namespace}.{this.ClassName}.{this.MethodName}";

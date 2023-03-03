@@ -31,9 +31,7 @@ namespace Consyzer.Metadata
                 Accessibility = extractor.GetMethodAccessibilityModifier(methodDef),
                 IsStatic = extractor.IsStaticMethod(methodDef),
                 ReturnType = extractor.GetMethodReturnType(methodDef),
-                MethodArguments = extractor.GetMethodArguments(methodDef),
-                MethodAttributes = extractor.GetMethodAttributes(methodDef),
-                MethodImplAttributes = extractor.GetMethodImplAttributes(methodDef)
+                MethodArguments = extractor.GetMethodArguments(methodDef)
             };
         }
 
