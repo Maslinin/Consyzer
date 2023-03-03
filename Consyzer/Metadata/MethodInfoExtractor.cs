@@ -16,6 +16,20 @@ namespace Consyzer.Metadata
             this._mdReader = mdReader;
         }
 
+        public SignatureInfo GetDecodedSignature(MethodDefinition methodDef)
+        {
+            return new SignatureInfo
+            {
+                Namespace = this.GetNamespace(methodDef),
+                ClassName = this.GetClassName(methodDef),
+                MethodName = this.GetMethodName(methodDef),
+                Accessibility = this.GetMethodAccessibilityModifier(methodDef),
+                IsStatic = this.IsStaticMethod(methodDef),
+                ReturnType = this.GetMethodReturnType(methodDef),
+                MethodArguments = this.GetMethodArguments(methodDef)
+            };
+        }
+
         public string GetNamespace(MethodDefinition methodDef)
         {
             var typeDef = this._mdReader.GetTypeDefinition(methodDef.GetDeclaringType());

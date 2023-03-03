@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace Consyzer.Metadata.Models
@@ -17,7 +18,7 @@ namespace Consyzer.Metadata.Models
             $"{this.Namespace}.{this.ClassName}.{this.MethodName}";
 
         public string FullMethodSignature => 
-            $"{this.Accessibility}{(this.IsStatic ? " static" : string.Empty)} {this.ReturnType.Type} {this.BaseMethodSignature})";
+            $"{this.Accessibility}{(this.IsStatic ? $" {nameof(MethodAttributes.Static)}" : string.Empty)} {this.ReturnType.Type} {this.BaseMethodSignature})";
 
         public string BaseMethodSignature =>
             $"{this.Namespace}.{this.ClassName}.{this.MethodName}({string.Join(", ", this.MethodArguments.Select(this.GetArgumentString))})";

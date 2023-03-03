@@ -51,7 +51,7 @@ namespace Consyzer.Metadata
         private ImportedMethodInfo GetImportedMethodInfo(MethodDefinition methodDef)
         {
             var import = methodDef.GetImport();
-            var signatureDecoder = new SignatureExtractor(this._mdReader);
+            var signatureDecoder = new MethodInfoExtractor(this._mdReader);
 
             var signatureInfo = signatureDecoder.GetDecodedSignature(methodDef);
             var moduleReference = this._mdReader.GetModuleReference(import.Module);

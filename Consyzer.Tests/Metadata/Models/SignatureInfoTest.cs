@@ -1,13 +1,14 @@
 ﻿using Xunit;
 using System.Linq;
 using Consyzer.Metadata;
+using System.Reflection;
 
 namespace Consyzer.Tests.Metadata.Models
 {
     public sealed class SignatureInfoTest
     {
-        private SignatureExtractor Decoder => new SignatureExtractor(TestHelper.GetMetadataReader());
-        private string StaticModifier => "static";
+        private MethodInfoExtractor Decoder => new MethodInfoExtractor(TestHelper.GetMetadataReader());
+        private string StaticModifier => nameof(MethodAttributes.Static);
 
         [Fact]
         public void GetMethodLocation_ShouldReturnNotEmptyString()

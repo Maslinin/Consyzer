@@ -22,6 +22,21 @@ namespace Consyzer.Tests.Metadata
         }
 
         [Fact]
+        public void GetDecodedSignature_ReceiveMethodDefinitionInstance_ShouldReturnInstanceWithNotNullAndNotEmptyProperties()
+        {
+            var decoder = new MethodInfoExtractor(MetadataReader);
+
+            var decodedSignature = decoder.GetDecodedSignature(this.TestMethodDefinition);
+
+            Assert.NotNull(decodedSignature);
+            Assert.NotEmpty(decodedSignature.Namespace);
+            Assert.NotEmpty(decodedSignature.ClassName);
+            Assert.NotEmpty(decodedSignature.MethodName);
+            Assert.NotNull(decodedSignature.ReturnType);
+            Assert.NotNull(decodedSignature.MethodArguments);
+        }
+
+        [Fact]
         public void GetNamespace_ShouldReturnNotEmptyString()
         {
             var extractor = new MethodInfoExtractor(this.MetadataReader);
