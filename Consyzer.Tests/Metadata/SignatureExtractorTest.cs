@@ -1,7 +1,10 @@
 ﻿using Xunit;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Metadata;
 using Consyzer.Metadata;
+using System.Runtime.CompilerServices;
 
 namespace Consyzer.Tests.Metadata
 {
@@ -42,8 +45,8 @@ namespace Consyzer.Tests.Metadata
             Assert.NotEmpty(decodedSignature.MethodName);
             Assert.NotNull(decodedSignature.ReturnType);
             Assert.NotNull(decodedSignature.MethodArguments);
-            Assert.NotNull(decodedSignature.MethodAttributes);
-            Assert.NotNull(decodedSignature.MethodImplAttributes);
+            Assert.IsType<MethodAttributes>(decodedSignature.MethodAttributes);
+            Assert.IsType<MethodImplAttributes>(decodedSignature.MethodImplAttributes);
         }
     }
 }

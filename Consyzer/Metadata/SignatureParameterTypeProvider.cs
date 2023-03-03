@@ -3,8 +3,6 @@ using System.Text;
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
 using Consyzer.Metadata.Models;
-using System.Xml.Linq;
-using System;
 
 namespace Consyzer.Metadata
 {

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace Consyzer.Metadata.Models
@@ -12,8 +13,8 @@ namespace Consyzer.Metadata.Models
         public bool IsStatic { get; set; }
         public SignatureParameter ReturnType { get; set; }
         public IEnumerable<SignatureParameter> MethodArguments { get; set; }
-        public string MethodAttributes { get; set; }
-        public string MethodImplAttributes { get; set; }
+        public MethodAttributes MethodAttributes { get; set; }
+        public MethodImplAttributes MethodImplAttributes { get; set; }
 
         public string MethodLocation =>
             $"{this.Namespace}.{this.ClassName}.{this.MethodName}";
@@ -22,7 +23,7 @@ namespace Consyzer.Metadata.Models
             $"{this.Accessibility}{(this.IsStatic ? " static" : string.Empty)} {this.ReturnType.Type} {this.BaseMethodSignature})";
 
         public string BaseMethodSignature =>
-            $"{Namespace}.{ClassName}.{MethodName}({string.Join(", ", MethodArguments.Select(GetArgumentString))})";
+            $"{this.Namespace}.{this.ClassName}.{this.MethodName}({string.Join(", ", this.MethodArguments.Select(this.GetArgumentString))})";
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private string GetArgumentString(SignatureParameter argument) =>

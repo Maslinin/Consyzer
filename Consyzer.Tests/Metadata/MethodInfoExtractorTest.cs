@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using Consyzer.Metadata;
 using Consyzer.Metadata.Models;
+using System.Reflection;
 
 namespace Consyzer.Tests.Metadata
 {
@@ -72,23 +73,23 @@ namespace Consyzer.Tests.Metadata
         }
 
         [Fact]
-        public void GetMethodAttributes_ShouldReturnNotEmptyString()
+        public void GetMethodAttributes_ShouldReturnMethodAttributesEnum()
         {
             var extractor = new MethodInfoExtractor(this.MetadataReader);
 
             var methodAttributes = extractor.GetMethodAttributes(this.TestMethodDefinition);
 
-            Assert.NotEmpty(methodAttributes);
+            Assert.IsType<MethodAttributes>(methodAttributes);
         }
 
         [Fact]
-        public void GetMethodImplAttributes_ShouldReturnNotEmptyString()
+        public void GetMethodImplAttributes_ShouldReturnMethodImplAttributesEnum()
         {
             var extractor = new MethodInfoExtractor(this.MetadataReader);
 
             var methodImplAttributes = extractor.GetMethodImplAttributes(this.TestMethodDefinition);
 
-            Assert.NotEmpty(methodImplAttributes);
+            Assert.IsType<MethodImplAttributes>(methodImplAttributes);
         }
 
         [Fact]

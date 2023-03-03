@@ -35,8 +35,7 @@ namespace Consyzer.Metadata
 
         public AccessModifier GetMethodAccessibilityModifier(MethodDefinition methodDef)
         {
-            string methodAttributes = this.GetMethodAttributes(methodDef);
-            var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodAttributes);
+            var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodDef);
 
             string[] accessibilityModifiers = Enum.GetNames(typeof(MsilAccessModifier));
             var modifierAsString = separatedMethodAttributes.Intersect(accessibilityModifiers).First();
@@ -47,20 +46,18 @@ namespace Consyzer.Metadata
 
         public bool IsStaticMethod(MethodDefinition methodDef)
         {
-            var methodAttributes = this.GetMethodAttributes(methodDef);
-            var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodAttributes);
-
+            var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodDef);
             return separatedMethodAttributes.Any(s => s == nameof(MethodAttributes.Static));
         }
 
-        public string GetMethodAttributes(MethodDefinition methodDef)
+        public MethodAttributes GetMethodAttributes(MethodDefinition methodDef)
         {
-            return methodDef.Attributes.ToString();
+            return methodDef.Attributes;
         }
 
-        public string GetMethodImplAttributes(MethodDefinition methodDef)
+        public MethodImplAttributes GetMethodImplAttributes(MethodDefinition methodDef)
         {
-            return methodDef.ImplAttributes.ToString();
+            return methodDef.ImplAttributes;
         }
 
         public SignatureParameter GetMethodReturnType(MethodDefinition methodDef)
@@ -76,8 +73,9 @@ namespace Consyzer.Metadata
         }
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        private IEnumerable<string> GetSeparatedMethodAttributes(string methodAttributes)
+        private IEnumerable<string> GetSeparatedMethodAttributes(MethodDefinition methodDef)
         {
+            string methodAttributes = this.GetMethodAttributes(methodDef).ToString();
             return methodAttributes.Split(',').Select(a => a.Trim());
         }
 
