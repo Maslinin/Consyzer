@@ -53,7 +53,7 @@ namespace Consyzer.Metadata
             var import = methodDef.GetImport();
             var signatureDecoder = new MethodInfoExtractor(this._mdReader);
 
-            var signatureInfo = signatureDecoder.GetDecodedSignature(methodDef);
+            var signatureInfo = signatureDecoder.GetSignatureInfo(methodDef);
             var moduleReference = this._mdReader.GetModuleReference(import.Module);
             var dllLocation = this._mdReader.GetString(moduleReference.Name);
             var dllImportArgs = import.Attributes.ToString();

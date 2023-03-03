@@ -16,7 +16,7 @@ namespace Consyzer.Metadata
             this._mdReader = mdReader;
         }
 
-        public SignatureInfo GetDecodedSignature(MethodDefinition methodDef)
+        public SignatureInfo GetSignatureInfo(MethodDefinition methodDef)
         {
             return new SignatureInfo
             {

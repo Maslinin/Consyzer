@@ -13,7 +13,7 @@ namespace Consyzer.Tests.Metadata.Models
         [Fact]
         public void GetMethodLocation_ShouldReturnNotEmptyString()
         {
-            var signatureInfo = this.Decoder.GetDecodedSignature(TestHelper.GetFirstMethodDefinition());
+            var signatureInfo = this.Decoder.GetSignatureInfo(TestHelper.GetFirstMethodDefinition());
 
             var methodLocation = signatureInfo.MethodLocation;
 
@@ -26,7 +26,7 @@ namespace Consyzer.Tests.Metadata.Models
             var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
             var methodDef = TestHelper.GetAllMethodsDefinitions()
                 .Where(m => extractor.IsStaticMethod(m)).First();
-            var signatureInfo = this.Decoder.GetDecodedSignature(methodDef);
+            var signatureInfo = this.Decoder.GetSignatureInfo(methodDef);
 
             var methodSignature = signatureInfo.FullMethodSignature;
 
@@ -40,7 +40,7 @@ namespace Consyzer.Tests.Metadata.Models
             var extractor = new MethodInfoExtractor(TestHelper.GetMetadataReader());
             var methodDef = TestHelper.GetAllMethodsDefinitions()
                 .Where(m => !extractor.IsStaticMethod(m)).First();
-            var signatureInfo = this.Decoder.GetDecodedSignature(methodDef);
+            var signatureInfo = this.Decoder.GetSignatureInfo(methodDef);
 
             var methodSignature = signatureInfo.FullMethodSignature;
 
@@ -51,7 +51,7 @@ namespace Consyzer.Tests.Metadata.Models
         [Fact]
         public void GetBaseMethodSignature_ShouldReturnNotEmptyString()
         {
-            var signatureInfo = this.Decoder.GetDecodedSignature(TestHelper.GetFirstMethodDefinition());
+            var signatureInfo = this.Decoder.GetSignatureInfo(TestHelper.GetFirstMethodDefinition());
 
             var methodLocation = signatureInfo.BaseMethodSignature;
 

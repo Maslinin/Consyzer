@@ -22,11 +22,11 @@ namespace Consyzer.Tests.Metadata
         }
 
         [Fact]
-        public void GetDecodedSignature_ReceiveMethodDefinitionInstance_ShouldReturnInstanceWithNotNullAndNotEmptyProperties()
+        public void GetSignatureInfo_ReceiveMethodDefinitionInstance_ShouldReturnInstanceWithNotNullAndNotEmptyProperties()
         {
             var decoder = new MethodInfoExtractor(MetadataReader);
 
-            var decodedSignature = decoder.GetDecodedSignature(this.TestMethodDefinition);
+            var decodedSignature = decoder.GetSignatureInfo(this.TestMethodDefinition);
 
             Assert.NotNull(decodedSignature);
             Assert.NotEmpty(decodedSignature.Namespace);
