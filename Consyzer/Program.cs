@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using Consyzer.File;
 using Consyzer.Logging;
 using Consyzer.Metadata;
-using Log = Consyzer.Logging.LogService;
+using Log = Consyzer.Logging.NLogService;
 using static Consyzer.Constants;
 using static Consyzer.Constants.File;
 
@@ -21,7 +21,8 @@ namespace Consyzer
             try
             {
                 var(analysisDirectory, fileExtensions) = CmdArgsParser.GetAnalysisParams();
-                AnalysisStatusLogger.LogAnalysisParams(analysisDirectory, fileExtensions);
+                Log.Debug(
+                    AnalysisStatusLogger.GetAnalysisParamsLog(analysisDirectory, fileExtensions));
 
                 var files = FileHelper.GetFilesFrom(analysisDirectory, fileExtensions);
                 if (!files.Any())
@@ -31,18 +32,21 @@ namespace Consyzer
                 }
 
                 Log.Info("The following files with the specified extensions were found:");
-                AnalysisStatusLogger.LogBaseFileInfo(files);
+                Log.Info(AnalysisStatusLogger.GetBaseFileInfoLog(files));
 
-                if (!AnalysisStatusLogger.CheckAndLogCorrectFiles(files))
+                AnalysisStatusLogger.GetNotCorrectFilesLog(files, out bool filesAreIncorrect);
+                if (filesAreIncorrect)
                     return (int)ProgramStatusCode.SuccessExit;
 
                 var metadataAnalyzers = MetadataFileFilter.GetMetadataAssemblyFiles(files)
                     .Select(f => new MetadataAnalyzer(f));
                 Log.Info("The following assembly files containing metadata were found:");
-                AnalysisStatusLogger.LogBaseAndHashFileInfo(metadataAnalyzers);
+                Log.Info(
+                    AnalysisStatusLogger.GetBaseAndHashFileInfoLog(metadataAnalyzers.Select(f => f.FileInfo)));
 
                 Log.Info("Information about imported methods from other assemblies in the analyzed files:");
-                AnalysisStatusLogger.LogImportedMethodsInfoForEachFile(metadataAnalyzers);
+                Log.Info(
+                    AnalysisStatusLogger.GetImportedMethodsInfoForEachFileLog(metadataAnalyzers));
 
                 var fileLocations = GetImportedMethodsLocations(metadataAnalyzers);
                 if (!fileLocations.Any())
@@ -54,7 +58,8 @@ namespace Consyzer
                 var searcher = new FileExistenceChecker(analysisDirectory);
 
                 Log.Info("The presence of files in the received locations:");
-                AnalysisStatusLogger.LogFilesExistStatus(searcher, fileLocations);
+                Log.Info(
+                    AnalysisStatusLogger.GetFilesExistStatusLog(searcher, fileLocations));
 
                 return (int)searcher.GetMaxFileExistanceStatus(fileLocations);
             }

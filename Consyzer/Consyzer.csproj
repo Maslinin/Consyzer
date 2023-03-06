@@ -15,12 +15,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="NLog.config">
+    <Content Include="Logging\NLog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<TargetPath>NLog.config</TargetPath>
     </Content>
 	  
-	<Content Include="NLog.xsd">
+	<Content Include="Logging\NLog.xsd">
 		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<TargetPath>NLog.xsd</TargetPath>
 	</Content>
   </ItemGroup>
 
