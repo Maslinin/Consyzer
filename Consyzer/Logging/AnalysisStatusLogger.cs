@@ -64,7 +64,6 @@ namespace Consyzer.Logging
 
                 log.AppendLine($"\t[{index}]File: '{file.Name}':");
                 log.AppendLine($"\t\tCreation Time: '{file.CreationTime}',");
-                log.AppendLine($"\t\tSHA256 Hash Sum: '{hashInfo.SHA256Sum}'.");
             }
             return log.ToString().TrimEnd('\n', '\r');
         }

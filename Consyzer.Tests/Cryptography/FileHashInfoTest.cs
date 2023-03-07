@@ -4,18 +4,18 @@ using static Consyzer.Tests.TestConstants.FileLocation;
 
 namespace Consyzer.Tests.Cryptography
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public sealed class FileHashInfoTest
     {
+        private int SHA256StandardHashLength => 64;
+
         [Fact]
-        public void InstanceCreation_ShouldCreateInstanceWithNotEmptyProperties()
+        public void CalculateHash_ShouldReturnIHashFileInfoWithRightHashSums()
         {
             var fileInfo = MetadataAssemblyFileInfo;
 
             var hashInfo = FileHashInfo.CalculateHash(fileInfo);
 
-            Assert.NotEmpty(hashInfo.MD5Sum);
-            Assert.NotEmpty(hashInfo.SHA256Sum);
+            Assert.Equal(this.SHA256StandardHashLength, hashInfo.SHA256Sum.Length);
         }
 
     }
