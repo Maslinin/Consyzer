@@ -1,13 +1,13 @@
 ﻿[CmdletBinding()]
 param(
-    [Parameter(Mandatory=$true, HelpMessage="Path to Consyzer executable.")]
+	[Parameter(Mandatory=$true, HelpMessage="Path to Consyzer executable.")]
 	[ValidateScript({Test-Path $_ -PathType Leaf})]
-    [String]$pathToConsyzer,
-    [Parameter(Mandatory=$true, HelpMessage="Path to the solution for analysis.")]
+	[String]$pathToConsyzer,
+	[Parameter(Mandatory=$true, HelpMessage="Path to the solution for analysis.")]
 	[ValidateScript({Test-Path $_ -PathType Container})]
-    [String]$solutionForAnalysis,
-    [String]$fileExtensions = ".dll",
-    [String]$buildConfiguration = "Debug"
+	[String]$solutionForAnalysis,
+	[String]$fileExtensions = ".dll",
+	[String]$buildConfiguration = "Debug"
 )
 
 if (-not ($fileExtensions.StartsWith("."))) {
