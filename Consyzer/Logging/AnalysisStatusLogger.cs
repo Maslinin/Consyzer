@@ -60,8 +60,6 @@ namespace Consyzer.Logging
             var log = new StringBuilder();
             foreach ((FileInfo file, int index) in files.Select((f, i) => (f, i)))
             {
-                var hashInfo = FileHashInfo.CalculateHash(file);
-
                 log.AppendLine($"\t[{index}]File: '{file.Name}':");
                 log.AppendLine($"\t\tCreation Time: '{file.CreationTime}',");
             }

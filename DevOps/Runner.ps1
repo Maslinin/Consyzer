@@ -1,81 +1,57 @@
-﻿param(
-    [Parameter()]
+﻿[CmdletBinding()]
+param(
+    [Parameter(Mandatory=$true, HelpMessage="Path to Consyzer executable.")]
+	[ValidateScript({Test-Path $_ -PathType Leaf})]
     [String]$pathToConsyzer,
+    [Parameter(Mandatory=$true, HelpMessage="Path to the solution for analysis.")]
+	[ValidateScript({Test-Path $_ -PathType Container})]
     [String]$solutionForAnalysis,
-    [String]$fileExtensions,
-    [String]$buildConfiguration
+    [String]$fileExtensions = ".dll",
+    [String]$buildConfiguration = "Debug"
 )
 
-switch ($null) {
-    $pathToConsyzer { 
-        Write-Host "Missing pathToConsyzer parameter. Script will exit."
-        Exit -1
-    }
-    $solutionForAnalysis {
-        Write-Host "Missing solutionForAnalysis parameter. Script will exit."
-        Exit -1
-    }
-    $fileExtensions {
-        Write-Host "Missing fileExtensions parameter. Script will use default value."
-        $fileExtensions = ".dll"
-    }
-    $buildConfiguration {
-        Write-Host "Missing buildConfiguration parameter. Script will use default value."
-        $buildConfiguration = "Debug"
-    }
+if (-not ($fileExtensions.StartsWith("."))) {
+    Write-Warning "Invalid file extension format. The extension should start with a dot. The default value is set to `$fileExtensions`."
+    $fileExtensions = "$fileExtensions"
 }
-
+if (-not $buildConfiguration) {
+    Write-Warning "Missing buildConfiguration parameter. Script will use the default $buildConfiguration value."
+    $buildConfiguration = "Debug"
+}
 
 #Project artifacts almost always contain DLL files; therefore, in order to avoid duplication of found paths containing artifacts, we are looking only for those paths that contain DLL files.
-#If you are firmly convinced that your application does not contain a DLL, replace "*.dll" with "*.exe" in the next line.
-$paths = $( Get-ChildItem -Path . -Include "*.dll"  -Recurse -Force )
-
-#Search for artifacts for analysis
-$pathsToAnalysisFiles = New-Object System.Collections.Generic.List[System.IO.FileInfo]
-foreach($file in $paths) {
-  if($file -match "bin" -and "$buildConfiguration" -and $file -notmatch "runtimes") {
-	$pathsToAnalysisFiles.Add($file)
-  }
+$defaultParams = @{
+    Filter = "*.dll"
+    Recurse = $true
+    Force = $true
 }
 
-if($pathsToAnalysisFiles.length -eq 0) {
-  Write-Host "No binary files were found for analysis."
-  Exit 0
+$pathsToAnalysisFiles = Get-ChildItem -Path . @defaultParams |
+    Where-Object { $_.FullName -match ".*\\$stopFolderName(\\|$)" -and $_.DirectoryName -match "bin" }
+
+if($pathsToAnalysisFiles.Length -eq 0) {
+    Write-Warning "No binary files were found for analysis."
+    Exit 0
 }
 
-#Get output project directories for analysis.
-$AnalysisFolders = New-Object System.Collections.Generic.List[System.String]
-foreach($file in $pathsToAnalysisFiles) {
-  $folder = $($file.DirectoryName)
-  $AnalysisFolders.Add($folder)
-}
-$AnalysisFolders = $AnalysisFolders | Select-Object -Unique
+#Get output project directories for analysis and then select unique project directories for analysis.
+$analysisFolders = $pathsToAnalysisFiles.DirectoryName | Select-Object -Unique
 
-#Scanning of projects artifacts.
+# Scan project artifacts for consistency
 $finalExitCode = -1
-$AnalysisStatuses = New-Object System.Collections.Generic.List[System.String]
-foreach($folder in $AnalysisFolders) {
-  & $pathToConsyzer $folder $fileExtensions
-  if ( $LastExitCode -eq $exitcode ) {
-	Write-Host "Error|$folder-> Consyzer could not analyze the files because an internal error occurred. Make sure that the arguments were passed correctly."
-  }
-  
-  if ( $LastExitCode -ge $exitcode ) {
-	$finalExitCode = $LastExitCode
-  }
-  Write-Host "Consyzer run exit code: " $LastExitCode `n
-  
-  #Determining the status of scanning project artifacts
-  switch( $LastExitCode )
-  {
-      0 { $Event = "Successfully|$folder-> No consistency problems were found." }
-      1 { $Event = "Warning|$folder->  One or more DLL components used in the project are on an absolute path." }
-      2 { $Event = "Warning|$folder->  One or more DLL components used in the project are on a relative path." }
-      3 { $Event = "Warning|$folder->  One or more DLL components used in the project are located on the system path." }
-      4 { $Event = "Error|$folder->  One or more components used in the DLL project were not found on the expected path." }
-  }
-  $AnalysisStatuses.Add($Event)
+$analysisStatuses = foreach ($folder in $analysisFolders) {
+$result = & $pathToConsyzer $folder $fileExtensions
+    $exitCodeMessages = @{
+        0 = "Successfully|$folder -> No consistency problems were found."
+        1 = "Warning|$folder -> One or more DLL components used in the project are on an absolute path."
+        2 = "Warning|$folder -> One or more DLL components used in the project are on a relative path."
+        3 = "Warning|$folder -> One or more DLL components used in the project are located on the system path."
+        4 = "Error|$folder -> One or more components used in the DLL project were not found on the expected path."
+    }
+    $analysisStatus = $exitCodeMessages[$result]
+    Write-Output "Consyzer run exit code: $result`n"
+    $analysisStatus
 }
 
-foreach($status in $AnalysisStatuses) { Write-Host $status }
+$analysisStatuses | Write-Output
 Exit $finalExitCode
