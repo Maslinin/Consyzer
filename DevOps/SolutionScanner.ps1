@@ -15,23 +15,22 @@ if (-not ($fileExtensions.StartsWith("."))) {
     	$fileExtensions = "$fileExtensions"
 }
 if (-not $buildConfiguration) {
-    	Write-Warning "Missing buildConfiguration parameter. Script will use the default $buildConfiguration value."
-    	$buildConfiguration = "Debug"
+	Write-Warning "Missing buildConfiguration parameter. Script will use the default $buildConfiguration value."
+	$buildConfiguration = "Debug"
 }
 
-#Project artifacts almost always contain DLL files; therefore, in order to avoid duplication of found paths containing artifacts, we are looking only for those paths that contain DLL files.
 $defaultParams = @{
-    	Filter = "*.dll"
-    	Recurse = $true
-    	Force = $true
+	Include = "*.dll", "*.exe"
+	Recurse = $true
+	Force = $true
 }
 
 $pathsToAnalysisFiles = Get-ChildItem -Path . @defaultParams |
-    	Where-Object { $_.FullName -match ".*\\$buildConfiguration(\\|$)" -and $_.DirectoryName -match "bin" }
+	Where-Object { $_.FullName -match ".*\\$buildConfiguration(\\|$)" -and $_.DirectoryName -match "bin" }
 
 if($pathsToAnalysisFiles.Length -eq 0) {
-    	Write-Warning "No binary files were found for analysis."
-    	Exit 0
+	Write-Warning "No binary files were found for analysis."
+	Exit 0
 }
 
 #Get output project directories for analysis and then select unique project directories for analysis.
@@ -39,11 +38,11 @@ $analysisFolders = $pathsToAnalysisFiles | ForEach-Object { $_.DirectoryName } |
 
 # Scan project artifacts for consistency
 $exitCodeMessages = @{
-	0 = "Successfully: No consistency problems were found."
+	0 = "Successfully: No consistency problems found."
 	1 = "Warning: One or more DLL components used in the project are on an absolute path."
 	2 = "Warning: One or more DLL components used in the project are on a relative path."
 	3 = "Warning: One or more DLL components used in the project are located on the system path."
-	4 = "Error: One or more components used in the DLL project were not found on the expected path."
+	4 = "Error: One or more components used in the DLL project do not found in the expected path."
 }
 
 $finalExitCode = -1
@@ -55,7 +54,7 @@ foreach ($folder in $analysisFolders) {
 	}
 	
 	$messageBuilder.AppendLine($exitCodeMessages[$result] + "| " + $folder)
-    	Write-Output "Consyzer run exit code: $result`n"
+	Write-Output "Consyzer run exit code: $result`n"
 }
 Write-Output $messageBuilder.ToString()
 
