@@ -1,4 +1,4 @@
-#DevOps solutions
+# DevOps solutions
 
 ## Analysis of multiple projects in solution
 You can use the *PowerShell* script ```SolutionScanner.ps1``` to analyze the output artifacts of the entire solution by using *Consyzer*.
