@@ -27,7 +27,7 @@ $defaultParams = @{
 }
 
 $pathsToAnalysisFiles = Get-ChildItem -Path . @defaultParams |
-    Where-Object { $_.FullName -match ".*\\$stopFolderName(\\|$)" -and $_.DirectoryName -match "bin" }
+    Where-Object { $_.FullName -match ".*\\$buildConfiguration(\\|$)" -and $_.DirectoryName -match "bin" }
 
 if($pathsToAnalysisFiles.Length -eq 0) {
     Write-Warning "No binary files were found for analysis."
@@ -35,23 +35,29 @@ if($pathsToAnalysisFiles.Length -eq 0) {
 }
 
 #Get output project directories for analysis and then select unique project directories for analysis.
-$analysisFolders = $pathsToAnalysisFiles.DirectoryName | Select-Object -Unique
+$analysisFolders = $pathsToAnalysisFiles | ForEach-Object { $_.DirectoryName } | Select-Object -Unique
 
 # Scan project artifacts for consistency
-$finalExitCode = -1
-$analysisStatuses = foreach ($folder in $analysisFolders) {
-$result = & $pathToConsyzer $folder $fileExtensions
-    $exitCodeMessages = @{
-        0 = "Successfully|$folder -> No consistency problems were found."
-        1 = "Warning|$folder -> One or more DLL components used in the project are on an absolute path."
-        2 = "Warning|$folder -> One or more DLL components used in the project are on a relative path."
-        3 = "Warning|$folder -> One or more DLL components used in the project are located on the system path."
-        4 = "Error|$folder -> One or more components used in the DLL project were not found on the expected path."
-    }
-    $analysisStatus = $exitCodeMessages[$result]
-    Write-Output "Consyzer run exit code: $result`n"
-    $analysisStatus
+$exitCodeMessages = @{
+    0 = "Successfully: No consistency problems were found."
+    1 = "Warning: One or more DLL components used in the project are on an absolute path."
+    2 = "Warning: One or more DLL components used in the project are on a relative path."
+    3 = "Warning: One or more DLL components used in the project are located on the system path."
+    4 = "Error: One or more components used in the DLL project were not found on the expected path."
 }
 
-$analysisStatuses | Write-Output
+$finalExitCode = -1
+$messageBuilder = New-Object System.Text.StringBuilder
+foreach ($folder in $analysisFolders) {
+	$result = & $pathToConsyzer $folder $fileExtensions
+	if ( $result -ge $finalExitCode ) {
+		$result = $finalExitCode
+	}
+	
+	$messageBuilder.AppendLine($exitCodeMessages[$result] + "| " + $folder)
+    Write-Output "Consyzer run exit code: $result`n"
+}
+
+Write-Output $messageBuilder.ToString()
+
 Exit $finalExitCode
