@@ -1,31 +1,26 @@
-[CmdletBinding()]
 param(
 	[Parameter(Mandatory=$true, HelpMessage="Path to Consyzer executable.")]
 	[ValidateScript({Test-Path $_ -PathType Leaf})]
 	[String]$pathToConsyzer,
+	
 	[Parameter(Mandatory=$true, HelpMessage="Path to the solution for analysis.")]
 	[ValidateScript({Test-Path $_ -PathType Container})]
 	[String]$solutionForAnalysis,
+	
+	[Parameter(HelpMessage={ "File extensions to scan for. Default is $fileExtensions." })]
 	[String]$fileExtensions = ".dll",
-	[String]$buildConfiguration = "Debug"
+	
+	[Parameter(HelpMessage={ "Build configuration to use. Default is $buildConfiguration." })]
+    [String]$buildConfiguration = "Debug"
 )
 
-if (-not ($fileExtensions.StartsWith("."))) {
-	Write-Warning "Invalid file extension format. The extension should start with a dot. The default value is set to `$fileExtensions`."
-    	$fileExtensions = "$fileExtensions"
-}
-if (-not $buildConfiguration) {
-	Write-Warning "Missing buildConfiguration parameter. Script will use the default $buildConfiguration value."
-	$buildConfiguration = "Debug"
-}
-
-$defaultParams = @{
+$defaultSearchParams = @{
 	Include = "*.dll", "*.exe"
 	Recurse = $true
 	Force = $true
 }
 
-$pathsToAnalysisFiles = Get-ChildItem -Path . @defaultParams |
+$pathsToAnalysisFiles = Get-ChildItem -Path . @defaultSearchParams |
 	Where-Object { $_.FullName -match ".*\\$buildConfiguration(\\|$)" -and $_.DirectoryName -match "bin" }
 
 if($pathsToAnalysisFiles.Length -eq 0) {
@@ -48,13 +43,13 @@ $exitCodeMessages = @{
 $finalExitCode = -1
 $messageBuilder = New-Object System.Text.StringBuilder
 foreach ($folder in $analysisFolders) {
-	$result = & $pathToConsyzer $folder $fileExtensions
-	if ( $result -ge $finalExitCode ) {
-		$finalExitCode = $result
+	& $pathToConsyzer $folder $fileExtensions
+	if ( $LASTEXITCODE -ge $finalExitCode ) {
+		$finalExitCode = $LASTEXITCODE
 	}
 	
-	$messageBuilder.AppendLine($exitCodeMessages[$result] + "| " + $folder)
-	Write-Output "Consyzer run exit code: $result`n"
+	$messageBuilder.AppendLine("$($exitCodeMessages[$LASTEXITCODE]) | $folder")
+	Write-Output "Consyzer run exit code: $LASTEXITCODE`n"
 }
 Write-Output $messageBuilder.ToString()
 

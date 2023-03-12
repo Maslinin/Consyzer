@@ -12,3 +12,17 @@ To run the script, use the following command:
 3) *C:\SolutionToBeAnalyzed* - path to the analyzed solution,        
 4) *".exe, .dll"* - files extensions to be analyzed,        
 5) *Release* - solution build configuration.       
+
+You can also use the following task if you want to analyze in Azure Pipelines CI:        
+```
+- task: PowerShell@2
+      inputs:
+        targetType: 'filePath'
+        filePath: '$(Build.SourcesDirectory)\Consyzer.ps1'
+        arguments: >
+          -pathToConsyzer '$YourPathToConsyzer'
+          -solutionForAnalysis '$(Build.SourcesDirectory)'
+          -fileExtensions '".exe, .dll"'
+          -buildConfiguration '$YourBuildConfiguration'
+      displayName: 'Consyzer Analysis'
+```
