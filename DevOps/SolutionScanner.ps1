@@ -50,7 +50,7 @@ $messageBuilder = New-Object System.Text.StringBuilder
 foreach ($folder in $analysisFolders) {
 	$result = & $pathToConsyzer $folder $fileExtensions
 	if ( $result -ge $finalExitCode ) {
-		$result = $finalExitCode
+		$finalExitCode = $result
 	}
 	
 	$messageBuilder.AppendLine($exitCodeMessages[$result] + "| " + $folder)
