@@ -31,15 +31,6 @@ if($pathsToAnalysisFiles.Length -eq 0) {
 #Get output project directories for analysis and then select unique project directories for analysis.
 $analysisFolders = $pathsToAnalysisFiles | ForEach-Object { $_.DirectoryName } | Select-Object -Unique
 
-# Scan project artifacts for consistency
-$exitCodeMessages = @{
-	0 = "Successfully: No consistency problems found."
-	1 = "Warning: One or more DLL components used in the project are on an absolute path."
-	2 = "Warning: One or more DLL components used in the project are on a relative path."
-	3 = "Warning: One or more DLL components used in the project are located on the system path."
-	4 = "Error: One or more components used in the DLL project do not found in the expected path."
-}
-
 $finalExitCode = -1
 $messageBuilder = New-Object System.Text.StringBuilder
 foreach ($folder in $analysisFolders) {
@@ -48,7 +39,16 @@ foreach ($folder in $analysisFolders) {
 		$finalExitCode = $LASTEXITCODE
 	}
 	
-	$messageBuilder.AppendLine("$($exitCodeMessages[$LASTEXITCODE]) | $folder")
+	# Scan project artifacts for consistency
+	$exitCodeMessages = @{
+		0 = "Successfully: $folder. No consistency problems found."
+		1 = "Warning: $folder. One or more DLL components used in the project are on an absolute path."
+		2 = "Warning: $folder. One or more DLL components used in the project are on a relative path."
+		3 = "Warning: $folder. One or more DLL components used in the project are located on the system path."
+		4 = "Error: $folder. One or more components used in the DLL project do not found in the expected path."
+	}
+	
+	$messageBuilder.AppendLine($exitCodeMessages[$LASTEXITCODE])
 	Write-Output "Consyzer run exit code: $LASTEXITCODE`n"
 }
 Write-Output $messageBuilder.ToString()
