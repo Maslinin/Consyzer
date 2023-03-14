@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Consyzer.File;
 using Consyzer.Logging;
@@ -48,7 +47,10 @@ namespace Consyzer
                 Log.Info(
                     AnalysisStatusLogger.GetImportedMethodsInfoForEachFileLog(metadataAnalyzers));
 
-                var fileLocations = GetImportedMethodsLocations(metadataAnalyzers);
+                var fileLocations = metadataAnalyzers
+                    .SelectMany(m => m.GetImportedMethodsInfo())
+                    .Select(m => FileHelper.AddExtensionToFile(m.DllLocation, DefaultFileExtension))
+                    .Distinct();
                 if (!fileLocations.Any())
                 {
                     Log.Warn("All files are missing imported methods from other assemblies.");
@@ -68,20 +70,6 @@ namespace Consyzer
                 Log.Error(e.ToString());
                 return (int)ProgramStatusCode.UnexpectedBehavior;
             }
-        }
-
-        public static IEnumerable<string> GetImportedMethodsLocations(IEnumerable<MetadataAnalyzer> metadataAnalyzers, string defaultFileExtension = DefaultFileExtension)
-        {
-            var importedMethods = new List<string>();
-
-            foreach (var method in metadataAnalyzers)
-            {
-                var methods = method.GetImportedMethodsInfo()
-                    .Select(m => FileHelper.AddExtensionToFile(m.DllLocation, defaultFileExtension));
-                importedMethods.AddRange(methods);
-            }
-
-            return importedMethods.Distinct();
         }
     }
 }
