@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using Consyzer.File;
 using Consyzer.Metadata;
 using Consyzer.Cryptography;
 using Consyzer.Metadata.Models;
+using NLog.Fluent;
 
 namespace Consyzer.Logging
 {
@@ -15,10 +17,12 @@ namespace Consyzer.Logging
         public static string GetAnalysisParamsLog(string analysisDirectory, IEnumerable<string> fileExtensions)
         {
             string separatedExtensions = string.Join(", ", fileExtensions.Select(e => $"'{e}'"));
-            return $"Path for analysis: '{analysisDirectory}'.\nSpecified file extensions for analysis: {separatedExtensions}.";
+            return 
+                $"Path for analysis: '{analysisDirectory}'." +
+                $"\nSpecified file extensions for analysis: {separatedExtensions}.";
         }
 
-        public static string GetNotCorrectFilesLog(IEnumerable<FileInfo> files, out bool filesAreIncorrect)
+        public static string GetNotMetadataFilesLog(IEnumerable<FileInfo> files, out bool filesAreIncorrect)
         {
             var log = new StringBuilder();
 
@@ -27,114 +31,103 @@ namespace Consyzer.Logging
             {
                 log.AppendLine("The following files were excluded from analysis because they DO NOT contain metadata:");
                 log.AppendLine(GetBaseFileInfoLog(notMetadataFiles));
-
-                if (files.Count() == notMetadataFiles.Count())
-                {
-                    log.AppendLine("All found files DO NOT contain metadata.");
-                    filesAreIncorrect = true;
-                    return log.ToString().TrimEnd('\n', '\r');
-                }
             }
 
+            filesAreIncorrect = notMetadataFiles.Count() == files.Count();
+            if (filesAreIncorrect)
+            {
+                log.AppendLine("All found files DO NOT contain metadata.");
+            }
+
+            return log.ToString().TrimEnd('\n', '\r');
+        }
+
+        public static string GetNotMetadataAssemblyFilesLog(IEnumerable<FileInfo> files, out bool filesAreIncorrect)
+        {
+            var log = new StringBuilder();
+
+            var notMetadataFiles = MetadataFileFilter.GetNotMetadataFiles(files);
             var notMetadataAssemblyFiles = MetadataFileFilter.GetNotMetadataAssemblyFiles(files);
-            var differentFiles = notMetadataFiles.Where(f => !notMetadataAssemblyFiles.Any(a => a.Name == f.Name));
-            if (differentFiles.Any())
+            var remainingFiles = notMetadataFiles.Where(f => !notMetadataAssemblyFiles.Any(a => a.Name == f.Name));
+
+            if (remainingFiles.Any())
             {
                 log.AppendLine("The following files were excluded from analysis because they ARE NOT assembly files:");
-                log.AppendLine(GetBaseFileInfoLog(differentFiles));
-
-                if (files.Count() == differentFiles.Count())
-                {
-                    log.AppendLine("All found files contain metadata, but ARE NOT assembly files.");
-                    filesAreIncorrect = true;
-                    return log.ToString().TrimEnd('\n', '\r');
-                }
+                log.AppendLine(GetBaseFileInfoLog(remainingFiles));
             }
 
-            filesAreIncorrect = false;
+            filesAreIncorrect = remainingFiles.Count() == files.Count();
+            if (filesAreIncorrect)
+            {
+                log.AppendLine("All found files contain metadata, but ARE NOT assembly files.");
+            }
+
             return log.ToString().TrimEnd('\n', '\r');
         }
 
         public static string GetBaseFileInfoLog(IEnumerable<FileInfo> files)
         {
-            var log = new StringBuilder();
-            foreach ((FileInfo file, int index) in files.Select((f, i) => (f, i)))
+            return string.Join(Environment.NewLine, files.Select((f, i) =>
             {
-                log.AppendLine($"\t[{index}]File: '{file.Name}':");
-                log.AppendLine($"\t\tCreation Time: '{file.CreationTime}',");
-            }
-            return log.ToString().TrimEnd('\n', '\r');
+                return 
+                    $"\t[{i}]File: '{f.Name}': {Environment.NewLine}" +
+                    $"\t\tCreation Time: '{f.CreationTime}',";
+            }));
         }
 
         public static string GetBaseAndHashFileInfoLog(IEnumerable<FileInfo> files)
         {
-            var log = new StringBuilder();
-            foreach ((FileInfo file, int index) in files.Select((f, i) => (f, i)))
+            return string.Join(Environment.NewLine, files.Select((f, i) =>
             {
-                var hashInfo = FileHashInfo.CalculateHash(file);
-
-                log.AppendLine($"\t[{index}]File: '{file.Name}':");
-                log.AppendLine($"\t\tCreation Time: '{file.CreationTime}',");
-                log.AppendLine($"\t\tSHA256 Hash Sum: '{hashInfo.SHA256Sum}'.");
-            }
-            return log.ToString().TrimEnd('\n', '\r');
+                var hashInfo = FileHashInfo.CalculateHash(f);
+                return 
+                    $"\t[{i}]File: '{f.Name}': {Environment.NewLine}" +
+                    $"\t\tCreation Time: '{f.CreationTime}', {Environment.NewLine}" +
+                    $"\t\tSHA256 Hash Sum: '{hashInfo.SHA256Sum}'.";
+            }));
         }
 
         public static string GetImportedMethodsInfoForEachFileLog(IEnumerable<MetadataAnalyzer> metadataAnalyzers)
         {
-            var log = new StringBuilder();
-            foreach ((MetadataAnalyzer file, int index) in metadataAnalyzers.Select((f, i) => (f, i)))
+            return string.Join(Environment.NewLine, metadataAnalyzers.Select((file, index) =>
             {
                 var importedMethods = file.GetImportedMethodsInfo();
+                var methodInfoText = importedMethods.Any()
+                    ? GetImportedMethodsInfoLog(importedMethods)
+                    : "\t\tThere is no any imported methods from other assemblies in the file.";
 
-                log.AppendLine($"\t[{index}]File '{file.FileInfo.FullName}': ");
-                if (importedMethods.Any())
-                {
-                    log.AppendLine(GetImportedMethodsInfoLog(importedMethods));
-                }
-                else
-                {
-                    log.AppendLine($"\t\tThere is no any imported methods from other assemblies in the file.");
-                }
-            }
-            return log.ToString().TrimEnd('\n', '\r');
+                return $"\t[{index}]File '{file.FileInfo.FullName}': {Environment.NewLine}{methodInfoText}";
+            }));
         }
 
         public static string GetImportedMethodsInfoLog(IEnumerable<ImportedMethodInfo> importedMethods)
         {
-            var log = new StringBuilder();
-            foreach ((ImportedMethodInfo info, int index) in importedMethods.Select((m, i) => (m, i)))
-            {
-                log.AppendLine($"\t\t[{index}]Method '{info.Signature.MethodLocation}':");
-                log.AppendLine($"\t\t\tMethod Signature: '{info.Signature.BaseMethodSignature}',");
-                log.AppendLine($"\t\t\tDLL Location: '{info.DllLocation}',");
-                log.AppendLine($"\t\t\tDLL Import Args: '{info.DllImportArgs}'.");
-            }
-            return log.ToString().TrimEnd('\n', '\r');
+            return string.Join(Environment.NewLine, importedMethods.Select((info, index) =>
+                $"\t\t[{index}]Method '{info.Signature.MethodLocation}': {Environment.NewLine}" +
+                $"\t\t\tMethod Signature: '{info.Signature.BaseMethodSignature}', {Environment.NewLine}" +
+                $"\t\t\tDLL Location: '{info.DllLocation}', {Environment.NewLine}" +
+                $"\t\t\tDLL Import Args: '{info.DllImportArgs}'."));
         }
 
         public static string GetFilesExistStatusLog(FileExistenceChecker fileSearcher, IEnumerable<string> fileLocations)
         {
-            int existingFiles = 0, nonExistingFiles = 0;
+            var fileStatuses = fileLocations
+                .Select((location, index) => (Index: index, 
+                Location: location, 
+                Status: fileSearcher.GetMinFileExistanceStatus(location)));
+
+            var existingFiles = fileStatuses.Count(x => x.Status != FileExistenceStatus.FileDoesNotExist);
+            var nonExistingFiles = fileStatuses.Count(x => x.Status == FileExistenceStatus.FileDoesNotExist);
 
             var log = new StringBuilder();
-            foreach ((string location, int index) in fileLocations.Select((l, i) => (l, i)))
+            foreach (var fileStatus in fileStatuses)
             {
-                bool notExists = fileSearcher.GetMinFileExistanceStatus(location) is FileExistenceStatus.FileDoesNotExist;
-                if (notExists)
-                {
-                    log.AppendLine($"\t[{index}]File '{location}' DOES NOT exist!");
-                    ++nonExistingFiles;
-                }
-                else
-                {
-                    log.AppendLine($"\t[{index}]File '{location}' exists.");
-                    ++existingFiles;
-                }
+                var statusText = fileStatus.Status != FileExistenceStatus.FileDoesNotExist ? "exists" : "DOES NOT exist";
+                log.AppendLine($"\t[{fileStatus.Index}]File '{fileStatus.Location}' {statusText}.");
             }
             log.Append($"TOTAL: {existingFiles} exists, {nonExistingFiles} DO NOT exist.");
 
-            return log.ToString().TrimEnd('\n', '\r');
+            return log.ToString();
         }
 
     }

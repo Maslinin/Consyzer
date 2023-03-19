@@ -12,7 +12,7 @@ using static Consyzer.Constants.File;
 
 namespace Consyzer
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     static class Program
     {
         private static int Main()
@@ -33,8 +33,13 @@ namespace Consyzer
                 Log.Info("The following files with the specified extensions were found:");
                 Log.Info(AnalysisStatusLogger.GetBaseFileInfoLog(files));
 
-                AnalysisStatusLogger.GetNotCorrectFilesLog(files, out bool filesAreIncorrect);
-                if (filesAreIncorrect)
+                Log.Info(
+                    AnalysisStatusLogger.GetNotMetadataFilesLog(files, out bool filesAreNotMetadata));
+                if (filesAreNotMetadata)
+                    return (int)ProgramStatusCode.SuccessExit;
+                Log.Info(
+                    AnalysisStatusLogger.GetNotMetadataAssemblyFilesLog(files, out bool filesAreNotMetadataAssembly));
+                if (filesAreNotMetadataAssembly)
                     return (int)ProgramStatusCode.SuccessExit;
 
                 var metadataAnalyzers = MetadataFileFilter.GetMetadataAssemblyFiles(files)

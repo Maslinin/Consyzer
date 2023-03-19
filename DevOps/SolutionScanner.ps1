@@ -41,11 +41,11 @@ foreach ($folder in $analysisFolders) {
 	
 	# Scan project artifacts for consistency
 	$exitCodeMessages = @{
-		0 = "Successfully: $folder. No consistency problems found."
+		0 = "Successfully: $folder. No consistency problems were found."
 		1 = "Warning: $folder. One or more DLL components used in the project are on an absolute path."
 		2 = "Warning: $folder. One or more DLL components used in the project are on a relative path."
 		3 = "Warning: $folder. One or more DLL components used in the project are located on the system path."
-		4 = "Error: $folder. One or more components used in the DLL project do not found in the expected path."
+		4 = "Error: $folder. One or more DLL components used in the project were not found in the expected path."
 	}
 	
 	$messageBuilder.AppendLine($exitCodeMessages[$LASTEXITCODE])
