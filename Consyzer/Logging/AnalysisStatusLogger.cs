@@ -7,7 +7,6 @@ using Consyzer.File;
 using Consyzer.Metadata;
 using Consyzer.Cryptography;
 using Consyzer.Metadata.Models;
-using NLog.Fluent;
 
 namespace Consyzer.Logging
 {
@@ -38,6 +37,10 @@ namespace Consyzer.Logging
             {
                 log.AppendLine("All found files DO NOT contain metadata.");
             }
+            else
+            {
+                log.AppendLine("All found files contain metadata.");
+            }
 
             return log.ToString().TrimEnd('\n', '\r');
         }
@@ -60,6 +63,10 @@ namespace Consyzer.Logging
             if (filesAreIncorrect)
             {
                 log.AppendLine("All found files contain metadata, but ARE NOT assembly files.");
+            }
+            else
+            {
+                log.AppendLine("All metadata files found are assemblies.");
             }
 
             return log.ToString().TrimEnd('\n', '\r');
