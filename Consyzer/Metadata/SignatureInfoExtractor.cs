@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Collections.Generic;
 using Consyzer.Metadata.Models;
 
 namespace Consyzer.Metadata
@@ -49,38 +48,34 @@ namespace Consyzer.Metadata
 
         public AccessModifier GetMethodAccessibilityModifier(MethodDefinition methodDef)
         {
-            var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodDef);
-
-            string[] accessibilityModifiers = Enum.GetNames(typeof(MsilAccessModifier));
-            var modifierAsString = separatedMethodAttributes.Intersect(accessibilityModifiers).First();
-
-            var parsedModifier = Enum.Parse(typeof(MsilAccessModifier), modifierAsString);
-            return (AccessModifier)(int)parsedModifier;
+            var methodAttributes = methodDef.Attributes & MethodAttributes.MemberAccessMask;
+            return methodAttributes switch
+            {
+                MethodAttributes.Private => AccessModifier.Private,
+                MethodAttributes.Public => AccessModifier.Public,
+                MethodAttributes.Assembly => AccessModifier.Internal,
+                MethodAttributes.Family => AccessModifier.Protected,
+                MethodAttributes.FamORAssem => AccessModifier.ProtectedInternal,
+                MethodAttributes.FamANDAssem => AccessModifier.ProtectedPrivate,
+                _ => throw new InvalidOperationException("Invalid method accessibility modifier."),
+            };
         }
 
         public bool IsStaticMethod(MethodDefinition methodDef)
         {
-            var separatedMethodAttributes = this.GetSeparatedMethodAttributes(methodDef);
-            return separatedMethodAttributes.Any(s => s == nameof(MethodAttributes.Static));
+            return (methodDef.Attributes & MethodAttributes.Static) != 0;
         }
 
         public SignatureParameter GetMethodReturnType(MethodDefinition methodDef)
         {
-            var signature = DecodeSignature(methodDef);
+            var signature = this.DecodeSignature(methodDef);
             return signature.ReturnType;
         }
 
         public IEnumerable<SignatureParameter> GetMethodArguments(MethodDefinition methodDef)
         {
-            var signature = DecodeSignature(methodDef);
+            var signature = this.DecodeSignature(methodDef);
             return signature.ParameterTypes;
-        }
-
-        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-        private IEnumerable<string> GetSeparatedMethodAttributes(MethodDefinition methodDef)
-        {
-            string methodAttributes = methodDef.Attributes.ToString();
-            return methodAttributes.Split(',').Select(a => a.Trim());
         }
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
