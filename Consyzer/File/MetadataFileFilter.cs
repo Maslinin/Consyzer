@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 
-namespace Consyzer.Metadata
+namespace Consyzer.File
 {
     public static class MetadataFileFilter
     {

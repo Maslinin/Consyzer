@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using Consyzer.Metadata;
-using Consyzer.Metadata.Models;
+using Consyzer.Extractors;
+using Consyzer.Extractors.Models;
 
-namespace Consyzer.Tests.Metadata
+namespace Consyzer.Tests.Extractors
 {
     public sealed class SignatureInfoExtractorTest
     {

@@ -2,9 +2,9 @@
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Collections.Generic;
-using Consyzer.Metadata.Models;
+using Consyzer.Extractors.Models;
 
-namespace Consyzer.Metadata
+namespace Consyzer.Extractors
 {
     internal sealed class SignatureInfoExtractor
     {

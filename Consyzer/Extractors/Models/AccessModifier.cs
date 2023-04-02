@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Consyzer.Metadata.Models
+namespace Consyzer.Extractors.Models
 {
     internal enum AccessModifier //for convert msil access modifier names to understandable names
     {

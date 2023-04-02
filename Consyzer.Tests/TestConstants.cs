@@ -15,7 +15,7 @@ namespace Consyzer.Tests
             public static FileInfo NotMetadataAssemblyFileInfo => new FileInfo(NotMetadataAssemblyLocation);
         }
 
-        public class TestMethods
+        public sealed class TestMethods
         {
             [DllImport("test")]
             public extern static int ImportedMethod(int testArg);

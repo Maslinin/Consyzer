@@ -1,43 +1,30 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
-using Consyzer.Metadata.Models;
+using System.Collections.Generic;
+using Consyzer.Extractors.Models;
 
-namespace Consyzer.Metadata
+namespace Consyzer.Extractors
 {
-    internal sealed class MetadataAnalyzer
+    internal class ImportedMethodsExtractor : MetadataExtractor
     {
-        private readonly MetadataReader _mdReader;
-
         public FileInfo FileInfo { get; }
 
-        public MetadataAnalyzer(FileInfo fileInfo)
+        public ImportedMethodsExtractor(FileInfo fileInfo) : base(fileInfo)
         {
-            var fileStream = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read);
-            this.FileInfo = fileInfo;
-
-            var peReader = new PEReader(fileStream);
-            this._mdReader = peReader.GetMetadataReader();
+            FileInfo = fileInfo;
         }
 
         public IEnumerable<ImportedMethodInfo> GetImportedMethodsInfo()
         {
-            var importedMethodDefs = this.GetImportedMethodDefinitions();
-            return importedMethodDefs.Select(m => this.GetImportedSignatureInfo(m));
+            var importedMethodDefs = GetImportedMethodDefinitions();
+            return importedMethodDefs.Select(m => GetImportedSignatureInfo(m));
         }
 
         public IEnumerable<MethodDefinition> GetImportedMethodDefinitions()
         {
             var methodDefs = this.GetMethodDefinitions();
             return methodDefs.Where(m => this.IsImportedMethod(m));
-        }
-
-        public IEnumerable<MethodDefinition> GetMethodDefinitions()
-        {
-            var methodDefHandles = this._mdReader.MethodDefinitions;
-            return methodDefHandles.Select(h => this._mdReader.GetMethodDefinition(h));
         }
 
         [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
@@ -65,6 +52,5 @@ namespace Consyzer.Metadata
                 DllImportArgs = dllImportArgs
             };
         }
-
     }
 }

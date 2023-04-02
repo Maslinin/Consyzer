@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace Consyzer.Metadata.Models
+namespace Consyzer.Extractors.Models
 {
     internal sealed class SignatureInfo
     {

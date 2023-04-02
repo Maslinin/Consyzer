@@ -1,9 +1,9 @@
 ﻿using Xunit;
 using System.Linq;
-using Consyzer.Metadata;
 using System.Reflection;
+using Consyzer.Extractors;
 
-namespace Consyzer.Tests.Metadata.Models
+namespace Consyzer.Tests.Extractors.Models
 {
     public sealed class SignatureInfoTest
     {

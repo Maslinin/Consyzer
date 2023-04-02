@@ -1,4 +1,4 @@
-﻿namespace Consyzer.Metadata.Models
+﻿namespace Consyzer.Extractors.Models
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class SignatureParameter

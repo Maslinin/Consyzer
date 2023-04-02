@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Consyzer.File;
 using Consyzer.Logging;
-using Consyzer.Metadata;
+using Consyzer.Extractors;
 using Log = Consyzer.Logging.NLogService;
 using static Consyzer.Constants;
 using static Consyzer.Constants.File;
@@ -12,7 +12,7 @@ using static Consyzer.Constants.File;
 
 namespace Consyzer
 {
-	[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     static class Program
     {
         private static int Main()
@@ -42,17 +42,17 @@ namespace Consyzer
                 if (filesAreNotMetadataAssembly)
                     return (int)ProgramStatusCode.SuccessExit;
 
-                var metadataAnalyzers = MetadataFileFilter.GetMetadataAssemblyFiles(files)
-                    .Select(f => new MetadataAnalyzer(f));
+                var importedMethodsAnalyzers = MetadataFileFilter.GetMetadataAssemblyFiles(files)
+                    .Select(f => new ImportedMethodsExtractor(f));
                 Log.Info("The following assembly files containing metadata were found:");
                 Log.Info(
-                    AnalysisStatusLogger.GetBaseAndHashFileInfoLog(metadataAnalyzers.Select(f => f.FileInfo)));
+                    AnalysisStatusLogger.GetBaseAndHashFileInfoLog(importedMethodsAnalyzers.Select(f => f.FileInfo)));
 
                 Log.Info("Information about imported methods from other assemblies in the analyzed files:");
                 Log.Info(
-                    AnalysisStatusLogger.GetImportedMethodsInfoForEachFileLog(metadataAnalyzers));
+                    AnalysisStatusLogger.GetImportedMethodsInfoForEachFileLog(importedMethodsAnalyzers));
 
-                var fileLocations = metadataAnalyzers
+                var fileLocations = importedMethodsAnalyzers
                     .SelectMany(m => m.GetImportedMethodsInfo())
                     .Select(m => FileHelper.AddExtensionToFile(m.DllLocation, DefaultFileExtension))
                     .Distinct();

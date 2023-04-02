@@ -2,9 +2,9 @@
 using System.Text;
 using System.Reflection.Metadata;
 using System.Collections.Immutable;
-using Consyzer.Metadata.Models;
+using Consyzer.Extractors.Models;
 
-namespace Consyzer.Metadata
+namespace Consyzer.Extractors
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class SignatureParameterTypeProvider : ISignatureTypeProvider<SignatureParameter, object>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using Consyzer.File;
-using Consyzer.Metadata;
+using Consyzer.Extractors;
 using Consyzer.Cryptography;
-using Consyzer.Metadata.Models;
+using Consyzer.Extractors.Models;
 
 namespace Consyzer.Logging
 {
@@ -94,7 +94,7 @@ namespace Consyzer.Logging
             }));
         }
 
-        public static string GetImportedMethodsInfoForEachFileLog(IEnumerable<MetadataAnalyzer> metadataAnalyzers)
+        public static string GetImportedMethodsInfoForEachFileLog(IEnumerable<ImportedMethodsExtractor> metadataAnalyzers)
         {
             return string.Join(Environment.NewLine, metadataAnalyzers.Select((file, index) =>
             {
