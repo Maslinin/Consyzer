@@ -1,9 +1,9 @@
 ﻿using Xunit;
 using System.IO;
-using Consyzer.File;
+using Consyzer.FileInteraction;
 using static Consyzer.Tests.TestConstants.FileLocation;
 
-namespace Consyzer.Tests.Extractors
+namespace Consyzer.Tests.File
 {
     public sealed class MetadataFileFilterTest
     {

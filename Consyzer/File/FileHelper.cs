@@ -3,15 +3,18 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Consyzer.File
+namespace Consyzer.FileInteraction
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal static class FileHelper
     {
+        public const string DefaultExtension = ".dll";
+
         public static IEnumerable<FileInfo> GetFilesFrom(string pathToFiles, IEnumerable<string> fileExtensions)
         {
-            var dirInfo = new DirectoryInfo(pathToFiles);
-            return dirInfo.GetFiles().Where(f => fileExtensions.Contains(f.Extension));
+            return new DirectoryInfo(pathToFiles)
+                .GetFiles()
+                .Where(f => fileExtensions.Contains(Path.GetExtension(f.FullName)));
         }
 
         public static string AddExtensionToFile(string filePath, string fileExtension)

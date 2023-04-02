@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Consyzer.File;
+using Consyzer.FileInteraction;
 using Consyzer.Logging;
 using Consyzer.Extractors;
 using Log = Consyzer.Logging.NLogService;
 using static Consyzer.Constants;
-using static Consyzer.Constants.File;
 
 [assembly: InternalsVisibleTo("Consyzer.Tests")]
 
@@ -55,7 +54,7 @@ namespace Consyzer
 
                 var fileLocations = importedMethodsAnalyzers
                     .SelectMany(m => m.GetImportedMethodsInfo())
-                    .Select(m => FileHelper.AddExtensionToFile(m.DllLocation, DefaultFileExtension))
+                    .Select(m => FileHelper.AddExtensionToFile(m.DllLocation, FileHelper.DefaultExtension))
                     .Distinct();
                 if (!fileLocations.Any())
                 {
