@@ -94,7 +94,7 @@ namespace Consyzer.Logging
             }));
         }
 
-        public static string GetImportedMethodsInfoForEachFileLog(IEnumerable<ImportedMethodsExtractor> metadataAnalyzers)
+        public static string GetImportedMethodsInfoForEachFileLog(IEnumerable<ImportedMethodExtractor> metadataAnalyzers)
         {
             return string.Join(Environment.NewLine, metadataAnalyzers.Select((file, index) =>
             {

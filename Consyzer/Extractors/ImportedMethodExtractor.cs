@@ -6,11 +6,11 @@ using Consyzer.Extractors.Models;
 
 namespace Consyzer.Extractors
 {
-    internal class ImportedMethodsExtractor : MetadataExtractor
+    internal class ImportedMethodExtractor : MetadataExtractor
     {
         public FileInfo FileInfo { get; }
 
-        public ImportedMethodsExtractor(FileInfo fileInfo) : base(fileInfo)
+        public ImportedMethodExtractor(FileInfo fileInfo) : base(fileInfo)
         {
             FileInfo = fileInfo;
         }

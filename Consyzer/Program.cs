@@ -44,7 +44,7 @@ namespace Consyzer
 
                 var importedMethodsAnalyzers = MetadataFileFilter.GetMetadataAssemblyFiles(files)
                     .AsParallel()
-                    .Select(f => new ImportedMethodsExtractor(f));
+                    .Select(f => new ImportedMethodExtractor(f));
                 Log.Info("The following assembly files containing metadata were found:");
                 Log.Info(
                     AnalysisStatusLogger.GetBaseAndHashFileInfoLog(importedMethodsAnalyzers.Select(f => f.FileInfo)));

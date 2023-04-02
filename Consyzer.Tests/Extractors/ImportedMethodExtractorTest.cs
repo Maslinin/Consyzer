@@ -4,12 +4,12 @@ using static Consyzer.Tests.TestConstants.FileLocation;
 
 namespace Consyzer.Tests.Extractors
 {
-    public sealed class ImportedMethodsExtractorTest
+    public sealed class ImportedMethodExtractorTest
     {
         [Fact]
         public void GetImportedMethodsInfo_ShouldReturnNotNullCollection()
         {
-            var importedMethodsAnalyzer = new ImportedMethodsExtractor(MetadataAssemblyFileInfo);
+            var importedMethodsAnalyzer = new ImportedMethodExtractor(MetadataAssemblyFileInfo);
 
             var importedMethodsInfo = importedMethodsAnalyzer.GetImportedMethodsInfo();
 
@@ -19,7 +19,7 @@ namespace Consyzer.Tests.Extractors
         [Fact]
         public void GetImportedMethodDefinitions_ShouldReturnNotEmptyCollectionIfThereAreImportedMethods()
         {
-            var importedMethodsAnalyzer = new ImportedMethodsExtractor(MetadataAssemblyFileInfo);
+            var importedMethodsAnalyzer = new ImportedMethodExtractor(MetadataAssemblyFileInfo);
 
             var importedMethodsDefs = importedMethodsAnalyzer.GetImportedMethodDefinitions();
 
