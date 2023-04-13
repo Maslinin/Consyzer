@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Consyzer.FileInteraction
+namespace Consyzer
 {
     internal enum FileExistenceStatus
     {
@@ -17,18 +17,20 @@ namespace Consyzer.FileInteraction
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class FileExistenceChecker
     {
+        private const string _defaultExtension = ".dll";
+
         private readonly string _analysisFolder;
         private readonly string _defaultFileExtension;
 
-        public FileExistenceChecker(string analysisFolder, string defaultFileExtension = FileHelper.DefaultExtension)
+        public FileExistenceChecker(string analysisFolder, string defaultFileExtension = _defaultExtension)
         {
-            this._analysisFolder = analysisFolder;
-            this._defaultFileExtension = defaultFileExtension;
+            _analysisFolder = analysisFolder;
+            _defaultFileExtension = defaultFileExtension;
         }
 
         public FileExistenceStatus GetMaxFileExistanceStatus(IEnumerable<string> fileLocations)
         {
-            return fileLocations.Max(f => this.GetMinFileExistanceStatus(f));
+            return fileLocations.Max(f => GetMinFileExistanceStatus(f));
         }
 
         public FileExistenceStatus GetMinFileExistanceStatus(string filePath)
@@ -46,39 +48,48 @@ namespace Consyzer.FileInteraction
 
         public FileExistenceStatus CheckFileExistenceAtAnalysisPath(string filePath)
         {
-            string correctPath = this.GetCorrectFilePath(filePath, this._analysisFolder);
+            string correctPath = GetCorrectFilePath(filePath, _analysisFolder);
             return File.Exists(correctPath) ? FileExistenceStatus.FileExistsAtAnalysisPath : FileExistenceStatus.FileDoesNotExist;
         }
 
         public FileExistenceStatus CheckFileExistenceAtAbsolutePath(string filePath)
         {
-            string correctPath = this.GetCorrectFilePath(filePath);
-            return FileHelper.IsAbsolutePath(correctPath) ? FileExistenceStatus.FileExistsAtAbsolutePath : FileExistenceStatus.FileDoesNotExist;
+            string correctPath = GetCorrectFilePath(filePath);
+            return Path.IsPathFullyQualified(correctPath) ? FileExistenceStatus.FileExistsAtAbsolutePath : FileExistenceStatus.FileDoesNotExist;
         }
 
         public FileExistenceStatus CheckFileExistenceAtRelativePath(string filePath)
         {
-            string correctPath = this.GetCorrectFilePath(filePath);
-            return FileHelper.IsRelativePath(correctPath) ? FileExistenceStatus.FileExistsAtRelativePath : FileExistenceStatus.FileDoesNotExist;
+            string correctPath = GetCorrectFilePath(filePath);
+            return Path.IsPathRooted(correctPath) ? FileExistenceStatus.FileExistsAtRelativePath : FileExistenceStatus.FileDoesNotExist;
         }
 
         public FileExistenceStatus CheckFileExistenceAtSystemFolder(string filePath)
         {
-            string correctPath = this.GetCorrectFilePath(filePath, Environment.SystemDirectory);
+            string correctPath = GetCorrectFilePath(filePath, Environment.SystemDirectory);
             return File.Exists(correctPath) ? FileExistenceStatus.FileExistsAtSystemFolder : FileExistenceStatus.FileDoesNotExist;
         }
 
         private string GetCorrectFilePath(string filePath, string folderPath)
         {
-            string correctPath = FileHelper.GetAbsolutePath(folderPath, filePath);
-            return this.GetCorrectFilePath(correctPath);
+            string correctPath = GetAbsolutePath(folderPath, filePath);
+            return GetCorrectFilePath(correctPath);
         }
 
         private string GetCorrectFilePath(string filePath)
         {
-            string correctPath = FileHelper.AddExtensionToFile(filePath, this._defaultFileExtension);
+            string correctPath = AddExtensionToFile(filePath, _defaultFileExtension);
             return correctPath;
         }
 
+        private static string AddExtensionToFile(string filePath, string fileExtension)
+        {
+            return Path.HasExtension(filePath) ? filePath : Path.ChangeExtension(filePath, fileExtension);
+        }
+
+        private static string GetAbsolutePath(string folder, string filePath)
+        {
+            return Path.IsPathFullyQualified(filePath) ? filePath : Path.Combine(folder, filePath);
+        }
     }
 }
