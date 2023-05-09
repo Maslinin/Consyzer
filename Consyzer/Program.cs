@@ -13,11 +13,8 @@ namespace Consyzer
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     static class Program
     {
-        public enum ProgramStatusCode
-        {
-            UnexpectedBehavior = -1,
-            SuccessExit = 0
-        }
+        private const int UnexpectedBehaviorExitCode = -1;
+        private const int SuccessExitCode = 0;
 
         private static int Main()
         {
@@ -32,7 +29,7 @@ namespace Consyzer
                 if (!files.Any())
                 {
                     Log.Warn("Files for analysis with the specified extensions were not found.");
-                    return (int)ProgramStatusCode.SuccessExit;
+                    return SuccessExitCode;
                 }
 
                 Log.Info("The following files with the specified extensions were found:");
@@ -40,10 +37,10 @@ namespace Consyzer
 
                 Log.Info(AnalysisStatusLogger.GetNotMetadataFilesLog(files, out bool filesAreNotMetadata));
                 if (filesAreNotMetadata)
-                    return (int)ProgramStatusCode.SuccessExit;
+                    return SuccessExitCode;
                 Log.Info(AnalysisStatusLogger.GetNotMetadataAssemblyFilesLog(files, out bool filesAreNotMetadataAssembly));
                 if (filesAreNotMetadataAssembly)
-                    return (int)ProgramStatusCode.SuccessExit;
+                    return SuccessExitCode;
 
                 var importedMethodsAnalyzers = MetadataFileFilter.GetMetadataAssemblyFiles(files)
                     .AsParallel()
@@ -61,7 +58,7 @@ namespace Consyzer
                 if (!fileLocations.Any())
                 {
                     Log.Warn("All files are missing imported methods from other assemblies.");
-                    return (int)ProgramStatusCode.SuccessExit;
+                    return SuccessExitCode;
                 }
 
                 var searcher = new FileExistenceChecker(analysisDirectory);
@@ -73,7 +70,7 @@ namespace Consyzer
             catch (Exception e)
             {
                 Log.Error(e.ToString());
-                return (int)ProgramStatusCode.UnexpectedBehavior;
+                return UnexpectedBehaviorExitCode;
             }
         }
     }
