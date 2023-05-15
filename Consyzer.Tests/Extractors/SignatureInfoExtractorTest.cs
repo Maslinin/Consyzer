@@ -16,7 +16,9 @@ namespace Consyzer.Tests.Extractors
         [Fact]
         public void InstanceCreation_ShouldNotThrowException()
         {
-            var exception = Record.Exception(() => new SignatureInfoExtractor(this.MetadataReader));
+            var mdReader = this.MetadataReader;
+
+            var exception = Record.Exception(() => new SignatureInfoExtractor(mdReader));
 
             Assert.Null(exception);
         }

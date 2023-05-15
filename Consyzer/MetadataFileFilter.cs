@@ -14,7 +14,7 @@ namespace Consyzer
             return fileInfos.Where(f => IsMetadataFile(f, false));
         }
 
-        public static IEnumerable<FileInfo> GetNotMetadataFiles(IEnumerable<FileInfo> fileInfos)
+        public static IEnumerable<FileInfo> GetNonMetadataFiles(IEnumerable<FileInfo> fileInfos)
         {
             return fileInfos.Where(f => !IsMetadataFile(f, false));
         }
@@ -24,7 +24,7 @@ namespace Consyzer
             return fileInfos.Where(f => IsMetadataFile(f, true));
         }
 
-        public static IEnumerable<FileInfo> GetNotMetadataAssemblyFiles(IEnumerable<FileInfo> fileInfos)
+        public static IEnumerable<FileInfo> GetNonMetadataAssemblyFiles(IEnumerable<FileInfo> fileInfos)
         {
             return fileInfos.Where(f => !IsMetadataFile(f, true));
         }

@@ -1,61 +1,90 @@
 ﻿using Xunit;
-using System.Linq;
 using System.Reflection;
-using Consyzer.Extractors;
+using System.Collections.Generic;
+using Consyzer.Extractors.Models;
 
 namespace Consyzer.Tests.Extractors.Models
 {
     public sealed class SignatureInfoTest
     {
-        private SignatureInfoExtractor Decoder => new SignatureInfoExtractor(TestHelper.GetMetadataReader());
-        private string StaticModifier => nameof(MethodAttributes.Static);
+        private readonly string _namespace = "MyNamespace";
+        private readonly string _class = "MyClass";
+        private readonly string _method = "MyMethod";
+        private readonly IEnumerable<SignatureParameter> _methodArguments = new List<SignatureParameter>
+        {
+            new SignatureParameter { Type = "int", Name = "x" },
+            new SignatureParameter { Type = "string", Name = "y" }
+        };
 
         [Fact]
-        public void GetMethodLocation_ShouldReturnNotEmptyString()
+        public void MethodLocation_ShouldReturnCorrectLocation()
         {
-            var signatureInfo = this.Decoder.GetSignatureInfo(TestHelper.GetFirstMethodDefinition());
+            var signatureInfo = new SignatureInfo
+            {
+                Namespace = this._namespace,
+                ClassName = this._class,
+                MethodName = this._method
+            };
 
-            var methodLocation = signatureInfo.MethodLocation;
+            var result = signatureInfo.MethodLocation;
 
-            Assert.NotEmpty(methodLocation);
+            Assert.Equal($"{this._namespace}.{this._class}.{this._method}", result);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void FullMethodSignature_ShouldReturnCorrectSignature(bool isStatic)
+        {
+            var signatureInfo = new SignatureInfo
+            {
+                Namespace = this._namespace,
+                ClassName = this._class,
+                MethodName = this._method,
+                Accessibility = AccessModifier.Public,
+                IsStatic = isStatic,
+                ReturnType = new SignatureParameter { Type = "string" },
+                MethodArguments = this._methodArguments
+            };
+
+            var result = signatureInfo.FullMethodSignature;
+
+            string signature = isStatic ? $"{AccessModifier.Public} {MethodAttributes.Static} string {this._namespace}.{this._class}.{this._method}(int x, string y)" :
+                $"{AccessModifier.Public} string {this._namespace}.{this._class}.{this._method}(int x, string y)";
+
+            Assert.Equal(signature, result);
         }
 
         [Fact]
-        public void GetFullMethodSignature_ShouldReturnNotEmptyStringWithStaticModifier()
+        public void BaseMethodSignature_ShouldReturnCorrectSignature()
         {
-            var extractor = new SignatureInfoExtractor(TestHelper.GetMetadataReader());
-            var methodDef = TestHelper.GetAllMethodsDefinitions()
-                .Where(m => extractor.IsStaticMethod(m)).First();
-            var signatureInfo = this.Decoder.GetSignatureInfo(methodDef);
+            var signatureInfo = new SignatureInfo
+            {
+                Namespace = this._namespace,
+                ClassName = this._class,
+                MethodName = this._method,
+                MethodArguments = this._methodArguments
+            };
 
-            var methodSignature = signatureInfo.FullMethodSignature;
+            var result = signatureInfo.BaseMethodSignature;
 
-            Assert.NotEmpty(methodSignature);
-            Assert.Contains(StaticModifier, methodSignature);
+            Assert.Equal($"{this._namespace}.{this._class}.{this._method}(int x, string y)", result);
         }
 
         [Fact]
-        public void GetFullMethodSignature_ShouldReturnNotEmptyStringWithoutStaticModifier()
+        public void ToString_ShouldReturnCorrectSignature()
         {
-            var extractor = new SignatureInfoExtractor(TestHelper.GetMetadataReader());
-            var methodDef = TestHelper.GetAllMethodsDefinitions()
-                .Where(m => !extractor.IsStaticMethod(m)).First();
-            var signatureInfo = this.Decoder.GetSignatureInfo(methodDef);
+            var signatureInfo = new SignatureInfo
+            {
+                Namespace = this._namespace,
+                ClassName = this._class,
+                MethodName = this._method,
+                MethodArguments = this._methodArguments
+            };
 
-            var methodSignature = signatureInfo.FullMethodSignature;
+            var result = signatureInfo.ToString();
 
-            Assert.NotEmpty(methodSignature);
-            Assert.DoesNotContain(StaticModifier, methodSignature);
-        }
-
-        [Fact]
-        public void GetBaseMethodSignature_ShouldReturnNotEmptyString()
-        {
-            var signatureInfo = this.Decoder.GetSignatureInfo(TestHelper.GetFirstMethodDefinition());
-
-            var methodLocation = signatureInfo.BaseMethodSignature;
-
-            Assert.NotEmpty(methodLocation);
+            Assert.Equal($"{this._namespace}.{this._class}.{this._method}(int x, string y)", result);
         }
 
     }

@@ -70,23 +70,27 @@ namespace Consyzer
             return File.Exists(correctPath) ? FileExistenceStatus.FileExistsAtSystemFolder : FileExistenceStatus.FileDoesNotExist;
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private string GetCorrectFilePath(string filePath, string folderPath)
         {
             string correctPath = GetAbsolutePath(folderPath, filePath);
             return GetCorrectFilePath(correctPath);
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private string GetCorrectFilePath(string filePath)
         {
             string correctPath = AddExtensionToFile(filePath, _defaultFileExtension);
             return correctPath;
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private static string AddExtensionToFile(string filePath, string fileExtension)
         {
             return Path.HasExtension(filePath) ? filePath : Path.ChangeExtension(filePath, fileExtension);
         }
 
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
         private static string GetAbsolutePath(string folder, string filePath)
         {
             return Path.IsPathFullyQualified(filePath) ? filePath : Path.Combine(folder, filePath);

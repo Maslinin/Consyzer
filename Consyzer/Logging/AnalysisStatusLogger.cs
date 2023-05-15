@@ -24,7 +24,7 @@ namespace Consyzer.Logging
         {
             var log = new StringBuilder();
 
-            var notMetadataFiles = MetadataFileFilter.GetNotMetadataFiles(files);
+            var notMetadataFiles = MetadataFileFilter.GetNonMetadataFiles(files);
             if (notMetadataFiles.Any())
             {
                 log.AppendLine("The following files were excluded from analysis because they DO NOT contain metadata:");
@@ -48,8 +48,8 @@ namespace Consyzer.Logging
         {
             var log = new StringBuilder();
 
-            var notMetadataFiles = MetadataFileFilter.GetNotMetadataFiles(files);
-            var notMetadataAssemblyFiles = MetadataFileFilter.GetNotMetadataAssemblyFiles(files);
+            var notMetadataFiles = MetadataFileFilter.GetNonMetadataFiles(files);
+            var notMetadataAssemblyFiles = MetadataFileFilter.GetNonMetadataAssemblyFiles(files);
             var remainingFiles = notMetadataFiles.Where(f => !notMetadataAssemblyFiles.Any(a => a.Name == f.Name));
 
             if (remainingFiles.Any())

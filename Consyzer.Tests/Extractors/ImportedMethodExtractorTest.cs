@@ -6,6 +6,17 @@ namespace Consyzer.Tests.Extractors
 {
     public sealed class ImportedMethodExtractorTest
     {
+
+        [Fact]
+        public void InstanceCreation_ShouldSetFileInfoProperty()
+        {
+            var fileInfo = MetadataAssemblyFileInfo;
+
+            var extractor = new ImportedMethodExtractor(fileInfo);
+
+            Assert.Equal(fileInfo, extractor.FileInfo);
+        }
+
         [Fact]
         public void GetImportedMethodsInfo_ShouldReturnNotNullCollection()
         {
@@ -13,7 +24,7 @@ namespace Consyzer.Tests.Extractors
 
             var importedMethodsInfo = importedMethodsAnalyzer.GetImportedMethodsInfo();
 
-            Assert.NotNull(importedMethodsInfo);
+            Assert.NotEmpty(importedMethodsInfo);
         }
 
         [Fact]
