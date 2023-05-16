@@ -37,7 +37,7 @@ namespace Consyzer.Extractors
             var type = new StringBuilder()
                 .Append($"{signature.ReturnType} *({signature.ParameterTypes[0].Type}")
                 .AppendJoin(", ", signature.ParameterTypes.Skip(1).Select(p => p.Type))
-                .Append(")");
+                .Append(')');
 
             return new SignatureParameter { Type = type.ToString() };
         }
@@ -47,7 +47,7 @@ namespace Consyzer.Extractors
             var type = new StringBuilder()
                 .Append($"{genericType.Type} <{typeArguments[0].Type}")
                 .AppendJoin(", ", typeArguments.Skip(1).Select(p => p.Type))
-                .Append(">");
+                .Append('>');
 
             return new SignatureParameter
             {

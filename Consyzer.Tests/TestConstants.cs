@@ -11,8 +11,8 @@ namespace Consyzer.Tests
         {
             public static string MetadataAssemblyLocation => Assembly.GetExecutingAssembly().Location;
             public static string NotMetadataAssemblyLocation => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testhost.exe");
-            public static FileInfo MetadataAssemblyFileInfo => new FileInfo(MetadataAssemblyLocation);
-            public static FileInfo NotMetadataAssemblyFileInfo => new FileInfo(NotMetadataAssemblyLocation);
+            public static FileInfo MetadataAssemblyFileInfo => new(MetadataAssemblyLocation);
+            public static FileInfo NotMetadataAssemblyFileInfo => new(NotMetadataAssemblyLocation);
         }
     }
 
