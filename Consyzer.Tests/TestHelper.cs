@@ -26,7 +26,7 @@ namespace Consyzer.Tests
 
         public static MetadataReader GetMetadataReader()
         {
-            var fileStream = new FileStream(MetadataAssemblyFileInfo.FullName, FileMode.Open, FileAccess.Read);
+            var fileStream = new FileStream(MetadataAssemblyLocation, FileMode.Open, FileAccess.Read);
             var peReader = new PEReader(fileStream, PEStreamOptions.Default);
 
             return peReader.GetMetadataReader();

@@ -2,7 +2,7 @@
 
 namespace Consyzer.Extractors.Models
 {
-    internal enum AccessModifier //for convert msil access modifier names to understandable names
+    public enum AccessModifier //for convert msil access modifier names to understandable names
     {
         Private = MethodAttributes.Private,
         Public = MethodAttributes.Public,

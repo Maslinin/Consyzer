@@ -14,7 +14,6 @@ namespace Consyzer
         FileDoesNotExist
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal sealed class FileExistenceChecker
     {
         private const string _defaultExtension = ".dll";
