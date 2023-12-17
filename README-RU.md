@@ -54,7 +54,7 @@ pathToConsyzer pathToFolderWithApplicationArtifacts extensionsOfAnalyzedFiles
 
 Пример запуска *Consyzer* из CLI:
 ```
-C:\Consyzer.exe C:\folderToBeAnalyzed ".exe, .dll"
+C:\Consyzer.exe --AnalysisDirectory C:\folderToBeAnalyzed --SearchPattern "*.exe, *.dll"
 ```
 
 ## Анализ нескольких проектов

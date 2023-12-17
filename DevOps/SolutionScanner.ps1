@@ -7,8 +7,8 @@ param(
 	[ValidateScript({Test-Path $_ -PathType Container})]
 	[String]$solutionForAnalysis,
 	
-	[Parameter(HelpMessage={ "File extensions to scan for. Default is $fileExtensions." })]
-	[String]$fileExtensions = ".dll",
+	[Parameter(HelpMessage={ "File extensions to scan for. Default is $searchPattern." })]
+	[String]$searchPattern = "*.exe, *.dll",
 	
 	[Parameter(HelpMessage={ "Build configuration to use. Default is $buildConfiguration." })]
     [String]$buildConfiguration = "Debug"
@@ -34,7 +34,7 @@ $analysisFolders = $pathsToAnalysisFiles | ForEach-Object { $_.DirectoryName } |
 $finalExitCode = -1
 $messageBuilder = New-Object System.Text.StringBuilder
 foreach ($folder in $analysisFolders) {
-	& $pathToConsyzer $folder $fileExtensions
+	& $pathToConsyzer $folder $searchPattern
 	if ( $LASTEXITCODE -ge $finalExitCode ) {
 		$finalExitCode = $LASTEXITCODE
 	}

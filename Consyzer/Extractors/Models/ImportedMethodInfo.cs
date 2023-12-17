@@ -1,10 +1,8 @@
-﻿namespace Consyzer.Extractors.Models
+﻿namespace Consyzer.Extractors.Models;
+
+internal sealed class ImportedMethodInfo
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    internal sealed class ImportedMethodInfo
-    {
-        public SignatureInfo Signature { get; set; }
-        public string DllLocation { get; set; }
-        public string DllImportArgs { get; set; }
-    }
+    public SignatureInfo Signature { get; set; }
+    public string DllLocation { get; set; }
+    public string DllImportArgs { get; set; }
 }

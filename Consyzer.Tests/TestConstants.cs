@@ -1,26 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
-namespace Consyzer.Tests
+namespace Consyzer.Tests;
+
+internal static class TestConstants
 {
-    internal static class TestConstants
-    {
-        public static class FileLocation
-        {
-            public static string MetadataAssemblyLocation => Assembly.GetExecutingAssembly().Location;
-            public static string NotMetadataAssemblyLocation => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testhost.exe");
-            public static FileInfo MetadataAssemblyFileInfo => new(MetadataAssemblyLocation);
-            public static FileInfo NotMetadataAssemblyFileInfo => new(NotMetadataAssemblyLocation);
-        }
-    }
-
-    public sealed class TestMethods
-    {
-        [DllImport("test")]
-        public extern static int ImportedMethod(int testArg);
-        public static int MethodWithArguments(int testArg) => testArg;
-        public int NotStaticMethod(int testArg) => testArg;
-    }
+    public static string NotMetadataAssemblyFile => "Consyzer.exe";
+    public static string MetadataAssemblyLocation => Assembly.GetExecutingAssembly().Location;
+    public static string NotMetadataAssemblyLocation => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, NotMetadataAssemblyFile);
+    public static FileInfo MetadataAssemblyFileInfo => new(MetadataAssemblyLocation);
+    public static FileInfo NotMetadataAssemblyFileInfo => new(NotMetadataAssemblyLocation);
 }

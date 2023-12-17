@@ -46,7 +46,7 @@ pathToConsyzer pathToFolderWithApplicationArtifacts extensionsOfAnalyzedFiles
 
 Example of running *Consyzer* from the CLI:
 ```
-C:\Consyzer.exe C:\folderToBeAnalyzed ".exe, .dll"
+C:\Consyzer.exe --AnalysisDirectory C:\folderToBeAnalyzed --SearchPattern "*.exe, *.dll"
 ```
 
 ## Analysis of multiple projects

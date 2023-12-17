@@ -21,8 +21,8 @@ You can also use the following task if you want to analyze in Azure Pipelines CI
         filePath: '$(Build.SourcesDirectory)\Consyzer.ps1'
         arguments: >
           -pathToConsyzer '$YourPathToConsyzer'
-          -solutionForAnalysis '$(Build.SourcesDirectory)'
-          -fileExtensions '".exe, .dll"'
+          -solutionForAnalysis '--AnalysisDirectory $(Build.SourcesDirectory)'
+          -fileExtensions '--SearchPattern "*.exe, *.dll"'
           -buildConfiguration '$YourBuildConfiguration'
       displayName: 'Consyzer Analysis'
 ```
