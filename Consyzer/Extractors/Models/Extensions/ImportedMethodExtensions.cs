@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-
-namespace Consyzer.Extractors.Models.Extensions;
+﻿namespace Consyzer.Extractors.Models.Extensions;
 
 internal static class ImportedMethodExtensions
 {

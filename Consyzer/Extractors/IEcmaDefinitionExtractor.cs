@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Metadata;
+﻿using System.Reflection.Metadata;
 
 namespace Consyzer.Extractors;
 

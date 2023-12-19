@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Consyzer.Checkers.Models;
+﻿using Consyzer.Checkers.Models;
 
 namespace Consyzer.Checkers;
 

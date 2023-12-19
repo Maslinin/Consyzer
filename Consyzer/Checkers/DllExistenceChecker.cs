@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Consyzer.Options.Models;
 using Consyzer.Checkers.Models;
 

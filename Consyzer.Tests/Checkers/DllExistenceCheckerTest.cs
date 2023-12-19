@@ -1,5 +1,4 @@
 ﻿using Xunit;
-using System.IO;
 using Consyzer.Checkers;
 using Consyzer.Checkers.Models;
 using Consyzer.Options.Models;

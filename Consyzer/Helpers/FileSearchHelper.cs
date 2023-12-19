@@ -1,8 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-
-namespace Consyzer.Helpers;
+﻿namespace Consyzer.Helpers;
 
 internal static class FileSearchHelper
 {

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Consyzer.Cryptography;
+﻿namespace Consyzer.Cryptography;
 
 internal interface IFileHasher
 {

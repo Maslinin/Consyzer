@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Collections.Generic;
-
-namespace Consyzer.Checkers;
+﻿namespace Consyzer.Checkers;
 
 internal interface IFileMetadataChecker
 {

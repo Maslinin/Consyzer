@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Consyzer.Extractors.Models;
+﻿using Consyzer.Extractors.Models;
 
 namespace Consyzer.Extractors;
 

@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Collections.Generic;
-
-namespace Consyzer.Filters;
+﻿namespace Consyzer.Filters;
 
 internal interface IMetadataFileFilter
 {

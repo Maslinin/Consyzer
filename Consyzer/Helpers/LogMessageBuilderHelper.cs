@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using Consyzer.Cryptography;
+﻿using Consyzer.Cryptography;
 using Consyzer.Options.Models;
 using Consyzer.Checkers.Models;
 using Consyzer.Extractors.Models;

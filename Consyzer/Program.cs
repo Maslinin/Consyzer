@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using NLog.Extensions.Logging;
+﻿using NLog.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

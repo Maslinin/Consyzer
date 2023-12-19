@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-
-namespace Consyzer.Checkers.Models.Extensions;
+﻿namespace Consyzer.Checkers.Models.Extensions;
 
 internal static class FileExistenceExtensions
 {

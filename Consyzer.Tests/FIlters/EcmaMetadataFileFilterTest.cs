@@ -1,6 +1,4 @@
 using Xunit;
-using System.IO;
-using System.Collections.Generic;
 using Consyzer.Filters;
 using static Consyzer.Tests.TestConstants;
 
