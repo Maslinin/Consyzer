@@ -73,7 +73,7 @@ internal static class LogMessageBuilderHelper
         return string.Join(Environment.NewLine, fileExistenceInfos.Select((info, index) =>
         {
             string status = info.ExistenceStatus != FileExistenceStatus.FileDoesNotExist ? $"exists ({info.ExistenceStatus})" : "DOES NOT exist";
-            return $"[{index}]File '{info.FilePath}' {status}.";
+            return $"\t[{index}]File '{info.FilePath}' {status}.";
         }));
     }
 }

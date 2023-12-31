@@ -12,9 +12,9 @@ internal static class ImportedMethodExtensions
         return importedMethodExtractors.Select(e => e.GetImportedMethodInfos());
     }
 
-    public static IEnumerable<ImportedMethodInfo> ToImportedMethodInfos(this IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> keyValuePairs)
+    public static IEnumerable<ImportedMethodInfo> ToImportedMethodInfos(this IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> fileInfoImportedMethodInfosPairs)
     {
-        return keyValuePairs.SelectMany(p => p.Value);
+        return fileInfoImportedMethodInfosPairs.SelectMany(p => p.Value);
     }
 
     public static IEnumerable<string> ToDllLocations(this IEnumerable<ImportedMethodInfo> importedMethods)

@@ -75,15 +75,15 @@ var metadataAssemblyFiles = fileFilter.GetMetadataAssemblyFiles(files);
 logger.LogInformation("The following assembly files containing metadata were found:{newLine}{fileAndHashInfo}",
     Environment.NewLine, LogMessageBuilderHelper.BuildBaseAndHashFileInfoLog(metadataAssemblyFiles, fileHasher));
 
-var fileInfoAndImportedMethodInfos = metadataAssemblyFiles
+var fileInfoImportedMethodInfosPairs = metadataAssemblyFiles
     .ToImportedMethodExtractors()
     .ToImportedMethodInfos()
     .ToFileInfoImportedMethodInfosDictionary(metadataAssemblyFiles);
 
 logger.LogInformation("Information about imported methods from other assemblies in the analyzed files:{newLine}{importedMethodsInfo}",
-    Environment.NewLine, LogMessageBuilderHelper.GetImportedMethodsInfoForEachFileLog(fileInfoAndImportedMethodInfos));
+    Environment.NewLine, LogMessageBuilderHelper.GetImportedMethodsInfoForEachFileLog(fileInfoImportedMethodInfosPairs));
 
-var dllLocations = fileInfoAndImportedMethodInfos
+var dllLocations = fileInfoImportedMethodInfosPairs
     .ToImportedMethodInfos()
     .ToDllLocations();
 
@@ -93,12 +93,11 @@ if (!dllLocations.Any())
     return SuccessExitCode;
 }
 
-logger.LogInformation("The presence of files at the received DLL import paths:");
-
 var fileExistenceStatuses = fileExistenceChecker.ToMinFileExistenceStatuses(dllLocations);
 var fileExistenceInfos = fileExistenceStatuses.ToFileExistenceInfos(dllLocations);
 
-logger.LogInformation("{fileExistenceInfo}", LogMessageBuilderHelper.BuildFileExistenceInfoLog(fileExistenceInfos));
+logger.LogInformation("The presence of files at the received DLL import paths:{newLine}{fileExistenceInfo}",
+    Environment.NewLine, LogMessageBuilderHelper.BuildFileExistenceInfoLog(fileExistenceInfos));
 
 var existingFiles = fileExistenceStatuses.CountExistingFiles();
 var nonExistingFiles = fileExistenceStatuses.CountNonExistingFiles();
