@@ -41,8 +41,6 @@ var fileFilter = host.Services.GetRequiredService<IMetadataFileFilter>();
 var fileMetadataChecker = host.Services.GetRequiredService<IFileMetadataChecker>();
 var fileExistenceChecker = host.Services.GetRequiredService<IFileExistenceChecker>();
 
-await host.StartAsync();
-
 if (!Directory.Exists(options.Value.AnalysisDirectory))
 {
     logger.LogWarning("Invalid directory for analysis is specified.");

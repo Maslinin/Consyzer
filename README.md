@@ -50,7 +50,7 @@ C:\Consyzer.exe --AnalysisDirectory C:\folderToBeAnalyzed --SearchPattern "*.exe
 ```
 
 ## Analysis of multiple projects
-You can use the *PowerShell* script located on the path ```DevOps\Runner.ps1```  to analyze the output artifacts of all projects in the solution using *Consyzer*.
-It can also be useful in the *CI/CD pipeline*.
+You can use the *PowerShell* script located on the path ```DevOps\SolutionAnalyzer.ps1```  to analyze the output artifacts of all projects in a solution using *Consyzer*.
+It can also be useful in *CI/CD pipeline*.
 
 Read more in ```DevOps\README.md```.

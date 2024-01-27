@@ -58,7 +58,7 @@ C:\Consyzer.exe --AnalysisDirectory C:\folderToBeAnalyzed --SearchPattern "*.exe
 ```
 
 ## Анализ нескольких проектов
-Вы можете использовать сценарий *PowerShell*, находящийся по пути ```DevOps\Runner.ps1``` для анализа выходных артефактов всех проектов в решении с помощью *Consyzer*. 
+Вы можете использовать сценарий *PowerShell*, находящийся по пути ```DevOps\SolutionAnalyzer.ps1``` для анализа выходных артефактов всех проектов в решении с помощью *Consyzer*. 
 Это также может быть полезно *конвейере CI/CD*.
 
 Подробнее читайте в ```DevOps\README.md```.
