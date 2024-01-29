@@ -33,7 +33,7 @@ var host = Host.CreateDefaultBuilder(args)
     })
     .Build();
 
-var options = host.Services.GetRequiredService<IOptions<CommandLineOptions>>();
+var options = host.Services.GetRequiredService<IOptions<CommandLineOptions>>().Value;
 
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 var fileHasher = host.Services.GetRequiredService<IFileHasher>();
@@ -41,21 +41,21 @@ var fileFilter = host.Services.GetRequiredService<IMetadataFileFilter>();
 var fileMetadataChecker = host.Services.GetRequiredService<IFileMetadataChecker>();
 var fileExistenceChecker = host.Services.GetRequiredService<IFileExistenceChecker>();
 
-if (!Directory.Exists(options.Value.AnalysisDirectory))
+if (!Directory.Exists(options.AnalysisDirectory))
 {
     logger.LogWarning("Invalid directory for analysis is specified.");
     return UnexpectedBehaviorExitCode;
 }
 
-if (string.IsNullOrEmpty(options.Value.SearchPattern))
+if (string.IsNullOrEmpty(options.SearchPattern))
 {
     logger.LogWarning("Invalid file search template for analysis is specified.");
     return UnexpectedBehaviorExitCode;
 }
 
-logger.LogInformation("{analysisParams}", LogMessageBuilderHelper.BuildAnalysisParamsLog(options.Value));
+logger.LogInformation("{analysisParams}", LogMessageBuilderHelper.BuildAnalysisParamsLog(options));
 
-var files = FileSearchHelper.GetFilesByCommaSeparatedSearchPatterns(options.Value.AnalysisDirectory, options.Value.SearchPattern);
+var files = FileSearchHelper.GetFilesByCommaSeparatedSearchPatterns(options.AnalysisDirectory, options.SearchPattern);
 if (!files.Any())
 {
     logger.LogWarning("Files for analysis corresponding to the specified search pattern were not found.");
