@@ -10,10 +10,10 @@ internal static class LogMessageBuilderHelper
 {
     public static string BuildAnalysisParamsLog(CommandLineOptions arguments)
     {
-        string pathForAnalysis = $"Path for analysis: '{arguments.AnalysisDirectory}'.";
+        string analysisDirectory = $"The specified directory for analysis: '{arguments.AnalysisDirectory}'.";
         string searchPattern = $"The specified file search pattern for analysis: {arguments.SearchPattern}.";
 
-        return $"{pathForAnalysis}{Environment.NewLine}{searchPattern}";
+        return $"{analysisDirectory}{Environment.NewLine}{searchPattern}";
     }
 
     public static string BuildBaseFileInfoLog(IEnumerable<FileInfo> fileInfos)
@@ -51,7 +51,7 @@ internal static class LogMessageBuilderHelper
                 return $"{file}{methodInfoText}";
             }
 
-            return $"{file}\tThere are no imported methods from other assemblies in the file.";
+            return $"{file}\tThe CIL module does not contain external functions from any unmanaged assemblies.";
         }));
     }
 
@@ -62,7 +62,7 @@ internal static class LogMessageBuilderHelper
             string methodLocation = $"\t[{index}]Method '{info.Signature.GetMethodLocation()}':";
             string methodSignature = $"\t\tMethod Signature: '{info.Signature.GetMethodSignature()}',";
             string dllLocation = $"\t\tDLL Location: '{info.DllLocation}',";
-            string dllImportArgs = $"\t\tDLL Import Args: '{info.DllImportArgs}'.";
+            string dllImportArgs = $"\t\tDllImport Args: '{info.DllImportArgs}'.";
 
             return $"{methodLocation}{Environment.NewLine}{methodSignature}{Environment.NewLine}{dllLocation}{Environment.NewLine}{dllImportArgs}";
         }));

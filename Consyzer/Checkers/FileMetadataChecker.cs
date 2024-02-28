@@ -21,7 +21,7 @@ internal sealed class FileMetadataChecker : IFileMetadataChecker
 
         if (nonMetadataFiles.Any())
         {
-            this._logger.LogInformation("The following files were excluded from analysis because they DO NOT contain metadata:{newLine}{baseFileInfo}",
+            this._logger.LogInformation("The following files have been excluded from the analysis because they DO NOT contain metadata:{newLine}{baseFileInfo}",
                 Environment.NewLine, LogMessageBuilderHelper.BuildBaseFileInfoLog(nonMetadataFiles));
         }
 
@@ -42,7 +42,7 @@ internal sealed class FileMetadataChecker : IFileMetadataChecker
 
         if (nonMetadataAssemblyFiles.Any())
         {
-            this._logger.LogInformation("The following files were excluded from analysis because they ARE NOT assembly files:{newLine}{baseFileInfo}",
+            this._logger.LogInformation("The following files have been excluded from the analysis because they ARE NOT metadata assembly files:{newLine}{baseFileInfo}",
                 Environment.NewLine, LogMessageBuilderHelper.BuildBaseFileInfoLog(nonMetadataAssemblyFiles));
         }
 
