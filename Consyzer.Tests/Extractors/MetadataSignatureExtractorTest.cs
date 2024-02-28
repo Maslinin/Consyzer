@@ -31,7 +31,7 @@ public sealed class MetadataSignatureExtractorTest
 
     private static MethodDefinition GetMethodDefinition()
     {
-        //we take average element of collection because first definitions are technical
+        //take an average element of the collection because first definitions are always technical
         var methodsDefs = GetAllMethodsDefinitions();
         return methodsDefs.ElementAt(methodsDefs.Count() / 2);
     }

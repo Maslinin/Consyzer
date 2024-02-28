@@ -22,7 +22,7 @@ internal sealed class MetadataDefinitionExtractor : IEcmaDefinitionExtractor
 
     public IEnumerable<MethodDefinition> GetImportedMethodDefinitions()
     {
-        var methodDefs = this.GetMethodDefinitions();
+        var methodDefs = GetMethodDefinitions();
         return methodDefs.Where(IsImported);
     }
 

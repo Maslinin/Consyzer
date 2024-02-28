@@ -7,12 +7,12 @@ namespace Consyzer.Tests.Filters;
 public sealed class EcmaMetadataFileFilterTest
 {
     private readonly IMetadataFileFilter _fileFilter;
-    private readonly IEnumerable<FileInfo> _fileInfosForTest;
+    private readonly IEnumerable<FileInfo> _testFileInfos;
 
     public EcmaMetadataFileFilterTest()
     {
         this._fileFilter = new EcmaMetadataFileFilter();
-        this._fileInfosForTest = new List<FileInfo>
+        this._testFileInfos = new List<FileInfo>
         {
             MetadataAssemblyFileInfo,
             NotMetadataAssemblyFileInfo
@@ -22,7 +22,7 @@ public sealed class EcmaMetadataFileFilterTest
     [Fact]
     public void GetMetadataFiles_ShouldReturnOnlyMetadataFiles()
     {
-        var metadataFiles = this._fileFilter.GetMetadataFiles(this._fileInfosForTest);
+        var metadataFiles = this._fileFilter.GetMetadataFiles(this._testFileInfos);
 
         Assert.DoesNotContain(NotMetadataAssemblyFileInfo, metadataFiles);
     }
@@ -30,7 +30,7 @@ public sealed class EcmaMetadataFileFilterTest
     [Fact]
     public void GetNonMetadataFiles_ShouldReturnOnlyNonMetadataFiles()
     {
-        var nonMetadataFiles = this._fileFilter.GetNonMetadataFiles(this._fileInfosForTest);
+        var nonMetadataFiles = this._fileFilter.GetNonMetadataFiles(this._testFileInfos);
 
         Assert.DoesNotContain(MetadataAssemblyFileInfo, nonMetadataFiles);
     }
@@ -38,7 +38,7 @@ public sealed class EcmaMetadataFileFilterTest
     [Fact]
     public void GetMetadataAssemblyFiles_ShouldReturnOnlyMetadataAssemblyFiles()
     {
-        var metadataAssemblyFiles = this._fileFilter.GetMetadataAssemblyFiles(this._fileInfosForTest);
+        var metadataAssemblyFiles = this._fileFilter.GetMetadataAssemblyFiles(this._testFileInfos);
 
         Assert.DoesNotContain(NotMetadataAssemblyFileInfo, metadataAssemblyFiles);
     }
@@ -46,7 +46,7 @@ public sealed class EcmaMetadataFileFilterTest
     [Fact]
     public void GetNonMetadataAssemblyFiles_ShouldReturnOnlyNonMetadataAssemblyFiles()
     {
-        var nonMetadataAssemblyFiles = this._fileFilter.GetNonMetadataAssemblyFiles(this._fileInfosForTest);
+        var nonMetadataAssemblyFiles = this._fileFilter.GetNonMetadataAssemblyFiles(this._testFileInfos);
 
         Assert.DoesNotContain(MetadataAssemblyFileInfo, nonMetadataAssemblyFiles);
     }

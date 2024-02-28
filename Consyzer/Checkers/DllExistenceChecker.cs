@@ -17,17 +17,17 @@ internal sealed class DllExistenceChecker : IFileExistenceChecker
 
     public FileExistenceStatus GetMaxFileExistanceStatus(IEnumerable<string> filePaths)
     {
-        return filePaths.Max(this.GetMinFileExistanceStatus);
+        return filePaths.Max(GetMinFileExistanceStatus);
     }
 
     public FileExistenceStatus GetMinFileExistanceStatus(string filePath)
     {
         var statuses = new[]
         {
-            this.CheckFileExistenceAtAnalysisPath(filePath),
-            this.CheckFileExistenceAtAbsolutePath(filePath),
-            this.CheckFileExistenceAtRelativePath(filePath),
-            this.CheckFileExistenceAtSystemDirectory(filePath)
+            CheckFileExistenceAtAnalysisPath(filePath),
+            CheckFileExistenceAtAbsolutePath(filePath),
+            CheckFileExistenceAtRelativePath(filePath),
+            CheckFileExistenceAtSystemDirectory(filePath)
         };
 
         return statuses.Min();

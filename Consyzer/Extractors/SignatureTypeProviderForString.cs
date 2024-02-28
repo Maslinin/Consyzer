@@ -42,17 +42,17 @@ internal sealed class SignatureTypeProviderForString : ISignatureTypeProvider<st
 
     public string GetTypeFromDefinition(MetadataReader reader, TypeDefinitionHandle handle, byte rawTypeKind)
     {
-        return this.TypeToString(handle, reader);
+        return TypeToString(handle, reader);
     }
 
     public string GetTypeFromReference(MetadataReader reader, TypeReferenceHandle handle, byte rawTypeKind)
     {
-        return this.TypeToString(handle, reader);
+        return TypeToString(handle, reader);
     }
 
     public string GetTypeFromSpecification(MetadataReader reader, object genericContext, TypeSpecificationHandle handle, byte rawTypeKind)
     {
-        return this.TypeToString(handle, genericContext, reader);
+        return TypeToString(handle, genericContext, reader);
     }
 
     private string TypeToString(EntityHandle handle, in object typeContext, MetadataReader reader)
@@ -60,14 +60,14 @@ internal sealed class SignatureTypeProviderForString : ISignatureTypeProvider<st
         HandleKind kind = handle.Kind;
         return kind switch
         {
-            HandleKind.TypeDefinition => this.TypeToString((TypeDefinitionHandle)handle, reader),
-            HandleKind.TypeReference => this.TypeToString((TypeReferenceHandle)handle, reader),
-            HandleKind.TypeSpecification => this.TypeToString((TypeSpecificationHandle)handle, reader, typeContext),
+            HandleKind.TypeDefinition => TypeToString((TypeDefinitionHandle)handle, reader),
+            HandleKind.TypeReference => TypeToString((TypeReferenceHandle)handle, reader),
+            HandleKind.TypeSpecification => TypeToString((TypeSpecificationHandle)handle, reader, typeContext),
             _ => "?"
         };
     }
 
-    private string TypeToString(TypeDefinitionHandle handle, MetadataReader reader)
+    private static string TypeToString(TypeDefinitionHandle handle, MetadataReader reader)
     {
         var typeDefinition = reader.GetTypeDefinition(handle);
         string @namespace = reader.GetString(typeDefinition.Namespace);
@@ -75,7 +75,7 @@ internal sealed class SignatureTypeProviderForString : ISignatureTypeProvider<st
 
         if (typeDefinition.IsNested)
         {
-            string declaringTypeName = this.TypeToString(typeDefinition.GetDeclaringType(), reader);
+            string declaringTypeName = TypeToString(typeDefinition.GetDeclaringType(), reader);
             name = declaringTypeName + "+" + name;
         }
 
@@ -90,7 +90,7 @@ internal sealed class SignatureTypeProviderForString : ISignatureTypeProvider<st
 
         if (typeReference.ResolutionScope.Kind == HandleKind.TypeDefinition || typeReference.ResolutionScope.Kind == HandleKind.TypeReference)
         {
-            string declaringTypeName = this.TypeToString(typeReference.ResolutionScope, default, reader);
+            string declaringTypeName = TypeToString(typeReference.ResolutionScope, default, reader);
             name = declaringTypeName + "+" + name;
         }
 

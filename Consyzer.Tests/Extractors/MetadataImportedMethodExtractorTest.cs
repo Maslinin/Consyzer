@@ -22,5 +22,5 @@ public sealed class MetadataImportedMethodExtractorTest
     }
 
     [System.Runtime.InteropServices.DllImport("test")]
-    private extern static int ImportedMethodForTest(int testArg);
+    private extern static int TestImportedMethod(int testArg);
 }
