@@ -29,38 +29,6 @@ public sealed class MetadataSignatureExtractorTest
         Assert.NotNull(decodedSignature.MethodArguments);
     }
 
-    [Fact]
-    public void GetNamespace_ShouldReturnNonEmptyString()
-    {
-        var rootNamespace = this._signatureExtractor.GetNamespace(TestMethodDefinition);
-
-        Assert.NotEmpty(rootNamespace);
-    }
-
-    [Fact]
-    public void GetClassName_ShouldReturnNonEmptyString()
-    {
-        var className = this._signatureExtractor.GetClassName(TestMethodDefinition);
-
-        Assert.NotEmpty(className);
-    }
-
-    [Fact]
-    public void GetMethodName_ShouldReturnNonEmptyString()
-    {
-        var methodName = this._signatureExtractor.GetMethodName(TestMethodDefinition);
-
-        Assert.NotEmpty(methodName);
-    }
-
-    [Fact]
-    public void GetArguments_ShouldReturnNonNullCollection()
-    {
-        var methodArguments = this._signatureExtractor.GetArguments(TestMethodDefinition);
-
-        Assert.NotNull(methodArguments);
-    }
-
     private static MethodDefinition GetMethodDefinition()
     {
         //we take average element of collection because first definitions are technical
