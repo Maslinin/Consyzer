@@ -46,7 +46,6 @@ internal sealed class MetadataSignatureExtractor : IEcmaSignatureExtractor
         return signature.ParameterTypes;
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static MethodSignature<string> DecodeSignature(MethodDefinition methodDef)
     {
         var signatureProvider = new SignatureTypeProviderForString();

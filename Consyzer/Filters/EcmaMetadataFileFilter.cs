@@ -25,7 +25,6 @@ public sealed class EcmaMetadataFileFilter : IMetadataFileFilter
         return fileInfos.Where(f => !IsAssembly(f));
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static bool HasMetadata(FileInfo fileInfo)
     {
         using var fileStream = fileInfo.OpenRead();
@@ -33,7 +32,6 @@ public sealed class EcmaMetadataFileFilter : IMetadataFileFilter
         return peReader.HasMetadata;
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static bool IsAssembly(FileInfo fileInfo)
     {
         using var fileStream = fileInfo.OpenRead();

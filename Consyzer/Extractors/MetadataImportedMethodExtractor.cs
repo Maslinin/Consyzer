@@ -21,7 +21,6 @@ internal sealed class MetadataImportedMethodExtractor : IEcmaImportedMethodExtra
         return importedMethodDefs.Select(GetImportedMethodInfo);
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private ImportedMethodInfo GetImportedMethodInfo(MethodDefinition methodDef)
     {
         var importedMethod = methodDef.GetImport();
@@ -38,14 +37,12 @@ internal sealed class MetadataImportedMethodExtractor : IEcmaImportedMethodExtra
         };
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static SignatureInfo GetSignature(MetadataReader mdReader, MethodDefinition methodDef)
     {
         var signatureExtractor = new MetadataSignatureExtractor(mdReader);
         return signatureExtractor.GetSignature(methodDef);
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static string GetDllLocation(MetadataReader mdReader, MethodImport importedMethod)
     {
         var moduleReference = mdReader.GetModuleReference(importedMethod.Module);

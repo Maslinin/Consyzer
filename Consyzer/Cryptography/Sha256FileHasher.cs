@@ -13,7 +13,6 @@ internal sealed class Sha256FileHasher : IFileHasher
         return BytesToHexString(hashBytes);
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static string BytesToHexString(byte[] hashBytes)
     {
         return BitConverter.ToString(hashBytes).Replace("-", string.Empty);

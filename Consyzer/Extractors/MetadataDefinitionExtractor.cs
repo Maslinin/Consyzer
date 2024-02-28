@@ -26,7 +26,6 @@ internal sealed class MetadataDefinitionExtractor : IEcmaDefinitionExtractor
         return methodDefs.Where(IsImported);
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static bool IsImported(MethodDefinition methodDef)
     {
         var importedMethod = methodDef.GetImport();

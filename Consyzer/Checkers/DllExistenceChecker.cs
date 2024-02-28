@@ -57,20 +57,17 @@ internal sealed class DllExistenceChecker : IFileExistenceChecker
         return File.Exists(correctPath) ? FileExistenceStatus.FileExistsAtSystemDirectory : FileExistenceStatus.FileDoesNotExist;
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static string EnsureCorrectFilePath(string filePath, string directory)
     {
         string correctPath = EnsureAbsoluteFilePath(directory, filePath);
         return EnsureDllExtension(correctPath);
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static string EnsureDllExtension(string filePath)
     {
         return Path.HasExtension(filePath) ? filePath : Path.ChangeExtension(filePath, DllExtension);
     }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     private static string EnsureAbsoluteFilePath(string directory, string filePath)
     {
         return Path.IsPathFullyQualified(filePath) ? filePath : Path.Combine(directory, filePath);
