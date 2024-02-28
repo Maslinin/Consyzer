@@ -11,7 +11,7 @@ param(
 	[String]$searchPattern = "*.exe, *.dll",
 	
 	[Parameter(HelpMessage={ "Build configuration to use. Default is $buildConfiguration." })]
-    [String]$buildConfiguration = "Debug"
+    [String]$buildConfiguration = "Release"
 )
 
 $defaultSearchParams = @{
@@ -34,18 +34,18 @@ $analysisFolders = $pathsToAnalysisFiles | ForEach-Object { $_.DirectoryName } |
 $finalExitCode = -1
 $messageBuilder = New-Object System.Text.StringBuilder
 foreach ($folder in $analysisFolders) {
-	& $pathToConsyzer $folder $searchPattern
+	& $pathToConsyzer --AnalysisDirectory $folder --SearchPattern $searchPattern
 	if ( $LASTEXITCODE -ge $finalExitCode ) {
 		$finalExitCode = $LASTEXITCODE
 	}
 	
 	# Scan project artifacts for consistency
 	$exitCodeMessages = @{
-		0 = "Successfully: $folder. No consistency problems were found."
-		1 = "Warning: $folder. One or more DLL components used in the project are on an absolute path."
-		2 = "Warning: $folder. One or more DLL components used in the project are on a relative path."
-		3 = "Warning: $folder. One or more DLL components used in the project are located on the system path."
-		4 = "Error: $folder. One or more DLL components used in the project were not found in the expected path."
+		0 = "Successfully: $folder. Consistency problems have not been found."
+		1 = "Warning: $folder. One or more DLL components used in the project are on the absolute path."
+		2 = "Warning: $folder. One or more DLL components used in the project are on the relative path."
+		3 = "Warning: $folder. One or more DLL components used in the project are in the system directory."
+		4 = "Error: $folder. One or more DLL components used in the project have not been found on the expected path."
 	}
 	
 	$messageBuilder.AppendLine($exitCodeMessages[$LASTEXITCODE])
