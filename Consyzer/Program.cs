@@ -1,45 +1,43 @@
 ﻿using NLog.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Consyzer.Options;
 using Consyzer.Filters;
 using Consyzer.Helpers;
 using Consyzer.Checkers;
 using Consyzer.Cryptography;
-using Consyzer.Options.Models;
 using Consyzer.Checkers.Models.Extensions;
 using Consyzer.Extractors.Models.Extensions;
 
 const int SuccessExitCode = 0;
 const int UnexpectedBehaviorExitCode = -1;
 
-var host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((hostContext, services) =>
-    {
-        services.AddScoped<IFileHasher, Sha256FileHasher>();
-        services.AddScoped<IMetadataFileFilter, EcmaMetadataFileFilter>();
-        services.AddScoped<IFileMetadataChecker, FileMetadataChecker>();
-        services.AddScoped<IFileExistenceChecker, DllExistenceChecker>();
-        services.AddSingleton<IConfigureOptions<CommandLineOptions>, CommandLineArgsConfigureOptions>();
-
-        services.Configure<CommandLineOptions>(hostContext.Configuration);
-    })
-    .ConfigureLogging(loggingBuilder =>
-    {
-        loggingBuilder.ClearProviders();
-        loggingBuilder.AddNLog();
-    })
+var configuration = new ConfigurationBuilder()
+    .AddCommandLine(args)
     .Build();
 
-var options = host.Services.GetRequiredService<IOptions<CommandLineOptions>>().Value;
+var serviceProvider = new ServiceCollection()
+    .AddLogging(builder =>
+    {
+        builder.ClearProviders();
+        builder.AddNLog();
+    })
+    .AddScoped<IFileHasher, Sha256FileHasher>()
+    .AddScoped<IMetadataFileFilter, EcmaMetadataFileFilter>()
+    .AddScoped<IFileMetadataChecker, FileMetadataChecker>()
+    .AddScoped<IFileExistenceChecker, DllExistenceChecker>()
+    .Configure<CommandLineOptions>(configuration)
+    .BuildServiceProvider();
 
-var logger = host.Services.GetRequiredService<ILogger<Program>>();
-var fileHasher = host.Services.GetRequiredService<IFileHasher>();
-var fileFilter = host.Services.GetRequiredService<IMetadataFileFilter>();
-var fileMetadataChecker = host.Services.GetRequiredService<IFileMetadataChecker>();
-var fileExistenceChecker = host.Services.GetRequiredService<IFileExistenceChecker>();
+var options = serviceProvider.GetRequiredService<IOptions<CommandLineOptions>>().Value;
+
+var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+var fileHasher = serviceProvider.GetRequiredService<IFileHasher>();
+var fileFilter = serviceProvider.GetRequiredService<IMetadataFileFilter>();
+var fileMetadataChecker = serviceProvider.GetRequiredService<IFileMetadataChecker>();
+var fileExistenceChecker = serviceProvider.GetRequiredService<IFileExistenceChecker>();
 
 if (!Directory.Exists(options.AnalysisDirectory))
 {

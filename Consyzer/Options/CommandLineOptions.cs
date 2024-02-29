@@ -1,4 +1,4 @@
-﻿namespace Consyzer.Options.Models;
+﻿namespace Consyzer.Options;
 
 internal sealed class CommandLineOptions
 {

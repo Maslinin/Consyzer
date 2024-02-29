@@ -1,8 +1,8 @@
 ﻿using Consyzer.Cryptography;
-using Consyzer.Options.Models;
 using Consyzer.Checkers.Models;
 using Consyzer.Extractors.Models;
 using Consyzer.Extractors.Models.Extensions;
+using Consyzer.Options;
 
 namespace Consyzer.Helpers;
 

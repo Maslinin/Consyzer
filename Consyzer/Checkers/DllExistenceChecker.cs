@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using Consyzer.Options.Models;
 using Consyzer.Checkers.Models;
+using Consyzer.Options;
 
 namespace Consyzer.Checkers;
 

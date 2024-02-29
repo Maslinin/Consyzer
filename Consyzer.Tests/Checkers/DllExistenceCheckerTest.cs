@@ -1,7 +1,7 @@
 ﻿using Xunit;
+using Consyzer.Options;
 using Consyzer.Checkers;
 using Consyzer.Checkers.Models;
-using Consyzer.Options.Models;
 using static Consyzer.Tests.TestConstants;
 
 namespace Consyzer.Tests.Checkers;
