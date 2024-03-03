@@ -49,15 +49,10 @@ If Consyzer finds an external function, it logs the following information about 
 
 > If the location of one of the unmanaged DLL components corresponds to the return code 2 and the other to the return code 3, the utility will return the largest of the codes.
 
-## Run
-The utility accepts two required parameters as input:
+## How to run?
+The utility is run from the CLI. Two required arguments must be passed to the utility as input:
 1. A directory containing CIL modules for analysis;
 2. Extensions of CIL modules to be analyzed.
-
-The template for running Consyzer from the CLI:
-```
-pathToConsyzer pathToDirectoryWithCILModules analyzedFilesExtensions
-```
 
 An example of running Consyzer from the CLI:
 ```
