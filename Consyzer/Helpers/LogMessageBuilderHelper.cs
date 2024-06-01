@@ -1,8 +1,8 @@
-﻿using Consyzer.Cryptography;
+﻿using Consyzer.Options;
+using Consyzer.Cryptography;
 using Consyzer.Checkers.Models;
 using Consyzer.Extractors.Models;
 using Consyzer.Extractors.Models.Extensions;
-using Consyzer.Options;
 
 namespace Consyzer.Helpers;
 
@@ -39,7 +39,7 @@ internal static class LogMessageBuilderHelper
         }));
     }
 
-    public static string GetImportedMethodsInfoForEachFileLog(IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> fileInfoImportedMethodPairs)
+    public static string GetExternalMethodsInfoForEachFileLog(IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> fileInfoImportedMethodPairs)
     {
         return string.Join(Environment.NewLine, fileInfoImportedMethodPairs.Select((pair, index) =>
         {
@@ -47,15 +47,15 @@ internal static class LogMessageBuilderHelper
 
             if (pair.Value.Any())
             {
-                string methodInfoText = BuildImportedMethodsInfoLog(pair.Value);
+                string methodInfoText = BuildExternalMethodsInfoLog(pair.Value);
                 return $"{file}{methodInfoText}";
             }
 
-            return $"{file}\tThe CIL module does not contain external functions from any unmanaged assemblies.";
+            return $"{file}\tThe CIL module does not contain external methods from any unmanaged assemblies.";
         }));
     }
 
-    public static string BuildImportedMethodsInfoLog(IEnumerable<ImportedMethodInfo> importedMethods)
+    public static string BuildExternalMethodsInfoLog(IEnumerable<ImportedMethodInfo> importedMethods)
     {
         return string.Join(Environment.NewLine, importedMethods.Select((info, index) =>
         {

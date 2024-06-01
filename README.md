@@ -1,18 +1,18 @@
 [![Build Status](https://github.com/Maslinin/Consyzer/workflows/Build/badge.svg)](https://github.com/Maslinin/Consyzer/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Maslinin_Consyzer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Maslinin_Consyzer) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Maslinin_Consyzer&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Maslinin_Consyzer) [![GitHub license](https://badgen.net/github/license/Maslinin/Consyzer)](https://github.com/Maslinin/Consyzer/blob/master/LICENSE)
 
 ## Overview
-**Consyzer** is a utility designed to prevent consistency problems of CIL modules when calling external functions from unmanaged Dynamic-Link Libraries (DLLs).
+**Consyzer** is a utility designed to prevent consistency problems of CIL modules when calling external methods implemented in unmanaged Dynamic-Link Libraries (DLLs).
 
-Imagine a scenario where the source code of the application contains calls to external functions from unmanaged Dynamic-Link libraries (DLLs).
+Imagine a scenario where the source code of the application contains calls to external methods implemented in unmanaged Dynamic-Link Libraries.
 In the source code of the a module, such calls are described by the **DllImport** attribute and stored in the metadata of the application after its assembly.
 
 The key feature of the **DllImport** attribute is
-that the function called from an unmanaged DLL is not directly linked to the source code of a CIL module; 
-instead, the metadata of the module stores information about that function, 
-including a reference to the expected location of the unmanaged DLL containing the definition of this function in the system.
+that the code of the method called from an unmanaged DLL is not directly linked to the source code of a CIL module; 
+instead, the metadata of the module stores information about this method, 
+including a reference to the expected location of the unmanaged DLL containing the implementation of the method in the system.
 
 ```
-//In this case, "kernel32.dll" is a reference to the unmanaged DLL containing the definition of the HelloWorld function:
+//In this case, "kernel32.dll" is a reference to the unmanaged DLL containing the definition of the HelloWorld method:
 [DllImport("kernel32.dll")]
 static extern void HelloWorld();
 ```
@@ -25,17 +25,17 @@ Consyzer was developed to prevent such incidents.
 ## How does it work?
 1. Consyzer selects files for analysis according to the directory and the search pattern specified for analysis;
 2. Consyzer discards files that are not ECMA-355 metadata assemblies;
-3. Consyzer scans the modules selected for analysis for external functions;
-4. Consyzer logs detailed information about each detected external function, up to its signature;
+3. Consyzer analyzes the modules selected for analysis for methods that are implemented externally;
+4. Consyzer logs detailed information about each detected methods that are implemented externally, up to its signature;
 5. Consyzer returns the specific analysis code to the operating system in the end, which also allows individual processing of each of the analysis incidents in accordance with your requirements.
 
 > Consyzer logs each of the above steps.
 
-## What information does Consyzer log about the external function?
-If Consyzer finds an external function, it logs the following information about it:
-1. Function name;
-2. The signature of a function;
-3. The expected location of the unmanaged DLL containing the definition of this function in the system;
+## What information does Consyzer log about the external method?
+If Consyzer finds a method that is implemented externally, it logs the following information about it:
+1. Method name;
+2. The signature of the method;
+3. The expected location of the unmanaged DLL containing the definition of the method in the system;
 4. Arguments of DllImport attribute.
 
 ## Return Codes

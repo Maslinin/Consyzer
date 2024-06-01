@@ -76,8 +76,8 @@ var fileInfoImportedMethodInfosPairs = metadataAssemblyFiles
     .ToImportedMethodInfos()
     .ToFileInfoImportedMethodInfosDictionary(metadataAssemblyFiles);
 
-logger.LogInformation("Information about external functions from unmanaged assemblies being analyzed:{newLine}{importedMethodsInfo}",
-    Environment.NewLine, LogMessageBuilderHelper.GetImportedMethodsInfoForEachFileLog(fileInfoImportedMethodInfosPairs));
+logger.LogInformation("Information about external methods from unmanaged assemblies being analyzed:{newLine}{importedMethodsInfo}",
+    Environment.NewLine, LogMessageBuilderHelper.GetExternalMethodsInfoForEachFileLog(fileInfoImportedMethodInfosPairs));
 
 var dllLocations = fileInfoImportedMethodInfosPairs
     .ToImportedMethodInfos()
@@ -85,7 +85,7 @@ var dllLocations = fileInfoImportedMethodInfosPairs
 
 if (!dllLocations.Any())
 {
-    logger.LogInformation("All analyzed files DO NOT contain external functions from any unmanaged assemblies.");
+    logger.LogInformation("All analyzed files DO NOT contain external methods from any unmanaged assemblies.");
     return SuccessExitCode;
 }
 
