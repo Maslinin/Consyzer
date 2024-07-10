@@ -2,33 +2,18 @@
 
 internal static class ImportedMethodExtensions
 {
-    public static IEnumerable<IEcmaImportedMethodExtractor> ToImportedMethodExtractors(this IEnumerable<FileInfo> fileInfos)
+    public static IDictionary<FileInfo, IEcmaImportedMethodExtractor> ToImportedMethodExtractors(this IEnumerable<FileInfo> metadataAssemblyFiles)
     {
-        return fileInfos.Select(f => new MetadataImportedMethodExtractor(f));
+        return metadataAssemblyFiles.ToDictionary(k => k, v => (IEcmaImportedMethodExtractor)new MetadataImportedMethodExtractor(v));
     }
 
-    public static IEnumerable<IEnumerable<ImportedMethodInfo>> ToImportedMethodInfos(this IEnumerable<IEcmaImportedMethodExtractor> importedMethodExtractors)
+    public static IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> ToImportedMethodInfos(this IDictionary<FileInfo, IEcmaImportedMethodExtractor> importedMethodExtractors)
     {
-        return importedMethodExtractors.Select(e => e.GetImportedMethodInfos());
+        return importedMethodExtractors.ToDictionary(k => k.Key, v => v.Value.GetImportedMethodInfos());
     }
 
-    public static IEnumerable<ImportedMethodInfo> ToImportedMethodInfos(this IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> fileInfoImportedMethodInfosPairs)
+    public static IEnumerable<string> ToDllLocations(this IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> importedMethodInfos)
     {
-        return fileInfoImportedMethodInfosPairs.SelectMany(p => p.Value);
-    }
-
-    public static IEnumerable<string> ToDllLocations(this IEnumerable<ImportedMethodInfo> importedMethods)
-    {
-        return importedMethods.Select(m => m.DllLocation).Distinct();
-    }
-
-    public static IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> ToFileInfoImportedMethodInfosDictionary(this IEnumerable<IEnumerable<ImportedMethodInfo>> importedMethodInfos, IEnumerable<FileInfo> fileInfos)
-    {
-        return fileInfos.Zip(importedMethodInfos, (fileInfo, importedMethods) => new
-        {
-            FileInfo = fileInfo,
-            ImportedMethods = importedMethods
-        })
-        .ToDictionary(k => k.FileInfo, v => v.ImportedMethods);
+        return importedMethodInfos.SelectMany(m => m.Value.Select(i => i.DllLocation)).Distinct();
     }
 }

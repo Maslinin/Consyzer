@@ -71,17 +71,14 @@ var metadataAssemblyFiles = fileFilter.GetMetadataAssemblyFiles(files);
 logger.LogInformation("The following assembly files containing metadata have been found:{newLine}{fileAndHashInfo}",
     Environment.NewLine, LogMessageBuilderHelper.BuildBaseAndHashFileInfoLog(metadataAssemblyFiles, fileHasher));
 
-var fileInfoImportedMethodInfosPairs = metadataAssemblyFiles
+var importedMethodInfos = metadataAssemblyFiles
     .ToImportedMethodExtractors()
-    .ToImportedMethodInfos()
-    .ToFileInfoImportedMethodInfosDictionary(metadataAssemblyFiles);
+    .ToImportedMethodInfos();
 
 logger.LogInformation("Information about external methods from unmanaged assemblies being analyzed:{newLine}{importedMethodsInfo}",
-    Environment.NewLine, LogMessageBuilderHelper.GetExternalMethodsInfoForEachFileLog(fileInfoImportedMethodInfosPairs));
+    Environment.NewLine, LogMessageBuilderHelper.GetExternalMethodsInfoForEachFileLog(importedMethodInfos));
 
-var dllLocations = fileInfoImportedMethodInfosPairs
-    .ToImportedMethodInfos()
-    .ToDllLocations();
+var dllLocations = importedMethodInfos.ToDllLocations();
 
 if (!dllLocations.Any())
 {
