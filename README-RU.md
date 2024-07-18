@@ -31,11 +31,22 @@ static extern void HelloWorld();
 > Consyzer логгирует каждый из указанных выше шагов.
 
 ## Какую информацию логгирует Consyzer о внешнем методе?
-Если Consyzer обнаружил метод с внешней реализацией, он логгирует следующую информацию о ней:
+Если Consyzer обнаружил метод с внешней реализацией, он логгирует следующую информацию о нем:
 1. Имя метода;
 2. Сигнатуру метода;
 3. Ожидаемое местоположение неуправляемой DLL, содержащей реализацию этого метода, в системе;
 4. Аргументы атрибута DllImport.
+
+Пример лога, содержащего информацию о методах с внешней реализацией:
+```
+[0]File 'C:\Libraries\foo.dll': 
+	The CIL module does not contain external methods from any unmanaged assemblies.
+[1]File 'C:\Libraries\bar.dll': 
+	[0]Method 'Bar.Math.Sqrt':
+		Method Signature: 'Bar.Math.Sqrt(Double)',
+		DLL Location: 'C:\Libraries\bar.dll',
+		DLL Import Args: 'CallingConventionWinApi'.
+```
 
 ## Коды возврата
 > 0 - все неуправляемые DLL-компоненты, используемые в анализируемых CIL-модулях, существуют в анализируемой директории;      

@@ -31,12 +31,23 @@ Consyzer was developed to prevent such incidents.
 
 > Consyzer logs each of the above steps.
 
-## What information does Consyzer log about the external method?
+## What information does Consyzer log about an external method?
 If Consyzer finds a method that is implemented externally, it logs the following information about it:
 1. Method name;
 2. The signature of the method;
 3. The expected location of the unmanaged DLL containing the definition of the method in the system;
 4. Arguments of DllImport attribute.
+
+An example of a log containing information about methods with an external implementation:
+```
+[0]File 'C:\Libraries\foo.dll': 
+	The CIL module does not contain external methods from any unmanaged assemblies.
+[1]File 'C:\Libraries\bar.dll': 
+	[0]Method 'Bar.Math.Sqrt':
+		Method Signature: 'Bar.Math.Sqrt(Double)',
+		DLL Location: 'C:\Libraries\bar.dll',
+		DLL Import Args: 'CallingConventionWinApi'.
+```
 
 ## Return Codes
 > 0 - all unmanaged DLL components used in the analyzed CIL modules exist in the analyzed directory;         
