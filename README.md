@@ -65,6 +65,11 @@ The utility is run from the CLI. Two required arguments must be passed to the ut
 1. A directory containing CIL modules for analysis;
 2. Extensions of CIL modules to be analyzed.
 
+The template for running Consyzer from the CLI:
+```
+pathToConsyzer --AnalysisDirectory pathToDirectoryWithCILModules --SearchPattern extensionsOfAnalyzedFiles
+```
+
 An example of running Consyzer from the CLI:
 ```
 C:\Consyzer.exe --AnalysisDirectory C:\analysisDirectory --SearchPattern "output.exe, *.dll"

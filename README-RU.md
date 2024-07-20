@@ -64,6 +64,11 @@ static extern void HelloWorld();
 1. Директория, содержащая CIL-модули для анализа;
 2. Расширения CIL-модулей, подлежащих анализу.
 
+Шаблон запуска Consyzer из CLI:
+```
+pathToConsyzer --AnalysisDirectory pathToDirectoryWithCILModules --SearchPattern extensionsOfAnalyzedFiles
+```
+
 Пример запуска Consyzer из CLI:
 ```
 C:\Consyzer.exe --AnalysisDirectory C:\analysisDirectory --SearchPattern "output.exe, *.dll"
