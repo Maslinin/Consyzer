@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Consyzer.Options;
 using Consyzer.Filters;
+using Consyzer.Logging;
 using Consyzer.Helpers;
 using Consyzer.Checkers;
 using Consyzer.Cryptography;
@@ -51,38 +52,38 @@ if (string.IsNullOrEmpty(options.SearchPattern))
     return UnexpectedBehaviorExitCode;
 }
 
-logger.LogInformation("{analysisParams}", LogMessageBuilderHelper.BuildAnalysisParamsLog(options));
+logger.LogInformation("{analysisParams}", OptionsLogMessageFormatter.GetCommandLineOptionsLog(options));
 
-var files = FileSearchHelper.GetFilesByCommaSeparatedSearchPatterns(options.AnalysisDirectory, options.SearchPattern);
-if (!files.Any())
+var fileInfos = FileSearchHelper.GetFilesByCommaSeparatedSearchPatterns(options.AnalysisDirectory, options.SearchPattern);
+if (!fileInfos.Any())
 {
     logger.LogWarning("Files for analysis matching the specified search pattern have not been found.");
     return UnexpectedBehaviorExitCode;
 }
 
 logger.LogInformation("Files for analysis matching the specified search pattern have been found:{newLine}{baseFileInfo}",
-    Environment.NewLine, LogMessageBuilderHelper.BuildBaseFileInfoLog(files));
+    Environment.NewLine, FileMetadataLogMessageFormatter.GetBaseFileInfoLog(fileInfos));
 
-if (!fileMetadataChecker.ContainsOnlyMetadata(files)) return SuccessExitCode;
-if (!fileMetadataChecker.ContainsOnlyMetadataAssemblies(files)) return SuccessExitCode;
+if (!fileMetadataChecker.ContainsOnlyMetadata(fileInfos)) return SuccessExitCode;
+if (!fileMetadataChecker.ContainsOnlyMetadataAssemblies(fileInfos)) return SuccessExitCode;
 
-var metadataAssemblyFiles = fileFilter.GetMetadataAssemblyFiles(files);
+var metadataAssemblyFiles = fileFilter.GetMetadataAssemblyFiles(fileInfos);
 
-logger.LogInformation("The following assembly files containing metadata have been found:{newLine}{fileAndHashInfo}",
-    Environment.NewLine, LogMessageBuilderHelper.BuildBaseAndHashFileInfoLog(metadataAssemblyFiles, fileHasher));
+logger.LogInformation("The following assembly fileInfos containing metadata have been found:{newLine}{fileAndHashInfo}",
+    Environment.NewLine, FileMetadataLogMessageFormatter.GetBaseAndHashFileInfoLog(metadataAssemblyFiles, fileHasher));
 
 var importedMethodInfos = metadataAssemblyFiles
     .ToImportedMethodExtractors()
     .ToImportedMethodInfos();
 
 logger.LogInformation("Information about external methods from unmanaged assemblies being analyzed:{newLine}{importedMethodsInfo}",
-    Environment.NewLine, LogMessageBuilderHelper.GetExternalMethodsInfoForEachFileLog(importedMethodInfos));
+    Environment.NewLine, AnalysisLogMessageFormatter.GetExternalMethodsInfoForEachFileLog(importedMethodInfos));
 
 var dllLocations = importedMethodInfos.ToDllLocations();
 
 if (!dllLocations.Any())
 {
-    logger.LogInformation("All analyzed files DO NOT contain external methods from any unmanaged assemblies.");
+    logger.LogInformation("All analyzed fileInfos DO NOT contain external methods from any unmanaged assemblies.");
     return SuccessExitCode;
 }
 
@@ -90,7 +91,7 @@ var fileExistenceStatuses = fileExistenceChecker.ToMinFileExistenceStatuses(dllL
 var fileExistenceInfos = fileExistenceStatuses.ToFileExistenceInfos(dllLocations);
 
 logger.LogInformation("The presence of unmanaged assemblies in the locations specified in the DllImport attribute:{newLine}{fileExistenceInfo}",
-    Environment.NewLine, LogMessageBuilderHelper.BuildFileExistenceInfoLog(fileExistenceInfos));
+    Environment.NewLine, AnalysisLogMessageFormatter.GetFileExistenceInfoLog(fileExistenceInfos));
 
 var existingFiles = fileExistenceStatuses.CountExistingFiles();
 var nonExistingFiles = fileExistenceStatuses.CountNonExistingFiles();

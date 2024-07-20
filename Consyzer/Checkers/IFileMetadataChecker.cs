@@ -2,6 +2,6 @@
 
 internal interface IFileMetadataChecker
 {
-    bool ContainsOnlyMetadata(IEnumerable<FileInfo> files);
-    bool ContainsOnlyMetadataAssemblies(IEnumerable<FileInfo> files);
+    bool ContainsOnlyMetadata(IEnumerable<FileInfo> fileInfos);
+    bool ContainsOnlyMetadataAssemblies(IEnumerable<FileInfo> fileInfos);
 }

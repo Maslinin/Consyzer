@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Consyzer.Filters;
-using Consyzer.Helpers;
+using Consyzer.Logging;
 
 namespace Consyzer.Checkers;
 
@@ -15,44 +15,44 @@ internal sealed class FileMetadataChecker : IFileMetadataChecker
         this._fileFilter = fileFilter;
     }
 
-    public bool ContainsOnlyMetadata(IEnumerable<FileInfo> files)
+    public bool ContainsOnlyMetadata(IEnumerable<FileInfo> fileInfos)
     {
-        var nonMetadataFiles = this._fileFilter.GetNonMetadataFiles(files);
+        var nonMetadataFiles = this._fileFilter.GetNonMetadataFiles(fileInfos);
 
         if (nonMetadataFiles.Any())
         {
-            this._logger.LogInformation("The following files have been excluded from the analysis because they DO NOT contain metadata:{newLine}{baseFileInfo}",
-                Environment.NewLine, LogMessageBuilderHelper.BuildBaseFileInfoLog(nonMetadataFiles));
+            this._logger.LogInformation("The following fileInfos have been excluded from the analysis because they DO NOT contain metadata:{newLine}{baseFileInfo}",
+                Environment.NewLine, FileMetadataLogMessageFormatter.GetBaseFileInfoLog(nonMetadataFiles));
         }
 
-        if (nonMetadataFiles.Count() == files.Count())
+        if (nonMetadataFiles.Count() == fileInfos.Count())
         {
-            this._logger.LogInformation("All found files DO NOT contain metadata.");
+            this._logger.LogInformation("All found fileInfos DO NOT contain metadata.");
             return false;
         }
 
-        this._logger.LogInformation("All found files contain metadata.");
+        this._logger.LogInformation("All found fileInfos contain metadata.");
 
         return true;
     }
 
-    public bool ContainsOnlyMetadataAssemblies(IEnumerable<FileInfo> files)
+    public bool ContainsOnlyMetadataAssemblies(IEnumerable<FileInfo> fileInfos)
     {
-        var nonMetadataAssemblyFiles = this._fileFilter.GetNonMetadataAssemblyFiles(files);
+        var nonMetadataAssemblyFiles = this._fileFilter.GetNonMetadataAssemblyFiles(fileInfos);
 
         if (nonMetadataAssemblyFiles.Any())
         {
-            this._logger.LogInformation("The following files have been excluded from the analysis because they ARE NOT metadata assembly files:{newLine}{baseFileInfo}",
-                Environment.NewLine, LogMessageBuilderHelper.BuildBaseFileInfoLog(nonMetadataAssemblyFiles));
+            this._logger.LogInformation("The following fileInfos have been excluded from the analysis because they ARE NOT metadata assembly fileInfos:{newLine}{baseFileInfo}",
+                Environment.NewLine, FileMetadataLogMessageFormatter.GetBaseFileInfoLog(nonMetadataAssemblyFiles));
         }
 
-        if (nonMetadataAssemblyFiles.Count() == files.Count())
+        if (nonMetadataAssemblyFiles.Count() == fileInfos.Count())
         {
-            this._logger.LogInformation("All found files contain metadata, but ARE NOT assembly files.");
+            this._logger.LogInformation("All found fileInfos contain metadata, but ARE NOT assembly fileInfos.");
             return false;
         }
 
-        this._logger.LogInformation("All metadata files found are assemblies.");
+        this._logger.LogInformation("All metadata fileInfos found are assemblies.");
 
         return true;
     }
