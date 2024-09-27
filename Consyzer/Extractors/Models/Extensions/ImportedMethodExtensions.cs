@@ -2,14 +2,14 @@
 
 internal static class ImportedMethodExtensions
 {
-    public static IDictionary<FileInfo, IEcmaImportedMethodExtractor> ToImportedMethodExtractors(this IEnumerable<FileInfo> metadataAssemblyFiles)
+    public static IEnumerable<IEcmaImportedMethodExtractor> ToImportedMethodExtractors(this IEnumerable<FileInfo> metadataAssemblyFiles)
     {
-        return metadataAssemblyFiles.ToDictionary(k => k, v => (IEcmaImportedMethodExtractor)new MetadataImportedMethodExtractor(v));
+        return metadataAssemblyFiles.Select(f => new MetadataImportedMethodExtractor(f));
     }
 
-    public static IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> ToImportedMethodInfos(this IDictionary<FileInfo, IEcmaImportedMethodExtractor> importedMethodExtractors)
+    public static IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> ToImportedMethodInfos(this IEnumerable<IEcmaImportedMethodExtractor> importedMethodExtractors)
     {
-        return importedMethodExtractors.ToDictionary(k => k.Key, v => v.Value.GetImportedMethodInfos());
+        return importedMethodExtractors.ToDictionary(k => k.MetadataAssembly, v => v.GetImportedMethodInfos());
     }
 
     public static IEnumerable<string> ToDllLocations(this IDictionary<FileInfo, IEnumerable<ImportedMethodInfo>> importedMethodInfos)

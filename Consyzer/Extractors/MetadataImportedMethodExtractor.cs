@@ -6,13 +6,14 @@ namespace Consyzer.Extractors;
 
 internal sealed class MetadataImportedMethodExtractor : IEcmaImportedMethodExtractor
 {
-    private readonly FileInfo _fileInfo;
     private readonly IEcmaDefinitionExtractor _definitionExtractor;
+
+    public FileInfo MetadataAssembly { get; }
 
     public MetadataImportedMethodExtractor(FileInfo fileInfo)
     {
-        this._fileInfo = fileInfo;
-        this._definitionExtractor = new MetadataDefinitionExtractor(fileInfo);
+        this.MetadataAssembly = fileInfo;
+        this._definitionExtractor = new MetadataDefinitionExtractor(this.MetadataAssembly);
     }
 
     public IEnumerable<ImportedMethodInfo> GetImportedMethodInfos()
@@ -25,7 +26,7 @@ internal sealed class MetadataImportedMethodExtractor : IEcmaImportedMethodExtra
     {
         var importedMethod = methodDef.GetImport();
 
-        using var fileStream = this._fileInfo.OpenRead();
+        using var fileStream = this.MetadataAssembly.OpenRead();
         using var peReader = new PEReader(fileStream);
         var mdReader = peReader.GetMetadataReader();
 

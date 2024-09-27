@@ -7,9 +7,13 @@ internal sealed class MetadataDefinitionExtractor : IEcmaDefinitionExtractor
 {
     private readonly MetadataReader _mdReader;
 
+    public FileInfo MetadataAssembly { get; }
+    
     public MetadataDefinitionExtractor(FileInfo fileInfo)
     {
-        var fileStream = fileInfo.OpenRead();
+        this.MetadataAssembly = fileInfo;
+
+        var fileStream = this.MetadataAssembly.OpenRead();
         var peReader = new PEReader(fileStream);
         this._mdReader = peReader.GetMetadataReader();
     }
