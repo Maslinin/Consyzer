@@ -52,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Consyzer
-          path: Consyzer\bin\Release
+          path: Consyzer/bin/**/publish
