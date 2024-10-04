@@ -15,7 +15,7 @@ internal static class FileMetadataLogMessageFormatter
         }));
     }
 
-    public static string GetBaseAndHashFileInfoLog(IEnumerable<FileInfo> fileInfos, IFileHasher hasher)
+    public static string GetExtendedFileInfoLog(IEnumerable<FileInfo> fileInfos, IFileHasher hasher)
     {
         return string.Join(Environment.NewLine, fileInfos.Select((f, i) =>
         {

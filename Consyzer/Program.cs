@@ -25,7 +25,6 @@ var serviceProvider = new ServiceCollection()
         builder.ClearProviders();
         builder.AddNLog();
     })
-    .AddScoped<IFileHasher, Sha256FileHasher>()
     .AddScoped<IMetadataFileFilter, EcmaMetadataFileFilter>()
     .AddScoped<IFileMetadataChecker, FileMetadataChecker>()
     .AddScoped<IFileExistenceChecker, DllExistenceChecker>()
@@ -70,7 +69,7 @@ if (!fileMetadataChecker.ContainsOnlyMetadataAssemblies(fileInfos)) return Succe
 var metadataAssemblyFiles = fileFilter.GetMetadataAssemblyFiles(fileInfos);
 
 logger.LogInformation("The following assembly fileInfos containing metadata have been found:{newLine}{fileAndHashInfo}",
-    Environment.NewLine, FileMetadataLogMessageFormatter.GetBaseAndHashFileInfoLog(metadataAssemblyFiles, fileHasher));
+    Environment.NewLine, FileMetadataLogMessageFormatter.GetExtendedFileInfoLog(metadataAssemblyFiles, fileHasher));
 
 var importedMethodInfos = metadataAssemblyFiles
     .ToImportedMethodExtractors()
@@ -87,7 +86,7 @@ if (!dllLocations.Any())
     return SuccessExitCode;
 }
 
-var fileExistenceStatuses = fileExistenceChecker.ToMinFileExistenceStatuses(dllLocations);
+var fileExistenceStatuses = fileExistenceChecker.GetMinFileExistenceStatuses(dllLocations);
 var fileExistenceInfos = fileExistenceStatuses.ToFileExistenceInfos(dllLocations);
 
 logger.LogInformation("The presence of unmanaged assemblies in the locations specified in the DllImport attribute:{newLine}{fileExistenceInfo}",

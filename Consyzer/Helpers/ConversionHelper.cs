@@ -1,7 +1,20 @@
-﻿namespace Consyzer.Extractors.Models.Extensions;
+﻿using Consyzer.Checkers.Models;
+using Consyzer.Extractors;
+using Consyzer.Extractors.Models;
 
-internal static class ImportedMethodExtensions
+namespace Consyzer.Helpers;
+
+internal static class ConversionHelper
 {
+    public static IEnumerable<FileExistenceInfo> ToFileExistenceInfos(this IEnumerable<FileExistenceStatus> fileExistenceStatuses, IEnumerable<string> filePaths)
+    {
+        return fileExistenceStatuses.Zip(filePaths, (fileExistence, filePath) => new FileExistenceInfo
+        {
+            ExistenceStatus = fileExistence,
+            FilePath = filePath
+        });
+    }
+
     public static IEnumerable<IEcmaImportedMethodExtractor> ToImportedMethodExtractors(this IEnumerable<FileInfo> metadataAssemblyFiles)
     {
         return metadataAssemblyFiles.Select(f => new MetadataImportedMethodExtractor(f));

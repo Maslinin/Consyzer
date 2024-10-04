@@ -2,16 +2,7 @@
 
 internal static class FileExistenceExtensions
 {
-    public static IEnumerable<FileExistenceInfo> ToFileExistenceInfos(this IEnumerable<FileExistenceStatus> fileExistenceStatuses, IEnumerable<string> filePaths)
-    {
-        return fileExistenceStatuses.Zip(filePaths, (fileExistence, filePath) => new FileExistenceInfo
-        {
-            ExistenceStatus = fileExistence,
-            FilePath = filePath
-        });
-    }
-
-    public static IEnumerable<FileExistenceStatus> ToMinFileExistenceStatuses(this IFileExistenceChecker fileChecker, IEnumerable<string> filePaths)
+    public static IEnumerable<FileExistenceStatus> GetMinFileExistenceStatuses(this IFileExistenceChecker fileChecker, IEnumerable<string> filePaths)
     {
         return filePaths.Select(fileChecker.GetMinFileExistanceStatus);
     }
