@@ -4,7 +4,7 @@ namespace Consyzer.Logging;
 
 internal static class OptionsLogMessageFormatter
 {
-    public static string GetCommandLineOptionsLog(CommandLineOptions arguments)
+    public static string GetAnalysisOptionsLog(AnalysisOptions arguments)
     {
         string analysisDirectory = $"The specified directory for analysis: '{arguments.AnalysisDirectory}'.";
         string searchPattern = $"The specified file search pattern for analysis: {arguments.SearchPattern}.";

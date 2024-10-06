@@ -13,7 +13,7 @@ public sealed class DllExistenceCheckerTest
 
     public DllExistenceCheckerTest()
     {
-        var options = Microsoft.Extensions.Options.Options.Create(new CommandLineOptions
+        var options = Microsoft.Extensions.Options.Options.Create(new AnalysisOptions
         {
             AnalysisDirectory = MetadataAssemblyFileInfo.DirectoryName
         });

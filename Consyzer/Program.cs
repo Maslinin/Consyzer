@@ -10,7 +10,6 @@ using Consyzer.Helpers;
 using Consyzer.Checkers;
 using Consyzer.Cryptography;
 using Consyzer.Checkers.Models.Extensions;
-using Consyzer.Extractors.Models.Extensions;
 
 const int SuccessExitCode = 0;
 const int UnexpectedBehaviorExitCode = -1;
@@ -28,10 +27,10 @@ var serviceProvider = new ServiceCollection()
     .AddScoped<IMetadataFileFilter, EcmaMetadataFileFilter>()
     .AddScoped<IFileMetadataChecker, FileMetadataChecker>()
     .AddScoped<IFileExistenceChecker, DllExistenceChecker>()
-    .Configure<CommandLineOptions>(configuration)
+    .Configure<AnalysisOptions>(configuration)
     .BuildServiceProvider();
 
-var options = serviceProvider.GetRequiredService<IOptions<CommandLineOptions>>().Value;
+var options = serviceProvider.GetRequiredService<IOptions<AnalysisOptions>>().Value;
 
 var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 var fileHasher = serviceProvider.GetRequiredService<IFileHasher>();
@@ -51,7 +50,7 @@ if (string.IsNullOrEmpty(options.SearchPattern))
     return UnexpectedBehaviorExitCode;
 }
 
-logger.LogInformation("{analysisParams}", OptionsLogMessageFormatter.GetCommandLineOptionsLog(options));
+logger.LogInformation("{analysisParams}", OptionsLogMessageFormatter.GetAnalysisOptionsLog(options));
 
 var fileInfos = FileSearchHelper.GetFilesByCommaSeparatedSearchPatterns(options.AnalysisDirectory, options.SearchPattern);
 if (!fileInfos.Any())

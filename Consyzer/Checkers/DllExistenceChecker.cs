@@ -10,7 +10,7 @@ internal sealed class DllExistenceChecker : IFileExistenceChecker
 
     private readonly string _analysisDirectory;
 
-    public DllExistenceChecker(IOptions<CommandLineOptions> options)
+    public DllExistenceChecker(IOptions<AnalysisOptions> options)
     {
         this._analysisDirectory = options.Value.AnalysisDirectory;
     }
