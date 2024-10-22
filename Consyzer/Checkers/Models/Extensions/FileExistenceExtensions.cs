@@ -2,18 +2,18 @@
 
 internal static class FileExistenceExtensions
 {
-    public static IEnumerable<FileExistenceStatus> GetMinFileExistenceStatuses(this IFileExistenceChecker fileChecker, IEnumerable<string> filePaths)
+    public static IDictionary<string, FileExistenceStatus> GetMinFileExistenceStatuses(this IFileExistenceChecker fileChecker, IEnumerable<string> filePaths)
     {
-        return filePaths.Select(fileChecker.GetMinFileExistanceStatus);
+        return filePaths.ToDictionary(k => k, v => fileChecker.GetMinFileExistanceStatus(v));
     }
 
-    public static int CountExistingFiles(this IEnumerable<FileExistenceStatus> fileExistenceStatuses)
+    public static int CountExistingFiles(this IEnumerable<FileExistenceInfo> fileExistenceInfos)
     {
-        return fileExistenceStatuses.Count(x => x != FileExistenceStatus.FileDoesNotExist);
+        return fileExistenceInfos.Count(x => x.ExistenceStatus != FileExistenceStatus.FileDoesNotExist);
     }
 
-    public static int CountNonExistingFiles(this IEnumerable<FileExistenceStatus> fileExistenceStatuses)
+    public static int CountNonExistingFiles(this IEnumerable<FileExistenceInfo> fileExistenceInfos)
     {
-        return fileExistenceStatuses.Count(x => x == FileExistenceStatus.FileDoesNotExist);
+        return fileExistenceInfos.Count(x => x.ExistenceStatus == FileExistenceStatus.FileDoesNotExist);
     }
 }

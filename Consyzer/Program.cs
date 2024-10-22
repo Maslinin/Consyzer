@@ -24,6 +24,7 @@ var serviceProvider = new ServiceCollection()
         builder.ClearProviders();
         builder.AddNLog();
     })
+    .AddScoped<IFileHasher, Sha256FileHasher>()
     .AddScoped<IMetadataFileFilter, EcmaMetadataFileFilter>()
     .AddScoped<IFileMetadataChecker, FileMetadataChecker>()
     .AddScoped<IFileExistenceChecker, DllExistenceChecker>()
@@ -86,13 +87,13 @@ if (!dllLocations.Any())
 }
 
 var fileExistenceStatuses = fileExistenceChecker.GetMinFileExistenceStatuses(dllLocations);
-var fileExistenceInfos = fileExistenceStatuses.ToFileExistenceInfos(dllLocations);
+var fileExistenceInfos = fileExistenceStatuses.ToFileExistenceInfos();
 
 logger.LogInformation("The presence of unmanaged assemblies in the locations specified in the DllImport attribute:{newLine}{fileExistenceInfo}",
     Environment.NewLine, AnalysisLogMessageFormatter.GetFileExistenceInfoLog(fileExistenceInfos));
 
-var existingFiles = fileExistenceStatuses.CountExistingFiles();
-var nonExistingFiles = fileExistenceStatuses.CountNonExistingFiles();
+var existingFiles = fileExistenceInfos.CountExistingFiles();
+var nonExistingFiles = fileExistenceInfos.CountNonExistingFiles();
 
 logger.LogInformation("OUTCOME: {existingFiles} exist, {nonExistingFiles} DO NOT exist.", existingFiles, nonExistingFiles);
 

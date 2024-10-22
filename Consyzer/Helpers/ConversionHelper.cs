@@ -6,13 +6,9 @@ namespace Consyzer.Helpers;
 
 internal static class ConversionHelper
 {
-    public static IEnumerable<FileExistenceInfo> ToFileExistenceInfos(this IEnumerable<FileExistenceStatus> fileExistenceStatuses, IEnumerable<string> filePaths)
+    public static IEnumerable<FileExistenceInfo> ToFileExistenceInfos(this IDictionary<string, FileExistenceStatus> fileExistenceStatuses)
     {
-        return fileExistenceStatuses.Zip(filePaths, (fileExistence, filePath) => new FileExistenceInfo
-        {
-            ExistenceStatus = fileExistence,
-            FilePath = filePath
-        });
+        return fileExistenceStatuses.Select(s => new FileExistenceInfo { FilePath = s.Key, ExistenceStatus = s.Value});
     }
 
     public static IEnumerable<IEcmaImportedMethodExtractor> ToImportedMethodExtractors(this IEnumerable<FileInfo> metadataAssemblyFiles)
