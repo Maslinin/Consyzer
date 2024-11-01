@@ -1,7 +1,7 @@
 # DevOps solutions
 
-## Analysis of multiple projects in the solution
-You can use the *PowerShell* script ```SolutionScanner.ps1``` to analyze the output artifacts of the entire solution by using Consyzer.
+## Analysis of multiple projects in a solution
+You can use the *PowerShell* script ```SolutionScanner.ps1``` to analyze the output artifacts of an entire solution using Consyzer.
 In other words, this script allows you to analyze the artifacts of all projects in the solution.
 It can be useful in the *CI/CD pipeline*.
 
@@ -13,7 +13,7 @@ To run the script, use the following command:
 4) *".exe, .dll"* - files search pattern to be analyzed,        
 5) *Release* - solution build configuration.       
 
-You can use the following task for analysis if you are using Azure Pipelines:        
+If you are using Azure Pipelines, you can use the following task for analysis:       
 ```
 - task: PowerShell@2
       inputs:

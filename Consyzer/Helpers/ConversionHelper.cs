@@ -1,6 +1,6 @@
-﻿using Consyzer.Checkers.Models;
-using Consyzer.Extractors;
+﻿using Consyzer.Extractors;
 using Consyzer.Extractors.Models;
+using Consyzer.Checkers.Models;
 
 namespace Consyzer.Helpers;
 
