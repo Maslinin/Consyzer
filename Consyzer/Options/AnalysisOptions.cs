@@ -2,6 +2,6 @@
 
 internal sealed class AnalysisOptions
 {
-    public string AnalysisDirectory { get; set; }
-    public string SearchPattern { get; set; }
+    public required string AnalysisDirectory { get; init; }
+    public required string SearchPattern { get; init; }
 }
