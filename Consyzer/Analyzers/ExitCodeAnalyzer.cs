@@ -2,9 +2,9 @@
 
 namespace Consyzer.Analyzers;
 
-internal class ExitCodeAnalyzer : IAnalyzer<IEnumerable<DllPresence>, int>
+internal class ExitCodeAnalyzer : IAnalyzer<IEnumerable<LibraryPresence>, int>
 {
-    public int Analyze(IEnumerable<DllPresence> presences)
+    public int Analyze(IEnumerable<LibraryPresence> presences)
     {
         return presences.Max(p => (int)p.LocationKind);
     }

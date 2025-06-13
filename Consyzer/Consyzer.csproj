@@ -43,7 +43,7 @@
 				Analyzers\**,
 				Core\Models\**,
 				Core\Extractors\Providers\StringSignatureTypeProvider.cs,
-				Core\Checkers\DllFilePresenceChecker.cs, <!--TODO: Write tests for the class-->
+				Core\Checkers\LibraryPresenceChecker.cs, <!--TODO: Write tests for the class-->
 				Program.cs,
 				AnalysisOrchestrator.cs
 			</Value>

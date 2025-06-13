@@ -1,13 +1,13 @@
 ﻿namespace Consyzer.Core.Models;
 
-internal sealed class DllPresence
+internal sealed class LibraryPresence
 {
-    public required string DllName { get; init; }
+    public required string LibraryName { get; init; }
     public required string? ResolvedPath { get; init; }
-    public required DllLocationKind LocationKind { get; init; }
+    public required LibraryLocationKind LocationKind { get; init; }
 }
 
-internal enum DllLocationKind
+internal enum LibraryLocationKind
 {
     InAnalyzedDirectory = 0,
     InEnvironmentPath = 1,

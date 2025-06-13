@@ -10,10 +10,10 @@ internal interface IAnalysisLogBuilder
     string BuildFileClassificationLog(AnalysisFileClassification fileClassification);
     string BuildEcmaAssemblyMetadataLog(IEnumerable<AssemblyMetadata> metadataList);
     string BuildPInvokeMethodGroupsLog(IEnumerable<PInvokeMethodGroup> groups);
-    string BuildDllPresenceLog(IEnumerable<DllPresence> presences);
+    string BuildLibraryPresenceLog(IEnumerable<LibraryPresence> presences);
 
     string BuildFinalSummaryLog(
         AnalysisFileClassification fileClassification,
-        IEnumerable<DllPresence> dllPresenceList,
+        IEnumerable<LibraryPresence> libraryPresences,
         IEnumerable<PInvokeMethodGroup> pinvokeGroups);
 }

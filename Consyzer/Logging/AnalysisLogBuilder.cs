@@ -48,19 +48,19 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
             .Raw(BuildPInvokeMethodsGroupSections(groups))
             .Build();
 
-    public string BuildDllPresenceLog(IEnumerable<DllPresence> presences) =>
+    public string BuildLibraryPresenceLog(IEnumerable<LibraryPresence> presences) =>
         new LogBuilder()
-            .Title("[DLL Presence Check]")
+            .Title("[Library Presence Check]")
             .IndexedItems(presences, p =>
             {
-                var status = p.LocationKind == DllLocationKind.Missing ? "MISSING" : $"FOUND [{p.LocationKind}]";
-                return $"{p.DllName} — {status}";
+                var status = p.LocationKind == LibraryLocationKind.Missing ? "MISSING" : $"FOUND [{p.LocationKind}]";
+                return $"{p.LibraryName} — {status}";
             })
             .Build();
 
     public string BuildFinalSummaryLog(
         AnalysisFileClassification fileClassification,
-        IEnumerable<DllPresence> dllPresenceList,
+        IEnumerable<LibraryPresence> libraryPresences,
         IEnumerable<PInvokeMethodGroup> pinvokeGroups) =>
         new LogBuilder()
             .Title("[Final Summary]")
@@ -68,7 +68,7 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
             .Line("ECMA Assemblies", fileClassification.EcmaAssemblies.Count())
             .Line("ECMA Assemblies with P/Invoke", pinvokeGroups.Count())
             .Line("Total P/Invoke Methods", pinvokeGroups.Sum(g => g.Methods.Count()))
-            .Line("Missing DLLs", dllPresenceList.Count(p => p.LocationKind == DllLocationKind.Missing))
+            .Line("Missing Libraries", libraryPresences.Count(p => p.LocationKind == LibraryLocationKind.Missing))
             .Build();
 
     private static string BuildPInvokeMethodsGroupSections(IEnumerable<PInvokeMethodGroup> groups) =>

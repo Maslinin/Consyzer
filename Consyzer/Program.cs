@@ -36,8 +36,8 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification>, FileClassificationAnalyzer>()
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>>, AssemblyMetadataAnalyzer>()
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>>, PInvokeMethodAnalyzer>()
-    .AddSingleton<IAnalyzer<IEnumerable<string>, IEnumerable<DllPresence>>, DllPresenceAnalyzer>()
-    .AddSingleton<IAnalyzer<IEnumerable<DllPresence>, int>, ExitCodeAnalyzer>()
+    .AddSingleton<IAnalyzer<IEnumerable<string>, IEnumerable<LibraryPresence>>, LibraryPresenceAnalyzer>()
+    .AddSingleton<IAnalyzer<IEnumerable<LibraryPresence>, int>, ExitCodeAnalyzer>()
 
     // Checkers
     .AddSingleton<IFileClassificationChecker<AnalysisFileClassification>, FileClassificationChecker>()

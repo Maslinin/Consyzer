@@ -14,8 +14,8 @@ internal sealed class AnalysisOrchestrator(
     IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification> fileClassifier,
     IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>> metadataAnalyzer,
     IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>> pinvokeAnalyzer,
-    IAnalyzer<IEnumerable<string>, IEnumerable<DllPresence>> dllPresenceAnalyzer,
-    IAnalyzer<IEnumerable<DllPresence>, int> exitCodeAnalyzer
+    IAnalyzer<IEnumerable<string>, IEnumerable<LibraryPresence>> libraryPresenceAnalyzer,
+    IAnalyzer<IEnumerable<LibraryPresence>, int> exitCodeAnalyzer
 )
 {
     public int Run(IEnumerable<FileInfo> files)
@@ -46,20 +46,20 @@ internal sealed class AnalysisOrchestrator(
 
         logger.LogInformation("{Message}", logBuilder.BuildPInvokeMethodGroupsLog(pInvokedMethodGroups));
 
-        var distinctDlls = pInvokedMethodGroups
+        var distinctLibraries = pInvokedMethodGroups
             .SelectMany(g => g.Methods.Select(m => m.ImportName))
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
-        var dllPresence = dllPresenceAnalyzer.Analyze(distinctDlls);
-        logger.LogInformation("{Message}", logBuilder.BuildDllPresenceLog(dllPresence));
+        var libraryPresence = libraryPresenceAnalyzer.Analyze(distinctLibraries);
+        logger.LogInformation("{Message}", logBuilder.BuildLibraryPresenceLog(libraryPresence));
 
-        var exitCode = exitCodeAnalyzer.Analyze(dllPresence);
+        var exitCode = exitCodeAnalyzer.Analyze(libraryPresence);
 
         logger.LogInformation(
             "{Message}",
             logBuilder.BuildFinalSummaryLog(
                 fileClassification,
-                dllPresence,
+                libraryPresence,
                 pInvokedMethodGroups
             )
         );
