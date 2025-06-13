@@ -7,7 +7,7 @@ internal sealed class MethodSignature
     public required string Namespace { get; init; }
     public required string Class { get; init; }
     public required string Method { get; init; }
-    public required IEnumerable<string> MethodArguments { get; init; }
+    public required IReadOnlyList<string> MethodArguments { get; init; }
 
     public override string ToString()
     {

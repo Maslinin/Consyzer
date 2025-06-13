@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Reflection.Metadata;
+using System.Collections.Immutable;
 using Consyzer.Core.Models;
 using Consyzer.Core.Extractors.Providers;
 
@@ -50,7 +51,7 @@ internal sealed class MethodSignatureExtractor(
         return mdReader.GetString(methodDef.Name);
     }
 
-    private static IEnumerable<string> GetArguments(MethodDefinition methodDef)
+    private static ImmutableArray<string> GetArguments(MethodDefinition methodDef)
     {
         var signature = DecodeSignature(methodDef);
         return signature.ParameterTypes;

@@ -28,25 +28,21 @@ internal sealed class PInvokeMethodExtractor(
         };
     }
 
-    private static IEnumerable<PInvokeMethod> GetPInvokeMethods(MetadataReader mdReader)
+    private static List<PInvokeMethod> GetPInvokeMethods(MetadataReader mdReader)
     {
-        foreach (var definition in GetMethodDefinitions(mdReader))
-        {
-            if (!IsPInvokeMethod(definition))
-            {
-                continue;
-            }
+        var result = new List<PInvokeMethod>();
 
-            yield return ToPInvokeMethod(mdReader, definition);
-        }
-    }
-
-    private static IEnumerable<MethodDefinition> GetMethodDefinitions(MetadataReader mdReader)
-    {
         foreach (var handle in mdReader.MethodDefinitions)
         {
-            yield return mdReader.GetMethodDefinition(handle);
+            var definition = mdReader.GetMethodDefinition(handle);
+
+            if (IsPInvokeMethod(definition))
+            {
+                result.Add(ToPInvokeMethod(mdReader, definition));
+            }
         }
+
+        return result;
     }
 
     private static bool IsPInvokeMethod(MethodDefinition methodDef)
