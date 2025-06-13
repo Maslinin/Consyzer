@@ -1,80 +1,101 @@
 [![Build Status](https://github.com/Maslinin/Consyzer/workflows/Build/badge.svg)](https://github.com/Maslinin/Consyzer/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Maslinin_Consyzer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Maslinin_Consyzer) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Maslinin_Consyzer&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Maslinin_Consyzer) [![GitHub license](https://badgen.net/github/license/Maslinin/Consyzer)](https://github.com/Maslinin/Consyzer/blob/master/LICENSE)
 
 ## Overview
-**Consyzer** is a utility designed to prevent consistency problems in CIL modules when calling external methods implemented in unmanaged Dynamic-Link Libraries (DLLs).
+**Consyzer** is a CLI utility designed to prevent CIL module consistency issues when using P/Invoke mechanisms to call methods implemented outside the managed CLR environment.
 
-Imagine a scenario where the source code of an application contains calls to external methods implemented in unmanaged Dynamic-Link Libraries.
-In the source code of a module, such calls are described by the **DllImport** attribute and are stored in the metadata of the application after its assembly.
+## Why?
+In CIL application development, it is not uncommon to need access to methods implemented outside the managed .NET ecosystem. In the source code of a CIL module, such calls are described using the **DllImport** or **LibraryImport** attributes and are stored in the module's metadata after compilation, indicating which unmanaged (native) library should be loaded at runtime and which function should be called from it.
 
-The key feature of the **DllImport** attribute is
-that the code of a method called from an unmanaged DLL is not directly linked to the source code of a CIL module; 
-instead, the metadata of the module stores information about this method, 
-including a reference to the expected location of the unmanaged DLL containing the method’s implementation in the system.
+A key feature of such calls is that the function code from the unmanaged library is not linked directly with the CIL module's code;
+instead, the module's metadata stores information about the function being called, including a reference to the expected location of the unmanaged library containing the implementation of that function on the system.
 
-```
-//In this case, "kernel32.dll" is a reference to the unmanaged DLL containing the definition of the HelloWorld method:
-[DllImport("kernel32.dll")]
+```csharp
+// In this example, "foo.dll" is a reference to an unmanaged library containing the implementation of the HelloWorld function:
+[DllImport("foo.dll")]
 static extern void HelloWorld();
+
+// or
+
+[LibraryImport("foo.dll")]
+static partial void HelloWorld();
 ```
 
-The application works correctly, without violating the integrity and security of the system, if all the unmanaged DLLs are in the locations described in the metadata;
-however, if at least one of the DLLs is missing, the application will not only crash, but may also lead to a security breach of the entire system.
+The application functions correctly without compromising system integrity and security as long as all unmanaged libraries are present at the locations described in the metadata;
+however, if even one of the libraries is missing, the application will not only crash but may also pose a security risk.
 
-Consyzer was developed to prevent such incidents.
+Consyzer was created to ensure that such situations do not come as a surprise.
 
-## How does it work?
-1. Consyzer selects files for analysis according to the directory and search pattern specified for analysis;
-2. Consyzer discards files that are not ECMA-355 metadata assemblies;
-3. Consyzer analyzes the modules selected for analysis to identify methods implemented externally;
-4. Consyzer logs detailed information about each detected method implemented externally, including its signature;
-5. Consyzer returns a specific analysis code to the operating system at the end, enabling individual processing of each analysis incident according to your requirements.
+## How does it works?
+1. Consyzer selects files for analysis based on the specified directory and search pattern;  
+2. Consyzer logs and excludes from analysis files that are not ECMA-355 assemblies;  
+3. Consyzer logs detailed information about each ECMA-355 assembly found, including its hash;  
+4. Consyzer analyzes the found ECMA-355 assemblies for P/Invoke calls;  
+5. Consyzer logs detailed information about each discovered method, including its signature;  
+6. Consyzer returns an exit code indicating the specific result of the analysis, which allows you to handle each analysis incident individually according to your needs.
 
-> Consyzer logs each of the above steps.
+> Consyzer logs each of the steps described above.
 
-## What information does Consyzer log about an external method?
-If Consyzer finds a method that is implemented externally, it logs the following information about it:
-1. Method name;
-2. Method signature;
-3. Expected location of the unmanaged DLL containing the method’s definition in the system;
-4. Arguments of the DllImport attribute.
+## What information does Consyzer log about found P/Invoke calls?
+If Consyzer finds P/Invoke calls in an assembly, it additionally logs the following information:
+1. Method name;  
+2. Method signature;  
+3. Expected name or location of the unmanaged library containing the function implementation on the system;  
+4. Flags of the `DllImport` or `LibraryImport` attribute.
 
-An example of a log containing information about methods with external implementations:
+Example log containing information about P/Invoke methods:
 ```
-[0]File 'C:\Libraries\foo.dll': 
-	The CIL module does not contain external methods from any unmanaged assemblies.
-[1]File 'C:\Libraries\bar.dll': 
-	[0]Method 'Bar.Math.Sqrt':
-		Method Signature: 'Bar.Math.Sqrt(Double)',
-		DLL Location: 'C:\Libraries\bar.dll',
-		DLL Import Args: 'CallingConventionWinApi'.
-```
-
-## Return Codes
-> 0 - all unmanaged DLL components used in the analyzed CIL modules exist in the analyzed directory;         
-> 1 - one or more unmanaged DLL components used in the analyzed CIL modules exist on the absolute path specified in the metadata;          
-> 2 - one or more unmanaged DLL components used in the analyzed CIL modules exist on the relative path specified in the metadata;      
-> 3 - one or more unmanaged DLL components used in the analyzed CIL modules exist in the system folder specified in the metadata;        
-> 4 - one or more unmanaged DLL components used in the analyzed CIL modules do not exist on the path specified in the metadata.          
-
-> Note that only the last return code indicates a violation of the consistency of the CIL module, while the other codes indicate locations of unmanaged DLL components that differ from the analyzed directory..
-
-> If the location of one unmanaged DLL components correspond to the return code 2 and another to return code 3, the utility will return the largest of the codes.
-
-## How to run?
-The utility is run from the CLI. Two required arguments must be passed to the utility as input:
-1. A directory containing CIL modules for analysis;
-2. Extensions of CIL modules to be analyzed.
-
-The template for running Consyzer from the CLI:
-```
-pathToConsyzer --AnalysisDirectory pathToDirectoryWithCILModules --SearchPattern extensionsOfAnalyzedFiles
+[0] File: Foo.dll — Found: 1
+	[0]
+		Method Signature: 'Int32 static .NativeMethods.HelloWorld()'
+		DLL Location: 'libfoobar.so'
+		DLL Import Flags: 'CallingConventionCDecl'
+[1] File: Bar.dll — Found: 2
+	[0]
+		Method Signature: 'Void static Foo.Tasks.HelloThere(Single)'
+		DLL Location: 'phantom.dll'
+		DLL Import Flags: 'CallingConventionStdCall'
+	[1]
+		Method Signature: 'Void static Foo.Tasks.WhatAFunc(Char[], Int32)'
+		DLL Location: 'phantom.dll'
+		DLL Import Flags: 'CallingConventionStdCall'
 ```
 
-An example of running Consyzer from the CLI:
+## Exit codes
+Consyzer returns a specific exit code depending on where the native libraries specified in the P/Invoke attributes were or were not found:
+
+| Code | Meaning                                                                          |
+|------|----------------------------------------------------------------------------------|
+| -5   | None of the found files were valid for analysis                                  |
+| -4   | No files matching the search pattern were found in the analysis directory        |
+| -3   | No file search pattern was specified                                             |
+| -2   | No directory was specified for analysis                                          |
+| -1   | An unexpected error occurred during analysis                                     |
+| 0    | All libraries were found in the analysis directory                               |
+| 1    | One or more libraries were found via the **PATH** environment variable           |
+| 2    | One or more libraries were found in the system directory                         |
+| 3    | One or more libraries were found via an absolute path                            |
+| 4    | One or more libraries were found via a relative path                             |
+| 5    | One or more libraries are missing from the system                                |
+
+> Note that only the last code indicates a module consistency violation.  
+> If libraries are found in different locations, the highest of the corresponding codes is returned.  
+> Negative codes indicate configuration or runtime errors.
+
+## How do I run it?
+**Consyzer** is launched from the command line (CLI) and requires two mandatory parameters:
+1. A directory containing the CIL modules to analyze;
+2. A file search pattern specifying which CIL modules should be analyzed.
+
+### General usage pattern
 ```
-C:\Consyzer.exe --AnalysisDirectory C:\analysisDirectory --SearchPattern "output.exe, *.dll"
+Consyzer.exe --AnalysisDirectory <path_to_directory> --SearchPattern <search_pattern>
 ```
 
-## Analysis of multiple projects in the solution
-You can use the *PowerShell* script located on ```DevOps\SolutionAnalyzer.ps1``` to analyze the output artifacts of all projects in the solution.
-The script can also be used in a **CI/CD pipeline**.
+### Example
+```
+Consyzer.exe --AnalysisDirectory C:\Modules --SearchPattern "output.exe, *.dll"
+```
+
+## Analyzing multiple projects in a solution
+You can use [this](https://github.com/Maslinin/Consyzer/blob/master/DevOps/SolutionAnalyzer.ps1) PowerShell script to analyze the output artifacts of all projects in a solution.  
+This script can also be used in a **CI/CD pipeline**.
