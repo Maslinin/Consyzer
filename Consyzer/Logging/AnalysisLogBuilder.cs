@@ -21,11 +21,11 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
     public string BuildFileClassificationLog(AnalysisFileClassification fileClassification) =>
         new LogBuilder()
             .Title("[File Classification]")
-            .Title($"[Not ECMA] Count: {fileClassification.NonEcmaModules.Count}")
+            .Title($"[Not ECMA] Count: {fileClassification.NonEcmaModules.Count()}")
             .IndexedItems(fileClassification.NonEcmaModules, f => f.Name)
-            .Title($"[ECMA but not assemblies] Count: {fileClassification.NonEcmaAssemblies.Count}")
+            .Title($"[ECMA but not assemblies] Count: {fileClassification.NonEcmaAssemblies.Count()}")
             .IndexedItems(fileClassification.NonEcmaAssemblies, f => f.Name)
-            .Title($"[ECMA assemblies] Count: {fileClassification.EcmaAssemblies.Count}")
+            .Title($"[ECMA assemblies] Count: {fileClassification.EcmaAssemblies.Count()}")
             .IndexedItems(fileClassification.EcmaAssemblies, f => f.Name)
             .Build();
 
@@ -64,8 +64,8 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
         IEnumerable<PInvokeMethodGroup> pinvokeGroups) =>
         new LogBuilder()
             .Title("[Final Summary]")
-            .Line("Total Files", fileClassification.EcmaModules.Count + fileClassification.NonEcmaModules.Count)
-            .Line("ECMA Assemblies", fileClassification.EcmaAssemblies.Count)
+            .Line("Total Files", fileClassification.EcmaModules.Count() + fileClassification.NonEcmaModules.Count())
+            .Line("ECMA Assemblies", fileClassification.EcmaAssemblies.Count())
             .Line("ECMA Assemblies with P/Invoke", pinvokeGroups.Count())
             .Line("Total P/Invoke Methods", pinvokeGroups.Sum(g => g.Methods.Count()))
             .Line("Missing DLLs", dllPresenceList.Count(p => p.LocationKind == DllLocationKind.Missing))
