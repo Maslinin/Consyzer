@@ -42,7 +42,7 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
             .Build();
 
 
-    public string BuildPInvokeMethodGroupsLog(IEnumerable<PInvokeMethodsGroup> groups) =>
+    public string BuildPInvokeMethodGroupsLog(IEnumerable<PInvokeMethodGroup> groups) =>
         new LogBuilder()
             .Title("[P/Invoke Method Groups]")
             .Raw(BuildPInvokeMethodsGroupSections(groups))
@@ -61,20 +61,20 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
     public string BuildFinalSummaryLog(
         AnalysisFileClassification fileClassification,
         IEnumerable<DllPresence> dllPresenceList,
-        IEnumerable<PInvokeMethodsGroup> pinvokeGroups) =>
+        IEnumerable<PInvokeMethodGroup> pinvokeGroups) =>
         new LogBuilder()
             .Title("[Final Summary]")
             .Line("Total Files", fileClassification.EcmaModules.Count + fileClassification.NonEcmaModules.Count)
             .Line("ECMA Assemblies", fileClassification.EcmaAssemblies.Count)
             .Line("ECMA Assemblies with P/Invoke", pinvokeGroups.Count())
-            .Line("Total P/Invoke Methods", pinvokeGroups.Sum(g => g.Methods.Count))
+            .Line("Total P/Invoke Methods", pinvokeGroups.Sum(g => g.Methods.Count()))
             .Line("Missing DLLs", dllPresenceList.Count(p => p.LocationKind == DllLocationKind.Missing))
             .Build();
 
-    private static string BuildPInvokeMethodsGroupSections(IEnumerable<PInvokeMethodsGroup> groups) =>
+    private static string BuildPInvokeMethodsGroupSections(IEnumerable<PInvokeMethodGroup> groups) =>
         string.Join(Environment.NewLine, groups.Select((group, index) =>
             new LogBuilder()
-                .Title($"[{index}] File: {group.File.Name} — Found: {group.Methods.Count}")
+                .Title($"[{index}] File: {group.File.Name} — Found: {group.Methods.Count()}")
                 .IndexedSection(group.Methods, (b, m) =>
                 {
                     b.InnerLine($"Method Signature: '{m.Signature}'");

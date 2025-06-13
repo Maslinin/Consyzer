@@ -8,18 +8,17 @@ namespace Consyzer.Tests.Core.Extractors;
 public sealed class PInvokeMethodExtractorTests
 {
     [Fact]
-    public void Extract_ShouldReturnMethodsGroup_WhenPInvokeMethodsPresent()
+    public void Extract_ShouldReturnMethods_WhenPInvokeMethodsPresent()
     {
         using var streamAccessor = new FileStreamAccessor();
         using var peAccessor = new PEReaderAccessor(streamAccessor);
         var extractor = new PInvokeMethodExtractor(peAccessor);
 
-        var group = extractor.Extract(EcmaAssemblyWithPInvoke).First();
+        var methods = extractor.Extract(EcmaAssemblyWithPInvoke);
 
-        Assert.Equal(EcmaAssemblyWithPInvoke.FullName, group.File.FullName);
-        Assert.NotEmpty(group.Methods);
+        Assert.NotEmpty(methods);
 
-        var method = group.Methods.First();
+        var method = methods.First();
         Assert.False(string.IsNullOrWhiteSpace(method.Signature.GetMethodLocation()));
         Assert.False(string.IsNullOrWhiteSpace(method.DllLocation));
     }

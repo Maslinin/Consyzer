@@ -13,7 +13,7 @@ internal sealed class AnalysisOrchestrator(
     IAnalysisLogBuilder logBuilder,
     IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification> fileClassifier,
     IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>> metadataAnalyzer,
-    IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodsGroup>> pinvokeAnalyzer,
+    IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>> pinvokeAnalyzer,
     IAnalyzer<IEnumerable<string>, IEnumerable<DllPresence>> dllPresenceAnalyzer,
     IAnalyzer<IEnumerable<DllPresence>, int> exitCodeAnalyzer
 )

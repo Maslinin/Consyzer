@@ -4,17 +4,22 @@ using Consyzer.Core.Extractors;
 namespace Consyzer.Analyzers;
 
 internal sealed class PInvokeMethodAnalyzer(
-    IExtractor<FileInfo, IEnumerable<PInvokeMethodsGroup>> pInvokeMethodExtractor
-) : IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodsGroup>>
+    IExtractor<FileInfo, IEnumerable<PInvokeMethod>> pInvokeMethodExtractor
+) : IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>>
 {
-    public IEnumerable<PInvokeMethodsGroup> Analyze(IEnumerable<FileInfo> files)
+    public IEnumerable<PInvokeMethodGroup> Analyze(IEnumerable<FileInfo> files)
     {
         foreach (var file in files)
         {
-            foreach (var methodsGroup in pInvokeMethodExtractor.Extract(file))
+            var methods = pInvokeMethodExtractor.Extract(file);
+            if (methods.Any())
+                continue;
+
+            yield return new PInvokeMethodGroup
             {
-                yield return methodsGroup;
-            }
+                File = file,
+                Methods = methods
+            };
         }
     }
 }

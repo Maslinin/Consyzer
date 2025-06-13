@@ -8,24 +8,17 @@ namespace Consyzer.Core.Extractors;
 
 internal sealed class PInvokeMethodExtractor(
     IResourceAccessor<FileInfo, PEReader> peReaderManager
-) : IExtractor<FileInfo, IEnumerable<PInvokeMethodsGroup>>
+) : IExtractor<FileInfo, IEnumerable<PInvokeMethod>>
 {
-    public IEnumerable<PInvokeMethodsGroup> Extract(FileInfo file)
+    public IEnumerable<PInvokeMethod> Extract(FileInfo file)
     {
         var peReader = peReaderManager.Get(file);
         var mdReader = peReader.GetMetadataReader();
 
-        var pinvokeMethods = GetPInvokeMethods(mdReader);
-        if (!pinvokeMethods.Any())
+        foreach (var method in GetPInvokeMethods(mdReader))
         {
-            yield break;
+            yield return method;
         }
-
-        yield return new PInvokeMethodsGroup
-        {
-            File = file,
-            Methods = pinvokeMethods
-        };
     }
 
     private static List<PInvokeMethod> GetPInvokeMethods(MetadataReader mdReader)

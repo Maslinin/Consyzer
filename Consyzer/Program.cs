@@ -1,13 +1,13 @@
 ﻿using Consyzer;
-using Consyzer.Analyzers;
-using Consyzer.Core.Checkers;
-using Consyzer.Core.Cryptography;
-using Consyzer.Core.Extractors;
-using Consyzer.Core.Models;
-using Consyzer.Core.Resources;
 using Consyzer.Helpers;
 using Consyzer.Logging;
 using Consyzer.Options;
+using Consyzer.Analyzers;
+using Consyzer.Core.Models;
+using Consyzer.Core.Checkers;
+using Consyzer.Core.Cryptography;
+using Consyzer.Core.Extractors;
+using Consyzer.Core.Resources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -35,7 +35,7 @@ var serviceProvider = new ServiceCollection()
     // Analyzers
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification>, FileClassificationAnalyzer>()
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>>, AssemblyMetadataAnalyzer>()
-    .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodsGroup>>, PInvokeMethodAnalyzer>()
+    .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>>, PInvokeMethodAnalyzer>()
     .AddSingleton<IAnalyzer<IEnumerable<string>, IEnumerable<DllPresence>>, DllPresenceAnalyzer>()
     .AddSingleton<IAnalyzer<IEnumerable<DllPresence>, int>, ExitCodeAnalyzer>()
 
@@ -43,7 +43,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IFileClassificationChecker<AnalysisFileClassification>, FileClassificationChecker>()
 
     // Extractors
-    .AddSingleton<IExtractor<FileInfo, IEnumerable<PInvokeMethodsGroup>>, PInvokeMethodExtractor>()
+    .AddSingleton<IExtractor<FileInfo, IEnumerable<PInvokeMethod>>, PInvokeMethodExtractor>()
     .AddSingleton<IExtractor<MethodDefinition, MethodSignature>, MethodSignatureExtractor>()
     .AddSingleton<IExtractor<FileInfo, AssemblyMetadata>, AssemblyMetadataExtractor>()
 

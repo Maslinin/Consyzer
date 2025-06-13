@@ -9,11 +9,11 @@ internal interface IAnalysisLogBuilder
     string BuildFoundFilesLog(IEnumerable<FileInfo> files);
     string BuildFileClassificationLog(AnalysisFileClassification fileClassification);
     string BuildEcmaAssemblyMetadataLog(IEnumerable<AssemblyMetadata> metadataList);
-    string BuildPInvokeMethodGroupsLog(IEnumerable<PInvokeMethodsGroup> groups);
+    string BuildPInvokeMethodGroupsLog(IEnumerable<PInvokeMethodGroup> groups);
     string BuildDllPresenceLog(IEnumerable<DllPresence> presences);
 
     string BuildFinalSummaryLog(
         AnalysisFileClassification fileClassification,
         IEnumerable<DllPresence> dllPresenceList,
-        IEnumerable<PInvokeMethodsGroup> pinvokeGroups);
+        IEnumerable<PInvokeMethodGroup> pinvokeGroups);
 }
