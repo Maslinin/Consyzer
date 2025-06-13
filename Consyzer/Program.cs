@@ -65,13 +65,13 @@ var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 if (string.IsNullOrWhiteSpace(options.AnalysisDirectory))
 {
     logger.LogError("{Parameter} parameter is missing.", nameof(options.AnalysisDirectory));
-    return (int)AppExitCode.NoAnalysisDirectory;
+    return (int)AppFailureCode.NoAnalysisDirectory;
 }
 
 if (string.IsNullOrWhiteSpace(options.SearchPattern))
 {
     logger.LogError("{Parameter} parameter is missing.", nameof(options.SearchPattern));
-    return (int)AppExitCode.NoSearchPattern;
+    return (int)AppFailureCode.NoSearchPattern;
 }
 
 var orchestrator = serviceProvider.GetRequiredService<AnalysisOrchestrator>();

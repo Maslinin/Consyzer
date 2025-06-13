@@ -25,7 +25,7 @@ internal sealed class AnalysisOrchestrator(
         if (!files.Any())
         {
             logger.LogError("No files found by the given search pattern.");
-            return (int)AppExitCode.NoFilesFound;
+            return (int)AppFailureCode.NoFilesFound;
         }
 
         logger.LogInformation("{Message}", logBuilder.BuildFoundFilesLog(files));
@@ -36,7 +36,7 @@ internal sealed class AnalysisOrchestrator(
         if (!fileClassification.EcmaAssemblies.Any())
         {
             logger.LogError("No valid ECMA assemblies found.");
-            return (int)AppExitCode.AllFilesInvalid;
+            return (int)AppFailureCode.AllFilesInvalid;
         }
 
         var metadataList = metadataAnalyzer.Analyze(fileClassification.EcmaAssemblies);

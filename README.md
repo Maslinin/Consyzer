@@ -65,11 +65,10 @@ Consyzer returns a specific exit code depending on where the native libraries sp
 
 | Code | Meaning                                                                          |
 |------|----------------------------------------------------------------------------------|
-| -5   | None of the found files were valid for analysis                                  |
-| -4   | No files matching the search pattern were found in the analysis directory        |
-| -3   | No file search pattern was specified                                             |
-| -2   | No directory was specified for analysis                                          |
-| -1   | An unexpected error occurred during analysis                                     |
+| -4   | None of the found files were valid for analysis                                  |
+| -3   | No files matching the search pattern were found in the analysis directory        |
+| -2   | No file search pattern was specified                                             |
+| -1   | No directory was specified for analysis                                          |
 | 0    | All libraries were found in the analysis directory                               |
 | 1    | One or more libraries were found via the **PATH** environment variable           |
 | 2    | One or more libraries were found in the system directory                         |
