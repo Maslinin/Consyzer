@@ -11,6 +11,6 @@ internal sealed class PInvokeMethodGroup
 internal sealed class PInvokeMethod
 {
     public required MethodSignature Signature { get; init; }
-    public required string DllLocation { get; init; }
-    public required MethodImportAttributes DllImportFlags { get; init; }
+    public required string ImportName { get; init; }
+    public required MethodImportAttributes ImportFlags { get; init; }
 }

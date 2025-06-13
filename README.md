@@ -40,24 +40,24 @@ If Consyzer finds P/Invoke calls in an assembly, it additionally logs the follow
 1. Method name;  
 2. Method signature;  
 3. Expected name or location of the unmanaged library containing the function implementation on the system;  
-4. Flags of the `DllImport` or `LibraryImport` attribute.
+4. Import attribute flags that define the behavior of the imported method.
 
 Example log containing information about P/Invoke methods:
 ```
 [0] File: Foo.dll — Found: 1
 	[0]
 		Method Signature: 'Int32 static .NativeMethods.HelloWorld()'
-		DLL Location: 'libfoobar.so'
-		DLL Import Flags: 'CallingConventionCDecl'
+		Import Name: 'libfoobar.so'
+		Import Flags: 'CallingConventionCDecl'
 [1] File: Bar.dll — Found: 2
 	[0]
 		Method Signature: 'Void static Foo.Tasks.HelloThere(Single)'
-		DLL Location: 'phantom.dll'
-		DLL Import Flags: 'CallingConventionStdCall'
+		Import Name: 'phantom.dll'
+		Import Flags: 'CallingConventionStdCall'
 	[1]
 		Method Signature: 'Void static Foo.Tasks.WhatAFunc(Char[], Int32)'
-		DLL Location: 'phantom.dll'
-		DLL Import Flags: 'CallingConventionStdCall'
+		Import Name: 'phantom.dll'
+		Import Flags: 'CallingConventionStdCall'
 ```
 
 ## Exit codes

@@ -47,7 +47,7 @@ internal sealed class AnalysisOrchestrator(
         logger.LogInformation("{Message}", logBuilder.BuildPInvokeMethodGroupsLog(pInvokedMethodGroups));
 
         var distinctDlls = pInvokedMethodGroups
-            .SelectMany(g => g.Methods.Select(m => m.DllLocation))
+            .SelectMany(g => g.Methods.Select(m => m.ImportName))
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
         var dllPresence = dllPresenceAnalyzer.Analyze(distinctDlls);

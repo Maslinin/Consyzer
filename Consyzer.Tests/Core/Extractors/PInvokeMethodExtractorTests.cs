@@ -20,7 +20,7 @@ public sealed class PInvokeMethodExtractorTests
 
         var method = methods.First();
         Assert.False(string.IsNullOrWhiteSpace(method.Signature.GetMethodLocation()));
-        Assert.False(string.IsNullOrWhiteSpace(method.DllLocation));
+        Assert.False(string.IsNullOrWhiteSpace(method.LibraryLocation));
     }
 
     [Fact]

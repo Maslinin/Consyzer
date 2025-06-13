@@ -53,8 +53,8 @@ internal sealed class PInvokeMethodExtractor(
         return new PInvokeMethod
         {
             Signature = signatureExtractor.Extract(methodDef),
-            DllLocation = mdReader.GetString(module.Name),
-            DllImportFlags = import.Attributes
+            ImportName = mdReader.GetString(module.Name),
+            ImportFlags = import.Attributes
         };
     }
 }

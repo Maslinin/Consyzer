@@ -41,24 +41,24 @@ Consyzer был разработан для того, чтобы такие си
 1. Имя метода;
 2. Сигнатуру метода;
 3. Ожидаемое имя или местоположение неуправляемой библиотеки, содержащей реализацию этой функции, в системе;
-4. Флаги атрибута ``DllImport`` или ``LibraryImport``.
+4. Флаги атрибута импорта, задающие поведение импортируемого метода.
 
 Пример лога, содержащего информацию о P/Invoke методах:
 ```
 [0] File: Foo.dll — Found: 1
 	[0]
 		Method Signature: 'Int32 static .NativeMethods.HelloWorld()'
-		DLL Location: 'libfoobar.so'
-		DLL Import Flags: 'CallingConventionCDecl'
+		Import Name: 'libfoobar.so'
+		Import Flags: 'CallingConventionCDecl'
 [1] File: Bar.dll — Found: 2
 	[0]
 		Method Signature: 'Void static Foo.Tasks.HelloThere(Single)'
-		DLL Location: 'phantom.dll'
-		DLL Import Flags: 'CallingConventionStdCall'
+		Import Name: 'phantom.dll'
+		Import Flags: 'CallingConventionStdCall'
 	[1]
 		Method Signature: 'Void static Foo.Tasks.WhatAFunc(Char[], Int32)'
-		DLL Location: 'phantom.dll'
-		DLL Import Flags: 'CallingConventionStdCall'
+		Import Name: 'phantom.dll'
+		Import Flags: 'CallingConventionStdCall'
 ```
 
 ## Коды возврата

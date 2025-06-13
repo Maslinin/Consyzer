@@ -78,8 +78,8 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
                 .IndexedSection(group.Methods, (b, m) =>
                 {
                     b.InnerLine($"Method Signature: '{m.Signature}'");
-                    b.InnerLine($"DLL Location: '{m.DllLocation}'");
-                    b.InnerLine($"DLL Import Flags: '{m.DllImportFlags}'");
+                    b.InnerLine($"Import Name: '{m.ImportName}'");
+                    b.InnerLine($"Import Flags: '{m.ImportFlags}'");
                 })
                 .Build()));
 }
