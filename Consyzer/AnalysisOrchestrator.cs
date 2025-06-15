@@ -9,66 +9,66 @@ using Microsoft.Extensions.Options;
 namespace Consyzer;
 
 internal sealed class AnalysisOrchestrator(
-	ILogger<AnalysisOrchestrator> logger,
-	IAnalysisLogBuilder analysisLogBuilder,
-	IOptions<AnalysisOptions> analysisOptions,
-	IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification> fileClassifier,
-	IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>> metadataAnalyzer,
-	IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>> pinvokeAnalyzer,
-	IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>> libraryPresenceAnalyzer,
-	IAnalyzer<IEnumerable<LibraryPresence>, int> exitCodeAnalyzer,
-	IEnumerable<IReportWriter> reportWriters
+    ILogger<AnalysisOrchestrator> logger,
+    IAnalysisLogBuilder analysisLogBuilder,
+    IOptions<AnalysisOptions> analysisOptions,
+    IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification> fileClassifier,
+    IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>> metadataAnalyzer,
+    IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>> pinvokeAnalyzer,
+    IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>> libraryPresenceAnalyzer,
+    IAnalyzer<IEnumerable<LibraryPresence>, int> exitCodeAnalyzer,
+    IEnumerable<IReportWriter> reportWriters
 )
 {
-	public int Run(IEnumerable<FileInfo> files)
-	{
-		logger.LogDebug("{Message}", analysisLogBuilder.BuildAnalysisOptionsLog(analysisOptions.Value));
+    public int Run(IEnumerable<FileInfo> files)
+    {
+        logger.LogDebug("{Message}", analysisLogBuilder.BuildAnalysisOptionsLog(analysisOptions.Value));
 
         logger.LogInformation("Analysis started.");
 
         if (!files.Any())
-		{
-			logger.LogError("No files found by the given search pattern.");
-			return (int)AppFailureCode.NoFilesFound;
-		}
+        {
+            logger.LogError("No files found by the given search pattern.");
+            return (int)AppFailureCode.NoFilesFound;
+        }
 
         logger.LogInformation("{Message}", analysisLogBuilder.BuildFoundFilesLog(files));
 
-		var fileClassification = fileClassifier.Analyze(files);
-		logger.LogInformation("{Message}", analysisLogBuilder.BuildFileClassificationLog(fileClassification));
+        var fileClassification = fileClassifier.Analyze(files);
+        logger.LogInformation("{Message}", analysisLogBuilder.BuildFileClassificationLog(fileClassification));
 
-		if (!fileClassification.EcmaAssemblies.Any())
-		{
-			logger.LogError("No valid ECMA assemblies found.");
-			return (int)AppFailureCode.AllFilesInvalid;
-		}
+        if (!fileClassification.EcmaAssemblies.Any())
+        {
+            logger.LogError("No valid ECMA assemblies found.");
+            return (int)AppFailureCode.AllFilesInvalid;
+        }
 
-		var metadataList = metadataAnalyzer.Analyze(fileClassification.EcmaAssemblies);
+        var metadataList = metadataAnalyzer.Analyze(fileClassification.EcmaAssemblies);
 
-		var pInvokeGroups = pinvokeAnalyzer.Analyze(fileClassification.EcmaAssemblies);
+        var pInvokeGroups = pinvokeAnalyzer.Analyze(fileClassification.EcmaAssemblies);
 
-		var libraryPresences = libraryPresenceAnalyzer.Analyze(pInvokeGroups);
+        var libraryPresences = libraryPresenceAnalyzer.Analyze(pInvokeGroups);
 
-		var summary = new AnalysisSummary
-		{
-			TotalFiles = files.Count(),
-			EcmaAssemblies = metadataList.Count(),
-			AssembliesWithPInvoke = pInvokeGroups.Count(),
-			TotalPInvokeMethods = pInvokeGroups.Sum(g => g.Methods.Count()),
-			MissingLibraries = libraryPresences.Count(l => l.LocationKind == LibraryLocationKind.Missing)
-		};
+        var summary = new AnalysisSummary
+        {
+            TotalFiles = files.Count(),
+            EcmaAssemblies = metadataList.Count(),
+            AssembliesWithPInvoke = pInvokeGroups.Count(),
+            TotalPInvokeMethods = pInvokeGroups.Sum(g => g.Methods.Count()),
+            MissingLibraries = libraryPresences.Count(l => l.LocationKind == LibraryLocationKind.Missing)
+        };
 
-		var outcome = new AnalysisOutcome
-		{
-			FileClassification = fileClassification,
-			AssemblyMetadataList = metadataList,
-			PInvokeGroups = pInvokeGroups,
-			LibraryPresences = libraryPresences,
-			Summary = summary
-		};
+        var outcome = new AnalysisOutcome
+        {
+            FileClassification = fileClassification,
+            AssemblyMetadataList = metadataList,
+            PInvokeGroups = pInvokeGroups,
+            LibraryPresences = libraryPresences,
+            Summary = summary
+        };
 
-		foreach (var writer in reportWriters)
-		{
+        foreach (var writer in reportWriters)
+        {
             logger.LogInformation("Generating report using {WriterType}...", writer.GetType().Name);
             var destination = writer.WriteReport(outcome);
             logger.LogInformation("Report successfully written to {Destination}.", destination);
@@ -77,5 +77,5 @@ internal sealed class AnalysisOrchestrator(
         logger.LogInformation("Analysis completed. Report successfully generated.");
 
         return exitCodeAnalyzer.Analyze(libraryPresences);
-	}
+    }
 }

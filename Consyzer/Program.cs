@@ -32,8 +32,8 @@ var serviceProvider = new ServiceCollection()
     })
     .AddSingleton<IAnalysisLogBuilder, AnalysisLogBuilder>()
 
-	// Reporting
-	.AddReportWriters(rawOptions.OutputFormats)
+    // Reporting
+    .AddReportWriters(rawOptions.OutputFormats)
 
     // Analyzers
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification>, FileClassificationAnalyzer>()
@@ -60,10 +60,10 @@ var serviceProvider = new ServiceCollection()
     // Orchestrator
     .AddSingleton<AnalysisOrchestrator>()
 
-	// Options
-	.Configure<AnalysisOptions>(configuration)
+    // Options
+    .Configure<AnalysisOptions>(configuration)
 
-	.BuildServiceProvider();
+    .BuildServiceProvider();
 
 var options = serviceProvider.GetRequiredService<IOptions<AnalysisOptions>>().Value;
 var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
