@@ -1,32 +1,32 @@
 ﻿using System.Text;
 
-namespace Consyzer.Logging;
+namespace Consyzer.Core.Text;
 
-internal sealed class LogBuilder
+internal sealed class IndentedTextBuilder
 {
     private const string Indent = "\t";
 
     private readonly StringBuilder _sb = new();
 
-    public LogBuilder Title(string title)
+    public IndentedTextBuilder Title(string title)
     {
         this._sb.AppendLine(title);
         return this;
     }
 
-    public LogBuilder Line(string label, object? value)
+    public IndentedTextBuilder Line(string label, object? value)
     {
         this._sb.AppendLine($"{label}: {value}");
         return this;
     }
 
-    public LogBuilder InnerLine(string text)
+    public IndentedTextBuilder InnerLine(string text)
     {
         this._sb.AppendLine($"{Indent}{Indent}{text}");
         return this;
     }
 
-    public LogBuilder IndexedItems<T>(IEnumerable<T> items, Func<T, string> formatter)
+    public IndentedTextBuilder IndexedItems<T>(IEnumerable<T> items, Func<T, string> formatter)
     {
         int index = 0;
         foreach (var item in items)
@@ -36,7 +36,7 @@ internal sealed class LogBuilder
         return this;
     }
 
-    public LogBuilder IndexedSection<T>(IEnumerable<T> items, Action<LogBuilder, T> renderer)
+    public IndentedTextBuilder IndexedSection<T>(IEnumerable<T> items, Action<IndentedTextBuilder, T> renderer)
     {
         int index = 0;
         foreach (var item in items)
@@ -48,7 +48,7 @@ internal sealed class LogBuilder
         return this;
     }
 
-    public LogBuilder Raw(string raw)
+    public IndentedTextBuilder Raw(string raw)
     {
         this._sb.Append(raw);
         return this;

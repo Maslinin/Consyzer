@@ -40,8 +40,10 @@
 				Options\**,
 				Helpers\**,
 				Logging\**,
+				Reporting\**,
 				Analyzers\**,
 				Core\Models\**,
+				Core\Text\IndentedTextBuilder.cs,
 				Core\Extractors\Providers\StringSignatureTypeProvider.cs,
 				Core\Checkers\LibraryPresenceChecker.cs, <!--TODO: Write tests for the class-->
 				Program.cs,

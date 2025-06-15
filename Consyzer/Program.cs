@@ -5,13 +5,14 @@ using Consyzer.Options;
 using Consyzer.Analyzers;
 using Consyzer.Core.Models;
 using Consyzer.Core.Checkers;
-using Consyzer.Core.Cryptography;
-using Consyzer.Core.Extractors;
 using Consyzer.Core.Resources;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Consyzer.Core.Extractors;
+using Consyzer.Core.Cryptography;
+using Consyzer.Options.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NLog.Extensions.Logging;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
@@ -19,6 +20,8 @@ using System.Reflection.PortableExecutable;
 var configuration = new ConfigurationBuilder()
     .AddCommandLine(args)
     .Build();
+
+var rawOptions = configuration.Get<AnalysisOptions>()!;
 
 var serviceProvider = new ServiceCollection()
     // Logging
@@ -29,14 +32,14 @@ var serviceProvider = new ServiceCollection()
     })
     .AddSingleton<IAnalysisLogBuilder, AnalysisLogBuilder>()
 
-    // Options
-    .Configure<AnalysisOptions>(configuration)
+	// Reporting
+	.AddReportWriters(rawOptions.OutputFormats)
 
     // Analyzers
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification>, FileClassificationAnalyzer>()
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>>, AssemblyMetadataAnalyzer>()
     .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>>, PInvokeMethodAnalyzer>()
-    .AddSingleton<IAnalyzer<IEnumerable<string>, IEnumerable<LibraryPresence>>, LibraryPresenceAnalyzer>()
+    .AddSingleton<IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>, LibraryPresenceAnalyzer>()
     .AddSingleton<IAnalyzer<IEnumerable<LibraryPresence>, int>, ExitCodeAnalyzer>()
 
     // Checkers
@@ -47,17 +50,20 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IExtractor<MethodDefinition, MethodSignature>, MethodSignatureExtractor>()
     .AddSingleton<IExtractor<FileInfo, AssemblyMetadata>, AssemblyMetadataExtractor>()
 
-    //Cryptography
+    // Cryptography
     .AddSingleton<IFileHasher, Sha256FileHasher>()
 
-    //Resources
+    // Resources
     .AddSingleton<IResourceAccessor<FileInfo, Stream>, FileStreamAccessor>()
     .AddSingleton<IResourceAccessor<FileInfo, PEReader>, PEReaderAccessor>()
 
     // Orchestrator
     .AddSingleton<AnalysisOrchestrator>()
 
-    .BuildServiceProvider();
+	// Options
+	.Configure<AnalysisOptions>(configuration)
+
+	.BuildServiceProvider();
 
 var options = serviceProvider.GetRequiredService<IOptions<AnalysisOptions>>().Value;
 var logger = serviceProvider.GetRequiredService<ILogger<Program>>();

@@ -7,16 +7,19 @@ namespace Consyzer.Analyzers;
 
 internal sealed class LibraryPresenceAnalyzer(
     IOptions<AnalysisOptions> analysisOptions
-) : IAnalyzer<IEnumerable<string>, IEnumerable<LibraryPresence>>
+) : IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>
 {
     private readonly LibraryPresenceChecker _filePresenceChecker = new(analysisOptions.Value.AnalysisDirectory);
 
-    public IEnumerable<LibraryPresence> Analyze(IEnumerable<string> fileNames)
+    public IEnumerable<LibraryPresence> Analyze(IEnumerable<PInvokeMethodGroup> methodGroups)
     {
-        foreach (var file in fileNames)
+        var distinctImportNames = methodGroups
+            .SelectMany(g => g.Methods.Select(m => m.ImportName))
+            .Distinct(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var import in distinctImportNames)
         {
-            yield return this._filePresenceChecker.Check(file);
+            yield return this._filePresenceChecker.Check(import);
         }
     }
-
 }

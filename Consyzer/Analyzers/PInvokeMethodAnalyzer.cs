@@ -12,8 +12,10 @@ internal sealed class PInvokeMethodAnalyzer(
         foreach (var file in files)
         {
             var methods = pInvokeMethodExtractor.Extract(file);
-            if (methods.Any())
+            if (!methods.Any())
+            {
                 continue;
+            }
 
             yield return new PInvokeMethodGroup
             {
