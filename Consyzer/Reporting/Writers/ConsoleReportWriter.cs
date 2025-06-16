@@ -7,7 +7,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
 {
     private const string Destination = "Console";
 
-    public string WriteReport(AnalysisOutcome outcome)
+    public string Write(AnalysisOutcome outcome)
     {
         WriteAssemblyMetadata(outcome.AssemblyMetadataList);
         WritePInvokeGroups(outcome.PInvokeGroups, outcome.AssemblyMetadataList);

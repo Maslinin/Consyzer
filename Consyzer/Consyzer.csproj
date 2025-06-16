@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -52,9 +52,11 @@
 				Analyzers\**,
 				Core\Models\**,
 				Core\Text\IndentedTextBuilder.cs,
+				Core\Converters\**, <!--TODO: Write tests for the classes-->
 				Core\Extractors\Providers\StringSignatureTypeProvider.cs,
 				Core\Checkers\LibraryPresenceChecker.cs, <!--TODO: Write tests for the class-->
 				Program.cs,
+				Constants.cs,
 				AnalysisOrchestrator.cs
 			</Value>
 		</SonarQubeSetting>

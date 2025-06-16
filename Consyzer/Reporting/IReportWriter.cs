@@ -4,5 +4,5 @@ namespace Consyzer.Reporting;
 
 internal interface IReportWriter
 {
-    string WriteReport(AnalysisOutcome outcome);
+    string Write(AnalysisOutcome outcome);
 }

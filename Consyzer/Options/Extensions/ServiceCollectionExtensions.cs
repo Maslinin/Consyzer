@@ -13,6 +13,9 @@ internal static class ServiceCollectionExtensions
         if (formats.HasFlag(AnalysisOptions.OutputFormat.Console))
             services.AddSingleton<IReportWriter, ConsoleReportWriter>();
 
+        if (formats.HasFlag(AnalysisOptions.OutputFormat.Json))
+            services.AddSingleton<IReportWriter, JsonReportWriter>();
+
         return services;
     }
 }

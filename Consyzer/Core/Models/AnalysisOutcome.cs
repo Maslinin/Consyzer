@@ -2,7 +2,6 @@
 
 internal sealed class AnalysisOutcome
 {
-    public required AnalysisFileClassification FileClassification { get; init; }
     public required IEnumerable<AssemblyMetadata> AssemblyMetadataList { get; init; }
     public required IEnumerable<PInvokeMethodGroup> PInvokeGroups { get; init; }
     public required IEnumerable<LibraryPresence> LibraryPresences { get; init; }

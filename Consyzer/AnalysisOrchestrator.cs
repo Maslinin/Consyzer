@@ -60,7 +60,6 @@ internal sealed class AnalysisOrchestrator(
 
         var outcome = new AnalysisOutcome
         {
-            FileClassification = fileClassification,
             AssemblyMetadataList = metadataList,
             PInvokeGroups = pInvokeGroups,
             LibraryPresences = libraryPresences,
@@ -70,11 +69,11 @@ internal sealed class AnalysisOrchestrator(
         foreach (var writer in reportWriters)
         {
             logger.LogInformation("Generating report using {WriterType}...", writer.GetType().Name);
-            var destination = writer.WriteReport(outcome);
+            var destination = writer.Write(outcome);
             logger.LogInformation("Report successfully written to {Destination}.", destination);
         }
 
-        logger.LogInformation("Analysis completed. Report successfully generated.");
+        logger.LogInformation("Analysis completed. Report(s) successfully generated.");
 
         return exitCodeAnalyzer.Analyze(libraryPresences);
     }
