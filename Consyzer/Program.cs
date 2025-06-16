@@ -19,6 +19,8 @@ using System.Reflection.PortableExecutable;
 
 var configuration = new ConfigurationBuilder()
     .AddCommandLine(args)
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false)
     .Build();
 
 var rawOptions = configuration.Get<AnalysisOptions>()!;
@@ -62,6 +64,7 @@ var serviceProvider = new ServiceCollection()
 
     // Options
     .Configure<AnalysisOptions>(configuration)
+    .Configure<AppOptions>(configuration)
 
     .BuildServiceProvider();
 
