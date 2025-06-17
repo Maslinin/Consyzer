@@ -1,28 +1,39 @@
 # DevOps solutions
 
-## Analysis of multiple projects in a solution
-You can use the *PowerShell* script ```SolutionScanner.ps1``` to analyze the output artifacts of an entire solution using Consyzer.
-In other words, this script allows you to analyze the artifacts of all projects in the solution.
-It can be useful in the *CI/CD pipeline*.
+## Analyze all projects in a solution
 
-To run the script, use the following command:       
-```SolutionScanner.ps1 C:\Consyzer.exe C:\SolutionToBeAnalyzed ".exe, .dll" Release```, where        
-1) *SolutionScanner.ps1* - name of the Powershell script (or its path),          
-2) *C:\Consyzer.exe* - path to Consyzer utility,       
-3) *C:\SolutionToBeAnalyzed* - path to the analyzed solution,        
-4) *".exe, .dll"* - files search pattern to be analyzed,        
-5) *Release* - solution build configuration.       
+Use the PowerShell script `SolutionAnalyzer.ps1` to run **Consyzer** on all compiled projects in a solution.  
+This is especially useful for use in **CI/CD pipelines** after a build.
 
-If you are using Azure Pipelines, you can use the following task for analysis:       
+### Usage
+
+```powershell
+.\SolutionScanner.ps1 `
+  -pathToConsyzer "C:\Tools\Consyzer.exe" `
+  -solutionForAnalysis "C:\Path\To\Solution" `
+  -searchPattern "*.exe, *.dll" `
+  -buildConfiguration "Release"
 ```
+
+Arguments:
+- `-pathToConsyzer` – Full path to the **Consyzer** executable.
+- `-solutionForAnalysis` – Path to the folder containing the solution or its build output.
+- `-searchPattern` – Comma-separated list of file patterns to scan (e.g. `"*.exe, *.dll"`). Default: `"*.exe, *.dll"`
+- `-buildConfiguration` – Build configuration folder to target (default: `"Release"`).
+
+### Azure Pipelines
+
+To use this in Azure Pipelines:
+
+```yaml
 - task: PowerShell@2
-      inputs:
-        targetType: 'filePath'
-        filePath: '$(Build.SourcesDirectory)\SolutionAnalyzer.ps1'
-        arguments: >
-          -pathToConsyzer '$PathToConsyzer'
-          -solutionForAnalysis '$(Build.SourcesDirectory)'
-          -fileExtensions '"*.exe, *.dll"'
-          -buildConfiguration '$YourBuildConfiguration'
-      displayName: 'Consyzer Analysis'
+  inputs:
+    targetType: 'filePath'
+    filePath: '$(Build.SourcesDirectory)\DevOps\SolutionScanner.ps1'
+    arguments: >
+      -pathToConsyzer "$(Build.BinariesDirectory)\Consyzer.exe"
+      -solutionForAnalysis "$(Build.SourcesDirectory)"
+      -searchPattern "*.exe, *.dll"
+      -buildConfiguration "Release"
+  displayName: 'Consyzer Solution Analysis'
 ```
