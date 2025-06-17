@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using System.Reflection;
 using Consyzer.Core.Models;
-using Consyzer.Core.Converters;
 using static Consyzer.Constants;
+using Consyzer.Reporting.Writers.Converters;
 
 namespace Consyzer.Reporting.Writers;
 
