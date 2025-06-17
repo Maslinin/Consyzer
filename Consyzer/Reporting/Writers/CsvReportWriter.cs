@@ -1,9 +1,8 @@
 ﻿using System.Text;
-using System.Collections;
-using System.Reflection;
-using Microsoft.Extensions.Options;
 using Consyzer.Options;
+using Consyzer.Core.Text;
 using Consyzer.Core.Models;
+using Microsoft.Extensions.Options;
 using static Consyzer.Constants;
 
 namespace Consyzer.Reporting.Writers;
@@ -32,118 +31,93 @@ internal sealed class CsvReportWriter(
     {
         var sb = new StringBuilder();
 
-        AppendAssemblyMetadataList(outcome, sb);
-        AppendPInvokeGroups(outcome, sb);
-        AppendLibraryPresences(outcome, sb);
-        AppendSummary(outcome, sb);
+        sb.AppendLine("[AssemblyMetadataList]");
+        sb.AppendLine(CsvTable(outcome.AssemblyMetadataList));
+
+        sb.AppendLine("[PInvokeGroups]");
+        sb.AppendLine(CsvPInvoke(outcome.PInvokeGroups));
+
+        sb.AppendLine("[LibraryPresences]");
+        sb.AppendLine(CsvTable(outcome.LibraryPresences));
+
+        sb.AppendLine("[Summary]");
+        sb.AppendLine(CsvTable([outcome.Summary]));
 
         return sb.ToString();
     }
 
-    private void AppendAssemblyMetadataList(AnalysisOutcome outcome, StringBuilder sb)
+    private string CsvTable<T>(IEnumerable<T> items)
     {
-        sb.AppendLine("[AssemblyMetadataList]");
-        sb.AppendLine(GetDelimitedPropertyNames<AssemblyMetadata>());
-
-        foreach (var m in outcome.AssemblyMetadataList)
-        {
-            sb.AppendLine(GetDelimitedPropertyValues(m));
-        }
-
-        sb.AppendLine();
+        return new CsvTableBuilder(Options.Delimiter)
+            .WithObjectRows(items, SerializeValue)
+            .ToString();
     }
 
-    private void AppendPInvokeGroups(AnalysisOutcome outcome, StringBuilder sb)
+    private string CsvPInvoke(IEnumerable<PInvokeMethodGroup> groups)
     {
-        sb.AppendLine("[PInvokeGroups]");
-
         var sigProps = typeof(MethodSignature).GetProperties();
-        var header = new List<string> { "File" };
-        header.AddRange(sigProps.Select(p => $"Signature_{p.Name}"));
-        header.AddRange(["ImportName", "ImportFlags"]);
-        sb.AppendLine(string.Join(Options.Delimiter, header));
+        var signatureFieldName = nameof(PInvokeMethod.Signature);
 
-        foreach (var group in outcome.PInvokeGroups)
+        var header = new List<string> { "File" };
+        header.AddRange(sigProps.Select(p => $"{signatureFieldName}_{p.Name}"));
+        header.Add(nameof(PInvokeMethod.ImportName));
+        header.Add(nameof(PInvokeMethod.ImportFlags));
+
+        var table = new CsvTableBuilder(Options.Delimiter)
+            .WithHeader(header);
+
+        foreach (var group in groups)
         {
             foreach (var method in group.Methods)
             {
-                sb.AppendLine(string.Join(Options.Delimiter, GetPInvokeValues(group, method, sigProps)));
+                var row = new List<string>
+                {
+                    SerializeValue(group.File.FullName)
+                };
+
+                row.AddRange(sigProps.Select(p => SerializeValue(p.GetValue(method.Signature))));
+                row.Add(SerializeValue(method.ImportName));
+                row.Add(SerializeValue(method.ImportFlags.ToString()));
+
+                table.AddRow(row);
             }
         }
 
-        sb.AppendLine();
+        return table.ToString();
     }
 
-    private void AppendLibraryPresences(AnalysisOutcome outcome, StringBuilder sb)
-    {
-        sb.AppendLine("[LibraryPresences]");
-        sb.AppendLine(GetDelimitedPropertyNames<LibraryPresence>());
 
-        foreach (var l in outcome.LibraryPresences)
+    private string SerializeValue(object? val)
+    {
+        if (val is IEnumerable<string> strList && val is not string)
         {
-            sb.AppendLine(GetDelimitedPropertyValues(l));
+            return EscapeList(strList);
         }
 
-        sb.AppendLine();
+        return EscapeValue(val?.ToString());
     }
 
-    private void AppendSummary(AnalysisOutcome outcome, StringBuilder sb)
+    private string EscapeList(IEnumerable<string> items)
     {
-        sb.AppendLine("[Summary]");
-        sb.AppendLine(GetDelimitedPropertyNames<AnalysisSummary>());
-
-        sb.AppendLine(GetDelimitedPropertyValues(outcome.Summary));
-
-        sb.AppendLine();
+        var delimiter = Options.Delimiter;
+        var innerDelimiter = GetSafeInnerDelimiter(delimiter);
+        var safeItems = items.Select(s => (s ?? string.Empty).Replace(delimiter, " "));
+        var joined = string.Join(innerDelimiter, safeItems);
+        return EscapeValue(joined);
     }
 
-    private static IEnumerable<string> GetPInvokeValues(PInvokeMethodGroup group, PInvokeMethod method, PropertyInfo[] sigProps)
-    {
-        yield return Escape(group.File.FullName);
-
-        var sig = method.Signature;
-        foreach (var p in sigProps)
+    private static string GetSafeInnerDelimiter(string delimiter)
+        => delimiter switch
         {
-            var val = p.GetValue(sig);
-            if (val is IEnumerable<string> strList && val is not string)
-                yield return Escape(string.Join(';', strList));
-            else
-                yield return Escape(val?.ToString() ?? string.Empty);
-        }
+            ";" => "|",
+            "|" => "/",
+            "," => ";",
+            _ => " "
+        };
 
-        yield return Escape(method.ImportName);
-        yield return Escape(method.ImportFlags.ToString());
-    }
-
-    private string GetDelimitedPropertyNames<T>()
+    private static string EscapeValue(string? value)
     {
-        return string.Join(Options.Delimiter, typeof(T).GetProperties().Select(p => p.Name));
-    }
-
-    private string GetDelimitedPropertyValues<T>(T obj)
-    {
-        var props = typeof(T).GetProperties();
-        var values = props.Select(p =>
-        {
-            var val = p.GetValue(obj);
-            if (val is IEnumerable<string> strList && val is not string)
-            {
-                return Escape(string.Join(Options.Delimiter, strList));
-            }
-
-            return Escape(val?.ToString() ?? string.Empty);
-        });
-
-        return string.Join(Options.Delimiter, values);
-    }
-
-    private static string Escape(string? value)
-    {
-        if (string.IsNullOrEmpty(value))
-        {
-            return "\"\"";
-        }
-
+        if (string.IsNullOrEmpty(value)) return "\"\"";
         return $"\"{value.Replace("\"", "\"\"").Replace('\n', ' ').Replace('\r', ' ')}\"";
     }
 
