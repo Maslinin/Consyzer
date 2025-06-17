@@ -38,19 +38,19 @@ var serviceProvider = new ServiceCollection()
     .AddReportWriters(rawOptions.OutputFormats)
 
     // Analyzers
-    .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification>, FileClassificationAnalyzer>()
-    .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>>, AssemblyMetadataAnalyzer>()
-    .AddSingleton<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>>, PInvokeMethodAnalyzer>()
-    .AddSingleton<IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>, LibraryPresenceAnalyzer>()
-    .AddSingleton<IAnalyzer<IEnumerable<LibraryPresence>, int>, ExitCodeAnalyzer>()
-
-    // Checkers
-    .AddSingleton<IFileClassificationChecker<AnalysisFileClassification>, FileClassificationChecker>()
+    .AddScoped<IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification>, FileClassificationAnalyzer>()
+    .AddScoped<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>>, AssemblyMetadataAnalyzer>()
+    .AddScoped<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>>, PInvokeMethodAnalyzer>()
+    .AddScoped<IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>, LibraryPresenceAnalyzer>()
+    .AddScoped<IAnalyzer<IEnumerable<LibraryPresence>, int>, ExitCodeAnalyzer>()
 
     // Extractors
-    .AddSingleton<IExtractor<FileInfo, IEnumerable<PInvokeMethod>>, PInvokeMethodExtractor>()
-    .AddSingleton<IExtractor<MethodDefinition, MethodSignature>, MethodSignatureExtractor>()
-    .AddSingleton<IExtractor<FileInfo, AssemblyMetadata>, AssemblyMetadataExtractor>()
+    .AddScoped<IExtractor<FileInfo, IEnumerable<PInvokeMethod>>, PInvokeMethodExtractor>()
+    .AddScoped<IExtractor<MethodDefinition, MethodSignature>, MethodSignatureExtractor>()
+    .AddScoped<IExtractor<FileInfo, AssemblyMetadata>, AssemblyMetadataExtractor>()
+
+    // Checkers
+    .AddScoped<IFileClassificationChecker<AnalysisFileClassification>, FileClassificationChecker>()
 
     // Cryptography
     .AddSingleton<IFileHasher, Sha256FileHasher>()
