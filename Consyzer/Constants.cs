@@ -8,8 +8,9 @@ internal static class Constants
     {
         public static class Directory
         {
-            public static string Base => Environment.CurrentDirectory;
             public const string Destination = "Reports";
+
+            public static string Base => Environment.CurrentDirectory;
             public static string FullPath => Path.Combine(Base, Destination);
         }
 
@@ -29,10 +30,11 @@ internal static class Constants
         {
             public const string Prefix = "report_";
             public const string ReserveIdentifier = "fallback";
-            public static string Identifier => Path.GetFileNameWithoutExtension(LoggingHelper.GetCurrentLogFilePath() ?? ReserveIdentifier);
+
             public static string Json => $"{Prefix}{Identifier}{FileExtension.Json}";
             public static string Csv => $"{Prefix}{Identifier}{FileExtension.Csv}";
             public static string Xml => $"{Prefix}{Identifier}{FileExtension.Xml}";
+            public static string Identifier => Path.GetFileNameWithoutExtension(LoggingHelper.GetCurrentLogFilePath() ?? ReserveIdentifier);
         }
     }
 }
