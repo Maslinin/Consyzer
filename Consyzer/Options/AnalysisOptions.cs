@@ -9,7 +9,6 @@ internal sealed class AnalysisOptions
     [Flags]
     public enum OutputFormat
     {
-        None = 0,
         Console = 1 << 0,
         Csv = 1 << 1,
         Json = 1 << 2
