@@ -11,7 +11,7 @@ internal sealed class AppOptions
         public sealed class CsvOptions
         {
             public required string Delimiter { get; init; }
-            public required string? BOM { get; init; }
+            public required string? Encoding { get; init; }
         }
     }
 
