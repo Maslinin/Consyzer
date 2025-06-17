@@ -1,5 +1,6 @@
 ﻿using Consyzer.Core.Text;
 using Consyzer.Core.Models;
+using static Consyzer.Reporting.Writers.Sections.ReportSections;
 
 namespace Consyzer.Reporting.Writers;
 
@@ -20,7 +21,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteAssemblyMetadata(IEnumerable<AssemblyMetadata> metadataList)
     {
         var builder = new IndentedTextBuilder()
-            .Title("[Assembly Metadata]")
+            .Title(AssemblyMetadataList)
             .IndexedSection(metadataList, (b, m) =>
             {
                 b.InnerLine($"File: {m.File.Name}");
@@ -35,7 +36,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WritePInvokeGroups(IEnumerable<PInvokeMethodGroup> groups, IEnumerable<AssemblyMetadata> metadata)
     {
         var builder = new IndentedTextBuilder()
-            .Title("[P/Invoke Method Groups]");
+            .Title(PInvokeGroups);
 
         int index = 0;
 
@@ -67,7 +68,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteLibraryPresence(IEnumerable<LibraryPresence> presences)
     {
         var builder = new IndentedTextBuilder()
-            .Title("[Library Presence Check]")
+            .Title(LibraryPresences)
             .IndexedItems(presences, p =>
             {
                 var status = p.LocationKind == LibraryLocationKind.Missing ? "MISSING" : $"FOUND [{p.LocationKind}]";
@@ -80,7 +81,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteSummary(AnalysisSummary summary)
     {
         var builder = new IndentedTextBuilder()
-            .Title("[Analysis Summary]")
+            .Title(Summary)
             .Line("Total Files", summary.TotalFiles)
             .Line("ECMA Assemblies", summary.EcmaAssemblies)
             .Line("Assemblies With P/Invoke", summary.AssembliesWithPInvoke)

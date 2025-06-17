@@ -4,6 +4,7 @@ using Consyzer.Core.Text;
 using Consyzer.Core.Models;
 using Microsoft.Extensions.Options;
 using static Consyzer.Constants;
+using static Consyzer.Reporting.Writers.Sections.ReportSections;
 
 namespace Consyzer.Reporting.Writers;
 
@@ -31,16 +32,16 @@ internal sealed class CsvReportWriter(
     {
         var sb = new StringBuilder();
 
-        sb.AppendLine("[AssemblyMetadataList]");
+        sb.AppendLine(AssemblyMetadataList);
         sb.AppendLine(CsvTable(outcome.AssemblyMetadataList));
 
-        sb.AppendLine("[PInvokeGroups]");
+        sb.AppendLine(PInvokeGroups);
         sb.AppendLine(CsvPInvoke(outcome.PInvokeGroups));
 
-        sb.AppendLine("[LibraryPresences]");
+        sb.AppendLine(LibraryPresences);
         sb.AppendLine(CsvTable(outcome.LibraryPresences));
 
-        sb.AppendLine("[Summary]");
+        sb.AppendLine(Summary);
         sb.AppendLine(CsvTable([outcome.Summary]));
 
         return sb.ToString();
