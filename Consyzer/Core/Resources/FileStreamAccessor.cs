@@ -10,6 +10,7 @@ internal sealed class FileStreamAccessor : IResourceAccessor<FileInfo, Stream>
 
         if (this._resources.TryGetValue(file.FullName, out var resource))
         {
+            resource.Position = 0;
             return resource;
         }
 
