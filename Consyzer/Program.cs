@@ -8,7 +8,7 @@ using Consyzer.Core.Checkers;
 using Consyzer.Core.Resources;
 using Consyzer.Core.Extractors;
 using Consyzer.Core.Cryptography;
-using Consyzer.Options.Extensions;
+using Consyzer.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
