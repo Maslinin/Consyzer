@@ -55,6 +55,7 @@
 				Core\Converters\**, <!--TODO: Write tests for the classes-->
 				Core\Extractors\Providers\StringSignatureTypeProvider.cs,
 				Core\Checkers\LibraryPresenceChecker.cs, <!--TODO: Write tests for the class-->
+				DependencyInjection\ServiceCollectionExtensions.cs,
 				Program.cs,
 				Constants.cs,
 				AnalysisOrchestrator.cs
