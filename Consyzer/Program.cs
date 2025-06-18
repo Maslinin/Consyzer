@@ -1,4 +1,11 @@
-﻿using Consyzer;
+﻿using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
+using NLog.Extensions.Logging;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Consyzer;
 using Consyzer.Helpers;
 using Consyzer.Logging;
 using Consyzer.Options;
@@ -9,13 +16,7 @@ using Consyzer.Core.Resources;
 using Consyzer.Core.Extractors;
 using Consyzer.Core.Cryptography;
 using Consyzer.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using NLog.Extensions.Logging;
-using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
+using static Consyzer.Constants.Search;
 
 var configuration = new ConfigurationBuilder()
     .AddCommandLine(args)
@@ -85,5 +86,5 @@ if (string.IsNullOrWhiteSpace(options.SearchPattern))
 
 var orchestrator = serviceProvider.GetRequiredService<AnalysisOrchestrator>();
 
-var files = FileSearchHelper.GetFilesByCommaSeparatedPatterns(options.AnalysisDirectory, options.SearchPattern);
+var files = FileSearchHelper.GetFilesBySeparatedPatterns(options.AnalysisDirectory, options.SearchPattern, PatternSeparator, options.Recursive);
 return orchestrator.Run(files);

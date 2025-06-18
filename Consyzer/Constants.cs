@@ -4,6 +4,11 @@ namespace Consyzer;
 
 internal static class Constants
 {
+    public static class Search
+    {
+        public const char PatternSeparator = ',';
+    }
+
     public static class Report
     {
         public static class Directory
