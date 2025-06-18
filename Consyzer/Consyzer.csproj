@@ -48,17 +48,16 @@
 				Options\**,
 				Helpers\**,
 				Logging\**,
-				Reporting\**,
 				Analyzers\**,
+				Reporting\**,
 				Core\Models\**,
-				Core\Text\IndentedTextBuilder.cs,
-				Core\Converters\**, <!--TODO: Write tests for the classes-->
+				Core\Text\**,
 				Core\Extractors\Providers\StringSignatureTypeProvider.cs,
 				Core\Checkers\LibraryPresenceChecker.cs, <!--TODO: Write tests for the class-->
 				DependencyInjection\ServiceCollectionExtensions.cs,
-				Program.cs,
+				AnalysisOrchestrator.cs,
 				Constants.cs,
-				AnalysisOrchestrator.cs
+				Program.cs
 			</Value>
 		</SonarQubeSetting>
 	</ItemGroup>

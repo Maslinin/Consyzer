@@ -1,6 +1,6 @@
 ﻿namespace Consyzer.Core.Models;
 
-internal sealed class LibraryPresence
+internal sealed record class LibraryPresence
 {
     public required string LibraryName { get; init; }
     public required string? ResolvedPath { get; init; }

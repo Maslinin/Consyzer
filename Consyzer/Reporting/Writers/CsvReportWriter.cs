@@ -17,7 +17,7 @@ internal sealed class CsvReportWriter(
     public string Write(AnalysisOutcome outcome)
     {
         Directory.CreateDirectory(Report.Directory.FullPath);
-        var fullPath = Path.Combine(Report.Directory.FullPath, Report.FileName.Csv);
+        var fullPath = Path.Combine(Report.Directory.FullPath, Report.Name.Csv);
 
         var encoding = GetEncoding(Options?.Encoding);
         var bom = encoding.GetPreamble();

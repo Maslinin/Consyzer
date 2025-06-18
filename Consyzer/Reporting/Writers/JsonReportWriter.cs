@@ -23,7 +23,7 @@ internal sealed class JsonReportWriter : IReportWriter
     {
         Directory.CreateDirectory(Report.Directory.FullPath);
 
-        var fullPath = Path.Combine(Report.Directory.FullPath, Report.FileName.Json);
+        var fullPath = Path.Combine(Report.Directory.FullPath, Report.Name.Json);
 
         var json = JsonSerializer.Serialize(outcome, JsonOptions);
         File.WriteAllText(fullPath, json);

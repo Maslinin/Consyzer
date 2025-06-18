@@ -1,4 +1,5 @@
 ﻿using Consyzer.Core.Models;
+using static Consyzer.Constants.LibraryPresence;
 
 namespace Consyzer.Core.Checkers;
 
@@ -15,45 +16,65 @@ internal sealed class LibraryPresenceChecker(
         ResolveRelativePath
     ];
 
-    public LibraryPresence Check(string file)
+    public LibraryPresence Check(string importName)
     {
-        foreach (var resolver in _resolvers)
+        foreach (var candidateName in ResolveLibraryName(importName))
         {
-            var presence = resolver(file);
-            if (presence != null)
+            foreach (var resolver in this._resolvers)
             {
-                return presence;
+                var presence = resolver(candidateName);
+                if (presence is not null)
+                {
+                    return presence with { LibraryName = importName };
+                }
             }
         }
 
         return new LibraryPresence
         {
-            LibraryName = file,
+            LibraryName = importName,
             ResolvedPath = null,
             LocationKind = LibraryLocationKind.Missing
         };
     }
 
-    private static LibraryPresence? ResolveAnalyzedDirectory(string analyzedDirectory, string file)
+    private static IEnumerable<string> ResolveLibraryName(string importName)
     {
-        var candidate = GetCandidatePath(analyzedDirectory, file);
+        if (Path.HasExtension(importName))
+        {
+            yield return importName;
+            yield break;
+        }
+
+        if (OperatingSystem.IsWindows())
+            yield return importName + Extension.WindowsExtension;
+        else if (OperatingSystem.IsLinux())
+            yield return importName + Extension.LinuxExtension;
+        else if (OperatingSystem.IsMacOS())
+            yield return importName + Extension.MacExtension;
+        else yield return importName;
+    }
+
+    private static LibraryPresence? ResolveAnalyzedDirectory(string analyzedDirectory, string importName)
+    {
+        var candidate = GetCandidatePath(analyzedDirectory, importName);
         if (candidate == null || !IsPathInsideDirectory(analyzedDirectory, candidate)) return null;
 
         return new LibraryPresence
         {
-            LibraryName = file,
+            LibraryName = importName,
             ResolvedPath = candidate,
             LocationKind = LibraryLocationKind.InAnalyzedDirectory
         };
     }
 
-    private static LibraryPresence? ResolveInEnvironmentPath(string file)
+    private static LibraryPresence? ResolveInEnvironmentPath(string importName)
     {
-        var candidate = GetCandidatePath(null, file);
+        var candidate = GetCandidatePath(null, importName);
         if (candidate == null) return null;
 
         var candidateDir = Path.GetFullPath(Path.GetDirectoryName(candidate) ?? string.Empty);
-        var pathDirs = (Environment.GetEnvironmentVariable("PATH") ?? string.Empty)
+        var pathDirs = (Environment.GetEnvironmentVariable(Variable.Path) ?? string.Empty)
             .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
             .Select(Path.GetFullPath);
 
@@ -61,58 +82,60 @@ internal sealed class LibraryPresenceChecker(
         {
             return new LibraryPresence
             {
-                LibraryName = file,
+                LibraryName = importName,
                 ResolvedPath = candidate,
                 LocationKind = LibraryLocationKind.InEnvironmentPath
             };
         }
+
         return null;
     }
 
-    private static LibraryPresence? ResolveSystemDirectory(string file)
+    private static LibraryPresence? ResolveSystemDirectory(string importName)
     {
-        var candidate = GetCandidatePath(Environment.SystemDirectory, file);
+        var candidate = GetCandidatePath(Environment.SystemDirectory, importName);
         if (candidate == null || !IsPathInsideDirectory(Environment.SystemDirectory, candidate)) return null;
 
         return new LibraryPresence
         {
-            LibraryName = file,
+            LibraryName = importName,
             ResolvedPath = candidate,
             LocationKind = LibraryLocationKind.InSystemDirectory
         };
     }
 
-    private static LibraryPresence? ResolveAbsolutePath(string file)
+    private static LibraryPresence? ResolveAbsolutePath(string importName)
     {
-        var candidate = GetCandidatePath(null, file);
+        var candidate = GetCandidatePath(null, importName);
         if (candidate == null) return null;
 
         return new LibraryPresence
         {
-            LibraryName = file,
+            LibraryName = importName,
             ResolvedPath = candidate,
             LocationKind = LibraryLocationKind.OnAbsolutePath
         };
     }
 
-    private static LibraryPresence? ResolveRelativePath(string file)
+    private static LibraryPresence? ResolveRelativePath(string importName)
     {
-        var candidate = GetCandidatePath(Directory.GetCurrentDirectory(), file);
+        var candidate = GetCandidatePath(Directory.GetCurrentDirectory(), importName);
         if (candidate == null) return null;
 
         return new LibraryPresence
         {
-            LibraryName = file,
+            LibraryName = importName,
             ResolvedPath = candidate,
             LocationKind = LibraryLocationKind.OnRelativePath
         };
     }
 
-    private static string? GetCandidatePath(string? baseDir, string file)
+    private static string? GetCandidatePath(string? baseDir, string importName)
     {
-        string candidate = Path.IsPathRooted(file)
-            ? file
-            : baseDir is not null ? Path.Combine(baseDir, file) : file;
+        string candidate = Path.IsPathRooted(importName)
+            ? importName
+            : baseDir is not null ? Path.Combine(baseDir, importName) : importName;
+
         return File.Exists(candidate) ? candidate : null;
     }
 
