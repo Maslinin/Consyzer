@@ -9,15 +9,15 @@ internal static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddReportWriters(
         this IServiceCollection services,
-        AnalysisOptions.OutputFormat formats)
+        AnalysisOptions.OutputFormats formats)
     {
-        if (formats.HasFlag(AnalysisOptions.OutputFormat.Console))
+        if (formats.HasFlag(AnalysisOptions.OutputFormats.Console))
             services.AddSingleton<IReportWriter, ConsoleReportWriter>();
 
-        if (formats.HasFlag(AnalysisOptions.OutputFormat.Json))
+        if (formats.HasFlag(AnalysisOptions.OutputFormats.Json))
             services.AddSingleton<IReportWriter, JsonReportWriter>();
 
-        if (formats.HasFlag(AnalysisOptions.OutputFormat.Csv))
+        if (formats.HasFlag(AnalysisOptions.OutputFormats.Csv))
             services.AddSingleton<IReportWriter, CsvReportWriter>();
 
         return services;
