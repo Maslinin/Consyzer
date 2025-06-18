@@ -25,7 +25,7 @@ internal sealed class LibraryPresenceChecker(
                 var presence = resolver(candidateName);
                 if (presence is not null)
                 {
-                    return presence with { LibraryName = file };
+                    return presence;
                 }
             }
         }
