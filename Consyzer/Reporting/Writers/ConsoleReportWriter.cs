@@ -40,15 +40,13 @@ internal sealed class ConsoleReportWriter : IReportWriter
 
         int index = 0;
 
-        var allFiles = metadata.Select(m => m.File);
-
-        foreach (var file in allFiles)
+        foreach (var fileName in metadata.Select(m => m.File.Name))
         {
-            var group = groups.FirstOrDefault(g => g.File.Name.Equals(file.Name, StringComparison.OrdinalIgnoreCase));
+            var group = groups.FirstOrDefault(g => g.File.Name.Equals(fileName, StringComparison.OrdinalIgnoreCase));
 
             if (group is not null && group.Methods.Any())
             {
-                builder.Title($"[{index++}] File: {file.Name} — Found: {group.Methods.Count()}");
+                builder.Title($"[{index++}] File: {fileName} — Found: {group.Methods.Count()}");
                 builder.IndexedSection(group.Methods, (b, m) =>
                 {
                     b.InnerLine($"Method Signature: '{m.Signature}'");
@@ -58,7 +56,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
             }
             else
             {
-                builder.Title($"[{index++}] {file.Name} - No P/Invoke methods");
+                builder.Title($"[{index++}] {fileName} - No P/Invoke methods");
             }
         }
 
