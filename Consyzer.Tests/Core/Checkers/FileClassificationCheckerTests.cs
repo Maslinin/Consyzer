@@ -23,13 +23,11 @@ public sealed class FileClassificationCheckerTests
         
         var result = checker.Check(files);
 
-        Assert.Single(result.EcmaModules);
         Assert.Single(result.EcmaAssemblies);
         Assert.Single(result.NonEcmaModules);
 
         Assert.Empty(result.NonEcmaAssemblies);
 
-        Assert.True(Matches(EcmaAssemblyWithPInvoke, result.EcmaModules));
         Assert.True(Matches(EcmaAssemblyWithPInvoke, result.EcmaAssemblies));
         Assert.True(Matches(NonEcmaAssembly, result.NonEcmaModules));
     }

@@ -12,7 +12,6 @@ internal sealed class FileClassificationChecker(
     public AnalysisFileClassification Check(IEnumerable<FileInfo> files)
     {
         var nonEcmaModules = new List<FileInfo>();
-        var ecmaModules = new List<FileInfo>();
         var ecmaAssemblies = new List<FileInfo>();
         var nonEcmaAssemblies = new List<FileInfo>();
 
@@ -24,15 +23,12 @@ internal sealed class FileClassificationChecker(
                 continue;
             }
 
-            ecmaModules.Add(file);
-
             (TryCheckEcmaAssembly(peReader) ? ecmaAssemblies : nonEcmaAssemblies).Add(file);
         }
 
         return new AnalysisFileClassification
         {
             NonEcmaModules = nonEcmaModules,
-            EcmaModules = ecmaModules,
             EcmaAssemblies = ecmaAssemblies,
             NonEcmaAssemblies = nonEcmaAssemblies
         };

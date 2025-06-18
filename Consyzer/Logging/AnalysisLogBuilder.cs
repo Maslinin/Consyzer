@@ -29,5 +29,4 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
             .Title($"[ECMA assemblies] Count: {fileClassification.EcmaAssemblies.Count()}")
             .IndexedItems(fileClassification.EcmaAssemblies, f => f.Name)
             .Build();
-
 }
