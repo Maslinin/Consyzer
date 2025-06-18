@@ -43,10 +43,13 @@ internal sealed class AnalysisOrchestrator(
             return (int)AppFailureCode.AllFilesInvalid;
         }
 
+        logger.LogInformation("Starting metadata analysis of {Count} ECMA assemblies...", fileClassification.EcmaAssemblies.Count());
         var metadataList = metadataAnalyzer.Analyze(fileClassification.EcmaAssemblies);
 
+        logger.LogInformation("Analyzing P/Invoke methods...");
         var pInvokeGroups = pinvokeAnalyzer.Analyze(fileClassification.EcmaAssemblies);
 
+        logger.LogInformation("Checking library presence for {Count} P/Invoke method groups...", pInvokeGroups.Count());
         var libraryPresences = libraryPresenceAnalyzer.Analyze(pInvokeGroups);
 
         var summary = new AnalysisSummary
