@@ -53,7 +53,6 @@
 				Core\Models\**,
 				Core\Text\**,
 				Core\Extractors\Providers\StringSignatureTypeProvider.cs,
-				Core\Checkers\LibraryPresenceChecker.cs, <!--TODO: Write tests for the class-->
 				DependencyInjection\ServiceCollectionExtensions.cs,
 				AnalysisOrchestrator.cs,
 				Constants.cs,

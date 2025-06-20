@@ -10,8 +10,8 @@ internal sealed class LibraryPresenceChecker(
     private readonly Func<string, LibraryPresence?>[] _resolvers =
     [
         name => ResolveAnalyzedDirectory(analyzedDirectory, name),
-        ResolveInEnvironmentPath,
         ResolveSystemDirectory,
+        ResolveInEnvironmentPath,
         ResolveAbsolutePath,
         ResolveRelativePath
     ];
@@ -70,24 +70,25 @@ internal sealed class LibraryPresenceChecker(
 
     private static LibraryPresence? ResolveInEnvironmentPath(string file)
     {
-        var candidate = GetCandidatePath(null, file);
-        if (candidate == null) return null;
+        if (Path.IsPathRooted(file) || Path.GetFileName(file) != file)
+            return null;
 
-        var candidateDir = Path.GetFullPath(Path.GetDirectoryName(candidate) ?? string.Empty);
         var pathDirs = (Environment.GetEnvironmentVariable(Variable.Path) ?? string.Empty)
-            .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
-            .Select(Path.GetFullPath);
+            .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-        if (pathDirs.Any(dir => string.Equals(dir, candidateDir, StringComparison.OrdinalIgnoreCase)))
+        foreach (var dir in pathDirs)
         {
-            return new LibraryPresence
+            var candidate = Path.Combine(dir, file);
+            if (File.Exists(candidate))
             {
-                LibraryName = file,
-                ResolvedPath = candidate,
-                LocationKind = LibraryLocationKind.InEnvironmentPath
-            };
+                return new LibraryPresence
+                {
+                    LibraryName = file,
+                    ResolvedPath = Path.GetFullPath(candidate),
+                    LocationKind = LibraryLocationKind.InEnvironmentPath
+                };
+            }
         }
-
         return null;
     }
 
@@ -106,6 +107,8 @@ internal sealed class LibraryPresenceChecker(
 
     private static LibraryPresence? ResolveAbsolutePath(string file)
     {
+        if (!Path.IsPathRooted(file)) return null;
+
         var candidate = GetCandidatePath(null, file);
         if (candidate == null) return null;
 
@@ -119,22 +122,28 @@ internal sealed class LibraryPresenceChecker(
 
     private static LibraryPresence? ResolveRelativePath(string file)
     {
-        var candidate = GetCandidatePath(Directory.GetCurrentDirectory(), file);
-        if (candidate == null) return null;
+        if (Path.IsPathRooted(file)) return null;
 
-        return new LibraryPresence
+        var candidate = Path.Combine(Directory.GetCurrentDirectory(), file);
+
+        if (File.Exists(candidate))
         {
-            LibraryName = file,
-            ResolvedPath = candidate,
-            LocationKind = LibraryLocationKind.OnRelativePath
-        };
+            return new LibraryPresence
+            {
+                LibraryName = file,
+                ResolvedPath = Path.GetFullPath(candidate),
+                LocationKind = LibraryLocationKind.OnRelativePath
+            };
+        }
+
+        return null;
     }
 
     private static string? GetCandidatePath(string? baseDir, string file)
     {
-        string candidate = Path.IsPathRooted(file)
-            ? file
-            : baseDir is not null ? Path.Combine(baseDir, file) : file;
+        var candidate = baseDir is not null
+            ? Path.Combine(baseDir, file)
+            : file;
 
         return File.Exists(candidate) ? candidate : null;
     }
