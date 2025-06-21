@@ -7,17 +7,15 @@ namespace Consyzer.DependencyInjection;
 
 internal static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddReportWriters(
-        this IServiceCollection services,
-        AnalysisOptions.OutputFormats formats)
+    public static IServiceCollection AddReportWriters(this IServiceCollection services, OutputFormats formats)
     {
-        if (formats.HasFlag(AnalysisOptions.OutputFormats.Console))
+        if (formats.HasFlag(OutputFormats.Console))
             services.AddSingleton<IReportWriter, ConsoleReportWriter>();
 
-        if (formats.HasFlag(AnalysisOptions.OutputFormats.Json))
+        if (formats.HasFlag(OutputFormats.Json))
             services.AddSingleton<IReportWriter, JsonReportWriter>();
 
-        if (formats.HasFlag(AnalysisOptions.OutputFormats.Csv))
+        if (formats.HasFlag(OutputFormats.Csv))
             services.AddSingleton<IReportWriter, CsvReportWriter>();
 
         return services;
