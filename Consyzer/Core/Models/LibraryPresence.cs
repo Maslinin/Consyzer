@@ -10,8 +10,8 @@ internal sealed class LibraryPresence
 internal enum LibraryLocationKind
 {
     InAnalyzedDirectory = 0,
-    InEnvironmentPath = 1,
-    InSystemDirectory = 2,
+    InSystemDirectory = 1,
+    InEnvironmentPath = 2,
     OnAbsolutePath = 3,
     OnRelativePath = 4,
     Missing = 5

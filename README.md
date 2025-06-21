@@ -70,8 +70,8 @@ Consyzer returns a specific exit code depending on where the native libraries sp
 | -2   | No file search pattern was specified                                             |
 | -1   | No directory was specified for analysis                                          |
 | 0    | All libraries were found in the analysis directory                               |
-| 1    | One or more libraries were found via the **PATH** environment variable           |
-| 2    | One or more libraries were found in the system directory                         |
+| 1    | One or more libraries were found in the system directory                         |
+| 2    | One or more libraries were found via the **PATH** environment variable           |
 | 3    | One or more libraries were found via an absolute path                            |
 | 4    | One or more libraries were found via a relative path                             |
 | 5    | One or more libraries are missing from the system                                |
