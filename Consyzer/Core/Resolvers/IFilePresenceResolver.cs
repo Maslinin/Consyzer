@@ -2,5 +2,5 @@
 
 internal interface IFilePresenceResolver<out TOut>
 {
-    TOut Check(string file);
+    TOut Resolve(string file);
 }

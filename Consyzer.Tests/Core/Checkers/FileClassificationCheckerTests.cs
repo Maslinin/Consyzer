@@ -9,11 +9,11 @@ namespace Consyzer.Tests.Core.Checkers;
 public sealed class FileClassificationCheckerTests
 {
     [Fact]
-    public void Check_ShouldClassifyFilesCorrectly_WhenGivenMixedInput()
+    public void Resolve_ShouldClassifyFilesCorrectly_WhenGivenMixedInput()
     {
         using var streamAccessor = new FileStreamAccessor();
         using var peAccessor = new PEReaderAccessor(streamAccessor);
-        var checker = new FileClassificationChecker(peAccessor);
+        var resolver = new FileClassificationChecker(peAccessor);
 
         var files = new[]
         {
@@ -21,7 +21,7 @@ public sealed class FileClassificationCheckerTests
             NonEcmaAssembly
         };
         
-        var result = checker.Check(files);
+        var result = resolver.Check(files);
 
         Assert.Single(result.EcmaAssemblies);
         Assert.Single(result.NonEcmaModules);

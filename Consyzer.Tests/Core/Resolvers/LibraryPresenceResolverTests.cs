@@ -2,7 +2,7 @@
 using Consyzer.Core.Models;
 using Consyzer.Core.Resolvers;
 
-namespace Consyzer.Tests.Core.Checkers;
+namespace Consyzer.Tests.Core.Resolvers;
 
 public sealed class LibraryPresenceResolverTests : IDisposable
 {
@@ -26,15 +26,15 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     }
 
     [Fact]
-    public void Check_ShouldReturnInAnalyzedDirectory_WhenLibraryIsInAnalyzedDir()
+    public void Resolve_ShouldReturnInAnalyzedDirectory_WhenLibraryIsInAnalyzedDir()
     {
         var libPath = Path.Combine(this._analyzedDirectory, TestLibAnalyzed);
         File.WriteAllText(libPath, DummyFileContent);
 
         try
         {
-            var checker = new LibraryPresenceResolver(this._analyzedDirectory);
-            var result = checker.Check(TestLibAnalyzed);
+            var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+            var result = resolver.Resolve(TestLibAnalyzed);
 
             Assert.Equal(LibraryLocationKind.InAnalyzedDirectory, result.LocationKind);
             Assert.Equal(libPath, result.ResolvedPath);
@@ -46,15 +46,15 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     }
 
     [Fact]
-    public void Check_ShouldReturnOnAbsolutePath_WhenLibraryExistsAtAbsolutePath()
+    public void Resolve_ShouldReturnOnAbsolutePath_WhenLibraryExistsAtAbsolutePath()
     {
         var libPath = Path.Combine(Path.GetTempPath(), TestLibAbs);
         File.WriteAllText(libPath, DummyFileContent);
 
         try
         {
-            var checker = new LibraryPresenceResolver(this._analyzedDirectory);
-            var result = checker.Check(libPath);
+            var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+            var result = resolver.Resolve(libPath);
 
             Assert.Equal(LibraryLocationKind.OnAbsolutePath, result.LocationKind);
             Assert.Equal(libPath, result.ResolvedPath);
@@ -66,15 +66,15 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     }
 
     [Fact]
-    public void Check_ShouldReturnOnRelativePath_WhenLibraryExistsInCwd()
+    public void Resolve_ShouldReturnOnRelativePath_WhenLibraryExistsInCwd()
     {
         var filePath = Path.Combine(Directory.GetCurrentDirectory(), TestLibRel);
         File.WriteAllText(filePath, DummyFileContent);
 
         try
         {
-            var checker = new LibraryPresenceResolver(this._analyzedDirectory);
-            var result = checker.Check(TestLibRel);
+            var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+            var result = resolver.Resolve(TestLibRel);
 
             Assert.Equal(LibraryLocationKind.OnRelativePath, result.LocationKind);
             Assert.Equal(filePath, result.ResolvedPath);
@@ -86,7 +86,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     }
 
     [Fact]
-    public void Check_ShouldReturnInEnvironmentPath_WhenLibraryInPath()
+    public void Resolve_ShouldReturnInEnvironmentPath_WhenLibraryInPath()
     {
         var libPath = Path.Combine(this._envPathDirectory, TestLibEnv);
         File.WriteAllText(libPath, DummyFileContent);
@@ -96,8 +96,8 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         try
         {
-            var checker = new LibraryPresenceResolver(this._analyzedDirectory);
-            var result = checker.Check(TestLibEnv);
+            var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+            var result = resolver.Resolve(TestLibEnv);
 
             Assert.Equal(LibraryLocationKind.InEnvironmentPath, result.LocationKind);
             Assert.Equal(Path.GetFullPath(libPath), result.ResolvedPath);
@@ -110,7 +110,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     }
 
     [Fact]
-    public void Check_ShouldReturnInSystemDirectory_WhenLibraryIsInSystemDirectory()
+    public void Resolve_ShouldReturnInSystemDirectory_WhenLibraryIsInSystemDirectory()
     {
         var systemDir = Environment.SystemDirectory;
         var libName = Directory.GetFiles(systemDir)
@@ -119,8 +119,8 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         if (libName is null) return;
 
-        var checker = new LibraryPresenceResolver(this._analyzedDirectory);
-        var result = checker.Check(libName);
+        var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+        var result = resolver.Resolve(libName);
 
         Assert.Contains(result.LocationKind, new[] {
             LibraryLocationKind.InSystemDirectory,
@@ -130,10 +130,10 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     }
 
     [Fact]
-    public void Check_ShouldReturnMissing_WhenLibraryNotFound()
+    public void Resolve_ShouldReturnMissing_WhenLibraryNotFound()
     {
-        var checker = new LibraryPresenceResolver(this._analyzedDirectory);
-        var result = checker.Check(TestLibMissing);
+        var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+        var result = resolver.Resolve(TestLibMissing);
 
         Assert.Equal(LibraryLocationKind.Missing, result.LocationKind);
         Assert.Null(result.ResolvedPath);

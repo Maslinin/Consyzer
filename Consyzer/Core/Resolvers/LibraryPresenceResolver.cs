@@ -16,7 +16,7 @@ internal sealed class LibraryPresenceResolver(
         ResolveRelativePath
     ];
 
-    public LibraryPresence Check(string file)
+    public LibraryPresence Resolve(string file)
     {
         foreach (var candidateName in ResolveLibraryName(file))
         {
