@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Consyzer.Options;
 using Consyzer.Core.Models;
-using Consyzer.Core.Checkers;
+using Consyzer.Core.Resolvers;
 
 namespace Consyzer.Analyzers;
 
@@ -9,7 +9,7 @@ internal sealed class LibraryPresenceAnalyzer(
     IOptions<AnalysisOptions> analysisOptions
 ) : IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>
 {
-    private readonly LibraryPresenceChecker _filePresenceChecker = new(analysisOptions.Value.AnalysisDirectory);
+    private readonly LibraryPresenceResolver _filePresenceResolver = new(analysisOptions.Value.AnalysisDirectory);
 
     public IEnumerable<LibraryPresence> Analyze(IEnumerable<PInvokeMethodGroup> methodGroups)
     {
@@ -19,7 +19,7 @@ internal sealed class LibraryPresenceAnalyzer(
 
         foreach (var import in distinctImportNames)
         {
-            yield return this._filePresenceChecker.Check(import);
+            yield return this._filePresenceResolver.Check(import);
         }
     }
 }

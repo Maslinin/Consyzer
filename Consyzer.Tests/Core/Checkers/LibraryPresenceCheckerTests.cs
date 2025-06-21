@@ -1,10 +1,10 @@
-﻿using Consyzer.Core.Checkers;
+﻿using Xunit;
 using Consyzer.Core.Models;
-using Xunit;
+using Consyzer.Core.Resolvers;
 
 namespace Consyzer.Tests.Core.Checkers;
 
-public sealed class LibraryPresenceCheckerTests : IDisposable
+public sealed class LibraryPresenceResolverTests : IDisposable
 {
     private const string DummyFileContent = "dummy";
     private const string DllExtension = ".dll";
@@ -19,7 +19,7 @@ public sealed class LibraryPresenceCheckerTests : IDisposable
     private readonly string _analyzedDirectory = Path.Combine(Path.GetTempPath(), "analyzed-" + Guid.NewGuid());
     private readonly string _envPathDirectory = Path.Combine(Path.GetTempPath(), "envpath-" + Guid.NewGuid());
 
-    public LibraryPresenceCheckerTests()
+    public LibraryPresenceResolverTests()
     {
         Directory.CreateDirectory(this._analyzedDirectory);
         Directory.CreateDirectory(this._envPathDirectory);
@@ -33,7 +33,7 @@ public sealed class LibraryPresenceCheckerTests : IDisposable
 
         try
         {
-            var checker = new LibraryPresenceChecker(this._analyzedDirectory);
+            var checker = new LibraryPresenceResolver(this._analyzedDirectory);
             var result = checker.Check(TestLibAnalyzed);
 
             Assert.Equal(LibraryLocationKind.InAnalyzedDirectory, result.LocationKind);
@@ -53,7 +53,7 @@ public sealed class LibraryPresenceCheckerTests : IDisposable
 
         try
         {
-            var checker = new LibraryPresenceChecker(this._analyzedDirectory);
+            var checker = new LibraryPresenceResolver(this._analyzedDirectory);
             var result = checker.Check(libPath);
 
             Assert.Equal(LibraryLocationKind.OnAbsolutePath, result.LocationKind);
@@ -73,7 +73,7 @@ public sealed class LibraryPresenceCheckerTests : IDisposable
 
         try
         {
-            var checker = new LibraryPresenceChecker(this._analyzedDirectory);
+            var checker = new LibraryPresenceResolver(this._analyzedDirectory);
             var result = checker.Check(TestLibRel);
 
             Assert.Equal(LibraryLocationKind.OnRelativePath, result.LocationKind);
@@ -96,7 +96,7 @@ public sealed class LibraryPresenceCheckerTests : IDisposable
 
         try
         {
-            var checker = new LibraryPresenceChecker(this._analyzedDirectory);
+            var checker = new LibraryPresenceResolver(this._analyzedDirectory);
             var result = checker.Check(TestLibEnv);
 
             Assert.Equal(LibraryLocationKind.InEnvironmentPath, result.LocationKind);
@@ -119,7 +119,7 @@ public sealed class LibraryPresenceCheckerTests : IDisposable
 
         if (libName is null) return;
 
-        var checker = new LibraryPresenceChecker(this._analyzedDirectory);
+        var checker = new LibraryPresenceResolver(this._analyzedDirectory);
         var result = checker.Check(libName);
 
         Assert.Contains(result.LocationKind, new[] {
@@ -132,7 +132,7 @@ public sealed class LibraryPresenceCheckerTests : IDisposable
     [Fact]
     public void Check_ShouldReturnMissing_WhenLibraryNotFound()
     {
-        var checker = new LibraryPresenceChecker(this._analyzedDirectory);
+        var checker = new LibraryPresenceResolver(this._analyzedDirectory);
         var result = checker.Check(TestLibMissing);
 
         Assert.Equal(LibraryLocationKind.Missing, result.LocationKind);
