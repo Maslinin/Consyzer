@@ -58,7 +58,7 @@ internal sealed class LibraryPresenceResolver(
     private static LibraryPresence? ResolveAnalyzedDirectory(string analyzedDirectory, string file)
     {
         var candidate = GetCandidatePath(analyzedDirectory, file);
-        if (candidate == null || !IsPathInsideDirectory(analyzedDirectory, candidate)) return null;
+        if (candidate is null || !IsPathInsideDirectory(analyzedDirectory, candidate)) return null;
 
         return new LibraryPresence
         {
@@ -95,7 +95,7 @@ internal sealed class LibraryPresenceResolver(
     private static LibraryPresence? ResolveSystemDirectory(string file)
     {
         var candidate = GetCandidatePath(Environment.SystemDirectory, file);
-        if (candidate == null || !IsPathInsideDirectory(Environment.SystemDirectory, candidate)) return null;
+        if (candidate is null || !IsPathInsideDirectory(Environment.SystemDirectory, candidate)) return null;
 
         return new LibraryPresence
         {
@@ -110,7 +110,7 @@ internal sealed class LibraryPresenceResolver(
         if (!Path.IsPathRooted(file)) return null;
 
         var candidate = GetCandidatePath(null, file);
-        if (candidate == null) return null;
+        if (candidate is null) return null;
 
         return new LibraryPresence
         {

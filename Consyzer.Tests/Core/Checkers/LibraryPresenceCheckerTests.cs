@@ -115,7 +115,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
         var systemDir = Environment.SystemDirectory;
         var libName = Directory.GetFiles(systemDir)
             .Select(Path.GetFileName)
-            .FirstOrDefault(name => name?.EndsWith(DllExtension, StringComparison.OrdinalIgnoreCase) == true);
+            .FirstOrDefault(name => name?.EndsWith(DllExtension, StringComparison.OrdinalIgnoreCase) is true);
 
         if (libName is null) return;
 

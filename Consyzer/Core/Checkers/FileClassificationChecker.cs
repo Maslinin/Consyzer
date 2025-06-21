@@ -39,7 +39,7 @@ internal sealed class FileClassificationChecker(
         try
         {
             peReader = accessor.Get(file);
-            return peReader.HasMetadata && peReader.PEHeaders != null;
+            return peReader.HasMetadata && peReader.PEHeaders is not null;
         }
         catch (BadImageFormatException)
         {

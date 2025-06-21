@@ -8,13 +8,13 @@ internal static class LoggingHelper
     public static string? GetCurrentLogFilePath()
     {
         var config = LogManager.Configuration;
-        if (config == null) return null;
+        if (config is null) return null;
 
         var fileTarget = config.AllTargets
             .OfType<FileTarget>()
             .FirstOrDefault();
 
-        if (fileTarget == null) return null;
+        if (fileTarget is null) return null;
 
         var logEventInfo = new LogEventInfo { TimeStamp = DateTime.UtcNow };
         return fileTarget.FileName.Render(logEventInfo);
