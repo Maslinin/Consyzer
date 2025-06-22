@@ -46,6 +46,7 @@
 			<Value>
 				Properties\**,
 				Options\**,
+				DependencyInjection\**,
 				Helpers\**,
 				Logging\**,
 				Analyzers\**,
@@ -53,7 +54,6 @@
 				Core\Models\**,
 				Core\Text\**,
 				Core\Extractors\Providers\StringSignatureTypeProvider.cs,
-				DependencyInjection\ServiceCollectionExtensions.cs,
 				AnalysisOrchestrator.cs,
 				Constants.cs,
 				Program.cs

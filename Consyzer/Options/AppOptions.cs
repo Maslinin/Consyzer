@@ -14,5 +14,4 @@ internal sealed class AppOptions
             public required string? Encoding { get; set; }
         }
     }
-
 }
