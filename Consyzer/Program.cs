@@ -86,5 +86,10 @@ if (string.IsNullOrWhiteSpace(options.SearchPattern))
 
 var orchestrator = serviceProvider.GetRequiredService<AnalysisOrchestrator>();
 
-var files = FileSearchHelper.GetFilesBySeparatedPatterns(options.AnalysisDirectory, options.SearchPattern, PatternSeparator, options.RecursiveSearch);
+var files = FileSearchHelper.GetFilesBySeparatedPatterns(
+    options.AnalysisDirectory,
+    options.SearchPattern,
+    PatternSeparator,
+    options.RecursiveSearch
+);
 return orchestrator.Run(files);
