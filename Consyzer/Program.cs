@@ -36,7 +36,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IAnalysisLogBuilder, AnalysisLogBuilder>()
 
     // Reporting
-    .AddReportWriters(rawOptions.Formats)
+    .AddReportWriters(rawOptions.OutputFormat)
 
     // Analyzers
     .AddScoped<IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification>, FileClassificationAnalyzer>()
