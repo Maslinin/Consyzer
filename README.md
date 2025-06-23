@@ -76,7 +76,7 @@ The following report formats are supported:
     Missing Libraries: 1
 ```
 
-## Exit Codes
+### Exit Codes
 **Consyzer** returns a specific exit code depending on where the native libraries specified in P/Invoke attributes were or were not found:
 
 | Code | Meaning                                                                                     |
