@@ -9,7 +9,7 @@ internal sealed class LibraryPresenceAnalyzer(
     IOptions<AnalysisOptions> analysisOptions
 ) : IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>
 {
-    private readonly LibraryPresenceResolver _filePresenceResolver = new(analysisOptions.Value.AnalysisDirectory);
+    private readonly CrossPlatformLibraryPresenceResolver _filePresenceResolver = new(analysisOptions.Value.AnalysisDirectory);
 
     public IEnumerable<LibraryPresence> Analyze(IEnumerable<PInvokeMethodGroup> methodGroups)
     {

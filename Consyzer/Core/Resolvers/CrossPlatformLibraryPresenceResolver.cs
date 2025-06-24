@@ -3,9 +3,9 @@ using static Consyzer.Constants.LibraryPresence;
 
 namespace Consyzer.Core.Resolvers;
 
-internal sealed class LibraryPresenceResolver(
+internal sealed class CrossPlatformLibraryPresenceResolver(
     string analyzedDirectory
-) : IFilePresenceResolver<LibraryPresence>
+) : ILibraryPresenceResolver
 {
     private readonly Func<string, LibraryPresence?>[] _resolvers =
     [

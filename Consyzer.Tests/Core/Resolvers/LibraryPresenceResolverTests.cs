@@ -33,7 +33,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         try
         {
-            var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+            var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
             var result = resolver.Resolve(TestLibAnalyzed);
 
             Assert.Equal(LibraryLocationKind.InAnalyzedDirectory, result.LocationKind);
@@ -53,7 +53,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         try
         {
-            var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+            var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
             var result = resolver.Resolve(libPath);
 
             Assert.Equal(LibraryLocationKind.OnAbsolutePath, result.LocationKind);
@@ -73,7 +73,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         try
         {
-            var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+            var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
             var result = resolver.Resolve(TestLibRel);
 
             Assert.Equal(LibraryLocationKind.OnRelativePath, result.LocationKind);
@@ -96,7 +96,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         try
         {
-            var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+            var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
             var result = resolver.Resolve(TestLibEnv);
 
             Assert.Equal(LibraryLocationKind.InEnvironmentPath, result.LocationKind);
@@ -119,7 +119,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         if (libName is null) return;
 
-        var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+        var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
         var result = resolver.Resolve(libName);
 
         Assert.Contains(result.LocationKind, new[] {
@@ -132,7 +132,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     [Fact]
     public void Resolve_ShouldReturnMissing_WhenLibraryNotFound()
     {
-        var resolver = new LibraryPresenceResolver(this._analyzedDirectory);
+        var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
         var result = resolver.Resolve(TestLibMissing);
 
         Assert.Equal(LibraryLocationKind.Missing, result.LocationKind);
