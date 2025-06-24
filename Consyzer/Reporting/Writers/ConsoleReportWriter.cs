@@ -11,7 +11,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     public string Write(AnalysisOutcome outcome)
     {
         WriteAssemblyMetadata(outcome.AssemblyMetadataList);
-        WritePInvokeGroups(outcome.PInvokeGroups, outcome.AssemblyMetadataList);
+        WritePInvokeGroups(outcome.PInvokeGroups);
         WriteLibraryPresence(outcome.LibraryPresences);
         WriteSummary(outcome.Summary);
 
@@ -22,43 +22,46 @@ internal sealed class ConsoleReportWriter : IReportWriter
     {
         var builder = new IndentedTextBuilder()
             .Title(AssemblyMetadataList)
+            .PushIndent()
             .IndexedSection(metadataList, (b, m) =>
             {
-                b.InnerLine($"File: {m.File.Name}");
-                b.InnerLine($"Version: {m.Version}");
-                b.InnerLine($"CreationDate: {m.CreationDateUtc}");
-                b.InnerLine($"SHA256 Hash: {m.Sha256}");
-            });
+                b.Line($"File: {m.File.Name}");
+                b.Line($"Version: {m.Version}");
+                b.Line($"CreationDate: {m.CreationDateUtc}");
+                b.Line($"SHA256 Hash: {m.Sha256}");
+            })
+            .PopIndent();
 
         Console.Out.Write(builder.Build());
     }
 
-    private static void WritePInvokeGroups(IEnumerable<PInvokeMethodGroup> groups, IEnumerable<AssemblyMetadata> metadata)
+    private static void WritePInvokeGroups(IEnumerable<PInvokeMethodGroup> groups)
     {
         var builder = new IndentedTextBuilder()
-            .Title(PInvokeGroups);
+            .Title(PInvokeGroups)
+            .PushIndent();
 
-        int index = 0;
-
-        foreach (var fileName in metadata.Select(m => m.File.Name))
+        builder.IndexedSection(groups, (b, g) =>
         {
-            var group = groups.FirstOrDefault(g => g.File.Name.Equals(fileName, StringComparison.OrdinalIgnoreCase));
+            var methods = g.Methods;
 
-            if (group is not null && group.Methods.Any())
+            if (!methods.Any())
             {
-                builder.Title($"[{index++}] File: {fileName} — Found: {group.Methods.Count()}");
-                builder.IndexedSection(group.Methods, (b, m) =>
-                {
-                    b.InnerLine($"Method Signature: '{m.Signature}'");
-                    b.InnerLine($"Import Name: '{m.ImportName}'");
-                    b.InnerLine($"Import Flags: '{m.ImportFlags}'");
-                });
+                b.Line($"File: {g.File.Name} — No P/Invoke methods");
+                return;
             }
-            else
+
+            b.Line($"File: {g.File.Name} — Found: {methods.Count()}");
+
+            b.IndexedSection(methods, (bb, m) =>
             {
-                builder.Title($"[{index++}] {fileName} - No P/Invoke methods");
-            }
-        }
+                bb.Line($"Method Signature: '{m.Signature}'");
+                bb.Line($"Import Name: '{m.ImportName}'");
+                bb.Line($"Import Flags: '{m.ImportFlags}'");
+            });
+        });
+
+        builder.PopIndent();
 
         Console.Out.Write(builder.Build());
     }
@@ -67,11 +70,13 @@ internal sealed class ConsoleReportWriter : IReportWriter
     {
         var builder = new IndentedTextBuilder()
             .Title(LibraryPresences)
+            .PushIndent()
             .IndexedItems(presences, p =>
             {
-                var status = p.LocationKind == LibraryLocationKind.Missing ? "MISSING" : $"FOUND [{p.LocationKind}]";
-                return $"{p.LibraryName} — {status}";
-            });
+                var status = p.LocationKind == LibraryLocationKind.Missing ? "MISSING" : "FOUND";
+                return $"{p.LibraryName} — {status} [{p.LocationKind}]";
+            })
+            .PopIndent();
 
         Console.Out.Write(builder.Build());
     }
@@ -80,11 +85,13 @@ internal sealed class ConsoleReportWriter : IReportWriter
     {
         var builder = new IndentedTextBuilder()
             .Title(Summary)
+            .PushIndent()
             .Line("Total Files", summary.TotalFiles)
             .Line("ECMA Assemblies", summary.EcmaAssemblies)
             .Line("Assemblies With P/Invoke", summary.AssembliesWithPInvoke)
             .Line("Total P/Invoke Methods", summary.TotalPInvokeMethods)
-            .Line("Missing Libraries", summary.MissingLibraries);
+            .Line("Missing Libraries", summary.MissingLibraries)
+            .PopIndent();
 
         Console.Out.Write(builder.Build());
     }
