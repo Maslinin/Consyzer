@@ -23,6 +23,8 @@ static partial void HelloWorld();
 The application functions correctly without compromising system integrity and security as long as all unmanaged libraries are present at the locations described in the metadata;
 however, if even one of the libraries is missing, the application will not only crash but may also pose a security risk.
 
+> ⚠️ The analysis is based on the metadata stored in CIL assemblies and does not evaluate the correctness of marshaling between managed and unmanaged code.
+
 Consyzer was created to ensure that such situations do not come as a surprise.
 
 ## How does it work?
