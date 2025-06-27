@@ -2,5 +2,5 @@
 
 internal interface IFileHasher
 {
-    string CalculateHash(FileInfo fileInfo);
+    string CalculateHash(FileInfo file);
 }

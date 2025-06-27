@@ -22,11 +22,11 @@ internal sealed class JsonEnumConverter<T> : JsonConverter<T> where T : struct, 
 {
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var str = reader.GetString();
+        var enumText = reader.GetString();
 
-        if (Enum.TryParse<T>(str, ignoreCase: true, out var result))
+        if (Enum.TryParse<T>(enumText, ignoreCase: true, out var value))
         {
-            return result;
+            return value;
         }
 
         return default;

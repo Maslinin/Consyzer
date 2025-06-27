@@ -11,13 +11,10 @@ internal sealed class MethodSignature
 
     public override string ToString()
     {
-        string separatedArgs = string.Join(", ", MethodArguments);
+        string args = string.Join(", ", MethodArguments);
         string isStatic = IsStatic ? " static" : string.Empty;
-        return $"{ReturnType}{isStatic} {GetMethodLocation()}({separatedArgs})";
+        return $"{ReturnType}{isStatic} {GetMethodLocation()}({args})";
     }
 
-    public string GetMethodLocation()
-    {
-        return $"{Namespace}.{Class}.{Method}";
-    }
+    public string GetMethodLocation() => $"{Namespace}.{Class}.{Method}";
 }

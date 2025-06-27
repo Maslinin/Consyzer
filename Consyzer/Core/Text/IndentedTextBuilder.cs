@@ -6,8 +6,8 @@ internal sealed class IndentedTextBuilder
 {
     private const char Indent = '\t';
 
-    private readonly StringBuilder _sb = new();
     private int _level;
+    private readonly StringBuilder _sb = new();
 
     public IndentedTextBuilder PushIndent()
     {
@@ -27,15 +27,15 @@ internal sealed class IndentedTextBuilder
         return this;
     }
 
-    public IndentedTextBuilder Line(string label, object? value)
+    public IndentedTextBuilder Line(string line)
     {
-        _sb.AppendLine($"{IndentString()}{label}: {value}");
+        _sb.AppendLine($"{IndentString()}{line}");
         return this;
     }
 
-    public IndentedTextBuilder Line(string label)
+    public IndentedTextBuilder Line(string line, object? value)
     {
-        _sb.AppendLine($"{IndentString()}{label}");
+        _sb.AppendLine($"{IndentString()}{line}: {value}");
         return this;
     }
 
@@ -43,9 +43,10 @@ internal sealed class IndentedTextBuilder
     {
         int index = 0;
         var indent = IndentString();
+
         foreach (var item in items)
         {
-            _sb.AppendLine($"{indent}[{index++}] {formatter(item)}");
+            _sb.AppendLine($"{indent}[{++index}] {formatter(item)}");
         }
 
         return this;
@@ -55,9 +56,10 @@ internal sealed class IndentedTextBuilder
     {
         int index = 0;
         var indent = IndentString();
+
         foreach (var item in items)
         {
-            _sb.AppendLine($"{indent}[{index++}]");
+            _sb.AppendLine($"{indent}[{++index}]");
             PushIndent();
             renderer(this, item);
             PopIndent();

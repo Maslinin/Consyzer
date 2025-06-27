@@ -7,7 +7,6 @@ using static Consyzer.Tests.TestInfrastructure.Helpers.MatchesHelper;
 
 namespace Consyzer.Tests.Core.Extractors;
 
-
 public sealed class AssemblyMetadataExtractorTests
 {
     private const string SemVerRegex = @"^\d+\.\d+\.\d+(\.\d+)?$";

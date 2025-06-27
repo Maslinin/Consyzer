@@ -4,7 +4,7 @@ using Consyzer.Core.Resolvers;
 
 namespace Consyzer.Tests.Core.Resolvers;
 
-public sealed class LibraryPresenceResolverTests : IDisposable
+public sealed class CrossPlatformLibraryPresenceResolverTests : IDisposable
 {
     private const string DummyFileContent = "dummy";
     private const string DllExtension = ".dll";
@@ -19,7 +19,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     private readonly string _analyzedDirectory = Path.Combine(Path.GetTempPath(), "analyzed-" + Guid.NewGuid());
     private readonly string _envPathDirectory = Path.Combine(Path.GetTempPath(), "envpath-" + Guid.NewGuid());
 
-    public LibraryPresenceResolverTests()
+    public CrossPlatformLibraryPresenceResolverTests()
     {
         Directory.CreateDirectory(_analyzedDirectory);
         Directory.CreateDirectory(_envPathDirectory);
@@ -28,8 +28,8 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     [Fact]
     public void Resolve_ShouldReturnInAnalyzedDirectory_WhenLibraryIsInAnalyzedDir()
     {
-        var libPath = Path.Combine(_analyzedDirectory, TestLibAnalyzed);
-        File.WriteAllText(libPath, DummyFileContent);
+        var libraryPath = Path.Combine(_analyzedDirectory, TestLibAnalyzed);
+        File.WriteAllText(libraryPath, DummyFileContent);
 
         try
         {
@@ -37,31 +37,31 @@ public sealed class LibraryPresenceResolverTests : IDisposable
             var result = resolver.Resolve(TestLibAnalyzed);
 
             Assert.Equal(LibraryLocationKind.InAnalyzedDirectory, result.LocationKind);
-            Assert.Equal(libPath, result.ResolvedPath);
+            Assert.Equal(libraryPath, result.ResolvedPath);
         }
         finally
         {
-            File.Delete(libPath);
+            File.Delete(libraryPath);
         }
     }
 
     [Fact]
     public void Resolve_ShouldReturnOnAbsolutePath_WhenLibraryExistsAtAbsolutePath()
     {
-        var libPath = Path.Combine(Path.GetTempPath(), TestLibAbs);
-        File.WriteAllText(libPath, DummyFileContent);
+        var libraryPath = Path.Combine(Path.GetTempPath(), TestLibAbs);
+        File.WriteAllText(libraryPath, DummyFileContent);
 
         try
         {
             var resolver = new CrossPlatformLibraryPresenceResolver(_analyzedDirectory);
-            var result = resolver.Resolve(libPath);
+            var result = resolver.Resolve(libraryPath);
 
             Assert.Equal(LibraryLocationKind.OnAbsolutePath, result.LocationKind);
-            Assert.Equal(libPath, result.ResolvedPath);
+            Assert.Equal(libraryPath, result.ResolvedPath);
         }
         finally
         {
-            File.Delete(libPath);
+            File.Delete(libraryPath);
         }
     }
 
@@ -88,8 +88,8 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     [Fact]
     public void Resolve_ShouldReturnInEnvironmentPath_WhenLibraryInPath()
     {
-        var libPath = Path.Combine(_envPathDirectory, TestLibEnv);
-        File.WriteAllText(libPath, DummyFileContent);
+        var libraryPath = Path.Combine(_envPathDirectory, TestLibEnv);
+        File.WriteAllText(libraryPath, DummyFileContent);
 
         var originalPath = Environment.GetEnvironmentVariable(PathVariableName) ?? string.Empty;
         Environment.SetEnvironmentVariable(PathVariableName, _envPathDirectory + Path.PathSeparator + originalPath);
@@ -100,12 +100,12 @@ public sealed class LibraryPresenceResolverTests : IDisposable
             var result = resolver.Resolve(TestLibEnv);
 
             Assert.Equal(LibraryLocationKind.InEnvironmentPath, result.LocationKind);
-            Assert.Equal(Path.GetFullPath(libPath), result.ResolvedPath);
+            Assert.Equal(Path.GetFullPath(libraryPath), result.ResolvedPath);
         }
         finally
         {
             Environment.SetEnvironmentVariable(PathVariableName, originalPath);
-            File.Delete(libPath);
+            File.Delete(libraryPath);
         }
     }
 
@@ -113,14 +113,14 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     public void Resolve_ShouldReturnInSystemDirectory_WhenLibraryIsInSystemDirectory()
     {
         var systemDir = Environment.SystemDirectory;
-        var libName = Directory.GetFiles(systemDir)
+        var libraryName = Directory.GetFiles(systemDir)
             .Select(Path.GetFileName)
             .FirstOrDefault(name => name?.EndsWith(DllExtension, StringComparison.OrdinalIgnoreCase) is true);
 
-        if (libName is null) return;
+        if (libraryName is null) return;
 
         var resolver = new CrossPlatformLibraryPresenceResolver(_analyzedDirectory);
-        var result = resolver.Resolve(libName);
+        var result = resolver.Resolve(libraryName);
 
         Assert.Contains(result.LocationKind, new[] {
             LibraryLocationKind.InSystemDirectory,

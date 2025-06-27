@@ -54,9 +54,9 @@ internal sealed class CsvReportWriter(
             .ToString();
     }
 
-    private string CsvPInvoke(IEnumerable<PInvokeMethodGroup> groups)
+    private string CsvPInvoke(IEnumerable<PInvokeMethodGroup> methodGroups)
     {
-        var sigProps = typeof(MethodSignature).GetProperties();
+        var signatureProperties = typeof(MethodSignature).GetProperties();
         var signatureFieldName = nameof(PInvokeMethod.Signature);
 
         var header = new List<string>
@@ -64,41 +64,41 @@ internal sealed class CsvReportWriter(
             Label.PInvoke.File
         };
 
-        header.AddRange(sigProps.Select(p => $"{signatureFieldName}_{p.Name}"));
+        header.AddRange(signatureProperties.Select(p => $"{signatureFieldName}_{p.Name}"));
         header.Add(Label.PInvoke.ImportName);
         header.Add(Label.PInvoke.ImportFlags);
 
         var table = new CsvTableBuilder(Options.Delimiter)
             .Header(header);
 
-        foreach (var group in groups)
+        foreach (var group in methodGroups)
         {
             foreach (var method in group.Methods)
             {
-                var row = new List<string>
+                var record = new List<string>
                 {
                     SerializeValue(group.File.FullName)
                 };
 
-                row.AddRange(sigProps.Select(p => SerializeValue(p.GetValue(method.Signature))));
-                row.Add(SerializeValue(method.ImportName));
-                row.Add(SerializeValue(method.ImportFlags.ToString()));
+                record.AddRange(signatureProperties.Select(p => SerializeValue(p.GetValue(method.Signature))));
+                record.Add(SerializeValue(method.ImportName));
+                record.Add(SerializeValue(method.ImportFlags.ToString()));
 
-                table.Record(row);
+                table.Record(record);
             }
         }
 
         return table.ToString();
     }
 
-    private string SerializeValue(object? val)
+    private string SerializeValue(object? value)
     {
-        if (val is IEnumerable<string> strList && val is not string)
+        if (value is IEnumerable<string> strList && value is not string)
         {
             return EscapeList(strList);
         }
 
-        return EscapeValue(val?.ToString());
+        return EscapeValue(value?.ToString());
     }
 
     private string EscapeList(IEnumerable<string> items)
@@ -125,8 +125,8 @@ internal sealed class CsvReportWriter(
         return $"\"{value.Replace("\"", "\"\"").Replace('\n', ' ').Replace('\r', ' ')}\"";
     }
 
-    private static Encoding GetEncoding(string? name)
+    private static Encoding GetEncoding(string? encoding)
     {
-        return string.IsNullOrEmpty(name) ? new UTF8Encoding(false) : Encoding.GetEncoding(name);
+        return string.IsNullOrEmpty(encoding) ? new UTF8Encoding(false) : Encoding.GetEncoding(encoding);
     }
 }

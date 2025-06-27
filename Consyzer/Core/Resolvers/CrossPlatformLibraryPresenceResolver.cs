@@ -73,12 +73,12 @@ internal sealed class CrossPlatformLibraryPresenceResolver(
         if (Path.IsPathRooted(file) || Path.GetFileName(file) != file)
             return null;
 
-        var pathDirs = (Environment.GetEnvironmentVariable(Variable.Path) ?? string.Empty)
+        var pathDirectories = (Environment.GetEnvironmentVariable(Variable.Path) ?? string.Empty)
             .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-        foreach (var dir in pathDirs)
+        foreach (var directory in pathDirectories)
         {
-            var candidate = Path.Combine(dir, file);
+            var candidate = Path.Combine(directory, file);
             if (File.Exists(candidate))
             {
                 return new LibraryPresence
@@ -89,6 +89,7 @@ internal sealed class CrossPlatformLibraryPresenceResolver(
                 };
             }
         }
+
         return null;
     }
 
@@ -139,18 +140,18 @@ internal sealed class CrossPlatformLibraryPresenceResolver(
         return null;
     }
 
-    private static string? GetCandidatePath(string? baseDir, string file)
+    private static string? GetCandidatePath(string? baseDirectory, string file)
     {
-        var candidate = baseDir is not null
-            ? Path.Combine(baseDir, file)
+        var candidate = baseDirectory is not null
+            ? Path.Combine(baseDirectory, file)
             : file;
 
         return File.Exists(candidate) ? candidate : null;
     }
 
-    private static bool IsPathInsideDirectory(string baseDir, string path)
+    private static bool IsPathInsideDirectory(string baseDirectory, string path)
     {
-        var baseFull = Path.GetFullPath(baseDir);
+        var baseFull = Path.GetFullPath(baseDirectory);
         var fileFull = Path.GetFullPath(path);
         var relative = Path.GetRelativePath(baseFull, fileFull);
         return !relative.StartsWith("..", StringComparison.OrdinalIgnoreCase);

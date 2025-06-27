@@ -64,7 +64,7 @@ internal sealed class MethodSignatureExtractor(
 
     private static MethodSignature<string> DecodeSignature(MethodDefinition methodDef)
     {
-        var signatureProvider = new StringSignatureTypeProvider();
-        return methodDef.DecodeSignature(signatureProvider, new object());
+        var signatureTypeProvider = new StringSignatureTypeProvider();
+        return methodDef.DecodeSignature(signatureTypeProvider, new object());
     }
 }

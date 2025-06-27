@@ -9,9 +9,9 @@ internal sealed class Sha256FileHasher(
 {
     private readonly SHA256 _sha256 = SHA256.Create();
 
-    public string CalculateHash(FileInfo fileInfo)
+    public string CalculateHash(FileInfo file)
     {
-        var stream = fileStreamAccessor.Get(fileInfo);
+        var stream = fileStreamAccessor.Get(file);
         byte[] hash = _sha256.ComputeHash(stream);
 
         return Convert.ToHexString(hash);

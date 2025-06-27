@@ -7,12 +7,12 @@ using Consyzer.Core.Resources;
 namespace Consyzer.Core.Extractors;
 
 internal sealed class PInvokeMethodExtractor(
-    IResourceAccessor<FileInfo, PEReader> peReaderManager
+    IResourceAccessor<FileInfo, PEReader> peReaderAccessor
 ) : IExtractor<FileInfo, IEnumerable<PInvokeMethod>>
 {
     public IEnumerable<PInvokeMethod> Extract(FileInfo file)
     {
-        var peReader = peReaderManager.Get(file);
+        var peReader = peReaderAccessor.Get(file);
         var mdReader = peReader.GetMetadataReader();
 
         foreach (var method in GetPInvokeMethods(mdReader))
@@ -23,7 +23,7 @@ internal sealed class PInvokeMethodExtractor(
 
     private static List<PInvokeMethod> GetPInvokeMethods(MetadataReader mdReader)
     {
-        var result = new List<PInvokeMethod>();
+        var methods = new List<PInvokeMethod>();
 
         foreach (var handle in mdReader.MethodDefinitions)
         {
@@ -31,11 +31,11 @@ internal sealed class PInvokeMethodExtractor(
 
             if (IsPInvokeMethod(definition))
             {
-                result.Add(ToPInvokeMethod(mdReader, definition));
+                methods.Add(ToPInvokeMethod(mdReader, definition));
             }
         }
 
-        return result;
+        return methods;
     }
 
     private static bool IsPInvokeMethod(MethodDefinition methodDef)

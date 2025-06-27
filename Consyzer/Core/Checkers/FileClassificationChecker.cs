@@ -6,7 +6,7 @@ using Consyzer.Core.Resources;
 namespace Consyzer.Core.Checkers;
 
 internal sealed class FileClassificationChecker(
-    IResourceAccessor<FileInfo, PEReader> accessor
+    IResourceAccessor<FileInfo, PEReader> peReaderAccessor
 ) : IFileClassificationChecker<AnalysisFileClassification>
 {
     public AnalysisFileClassification Check(IEnumerable<FileInfo> files)
@@ -38,7 +38,7 @@ internal sealed class FileClassificationChecker(
     {
         try
         {
-            peReader = accessor.Get(file);
+            peReader = peReaderAccessor.Get(file);
             return peReader.HasMetadata && peReader.PEHeaders is not null;
         }
         catch (BadImageFormatException)

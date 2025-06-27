@@ -12,7 +12,7 @@ internal sealed class AnalysisOrchestrator(
     ILogger<AnalysisOrchestrator> logger,
     IAnalysisLogBuilder analysisLogBuilder,
     IOptions<AnalysisOptions> analysisOptions,
-    IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification> fileClassifier,
+    IAnalyzer<IEnumerable<FileInfo>, AnalysisFileClassification> fileClassificationAnalyzer,
     IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>> metadataAnalyzer,
     IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>> pinvokeAnalyzer,
     IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>> libraryPresenceAnalyzer,
@@ -34,7 +34,7 @@ internal sealed class AnalysisOrchestrator(
 
         logger.LogInformation("{Message}", analysisLogBuilder.BuildFoundFilesLog(files));
 
-        var fileClassification = fileClassifier.Analyze(files);
+        var fileClassification = fileClassificationAnalyzer.Analyze(files);
         logger.LogInformation("{Message}", analysisLogBuilder.BuildFileClassificationLog(fileClassification));
 
         if (!fileClassification.EcmaAssemblies.Any())

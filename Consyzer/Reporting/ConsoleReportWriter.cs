@@ -18,12 +18,12 @@ internal sealed class ConsoleReportWriter : IReportWriter
         return Destination;
     }
 
-    private static void WriteAssemblyMetadata(IEnumerable<AssemblyMetadata> metadataList)
+    private static void WriteAssemblyMetadata(IEnumerable<AssemblyMetadata> assemblyInfos)
     {
         var builder = new IndentedTextBuilder()
             .Title(Section.AssemblyMetadataList)
             .PushIndent()
-            .IndexedSection(metadataList, (b, m) =>
+            .IndexedSection(assemblyInfos, (b, m) =>
             {
                 b.Line($"{Label.Assembly.File}: {m.File.Name}");
                 b.Line($"{Label.Assembly.Version}: {m.Version}");
@@ -65,8 +65,8 @@ internal sealed class ConsoleReportWriter : IReportWriter
             .PushIndent()
             .IndexedItems(presences, p =>
             {
-                var status = p.LocationKind == LibraryLocationKind.Missing ? "MISSING" : "FOUND";
-                return $"{p.LibraryName} — {status} [{p.LocationKind}]";
+                var presence = p.LocationKind == LibraryLocationKind.Missing ? "MISSING" : "FOUND";
+                return $"{p.LibraryName} — {presence} [{p.LocationKind}]";
             })
             .PopIndent();
 

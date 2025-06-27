@@ -9,7 +9,7 @@ internal sealed class LibraryPresenceAnalyzer(
     IOptions<AnalysisOptions> analysisOptions
 ) : IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>
 {
-    private readonly CrossPlatformLibraryPresenceResolver _filePresenceResolver = new(analysisOptions.Value.AnalysisDirectory);
+    private readonly CrossPlatformLibraryPresenceResolver _libraryPresenceResolver = new(analysisOptions.Value.AnalysisDirectory);
 
     public IEnumerable<LibraryPresence> Analyze(IEnumerable<PInvokeMethodGroup> methodGroups)
     {
@@ -17,9 +17,9 @@ internal sealed class LibraryPresenceAnalyzer(
             .SelectMany(g => g.Methods.Select(m => m.ImportName))
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var import in distinctImportNames)
+        foreach (var importName in distinctImportNames)
         {
-            yield return _filePresenceResolver.Resolve(import);
+            yield return _libraryPresenceResolver.Resolve(importName);
         }
     }
 }

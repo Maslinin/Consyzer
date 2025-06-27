@@ -8,7 +8,7 @@ namespace Consyzer.Core.Extractors;
 
 internal sealed class AssemblyMetadataExtractor(
     IFileHasher hasher,
-    IResourceAccessor<FileInfo, PEReader> peReaderManager
+    IResourceAccessor<FileInfo, PEReader> peReaderAccessor
 ) : IExtractor<FileInfo, AssemblyMetadata>
 {
     public AssemblyMetadata Extract(FileInfo file)
@@ -24,7 +24,7 @@ internal sealed class AssemblyMetadataExtractor(
 
     private string ExtractVersion(FileInfo file)
     {
-        var peReader = peReaderManager.Get(file);
+        var peReader = peReaderAccessor.Get(file);
 
         var mdReader = peReader.GetMetadataReader();
         return mdReader.GetAssemblyDefinition().Version?.ToString() ?? "unknown";

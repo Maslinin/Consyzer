@@ -4,15 +4,15 @@ internal sealed class CsvTableBuilder(char delimiter)
 {
     private readonly List<string> lines = [];
 
-    public CsvTableBuilder Header(IEnumerable<string> cols)
+    public CsvTableBuilder Header(IEnumerable<string> fields)
     {
-        lines.Add(string.Join(delimiter, cols));
+        lines.Add(string.Join(delimiter, fields));
         return this;
     }
 
-    public CsvTableBuilder Record(IEnumerable<string> cols)
+    public CsvTableBuilder Record(IEnumerable<string> fields)
     {
-        lines.Add(string.Join(delimiter, cols));
+        lines.Add(string.Join(delimiter, fields));
         return this;
     }
 
