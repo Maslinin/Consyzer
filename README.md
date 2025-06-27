@@ -32,7 +32,7 @@ Consyzer was created to ensure that such situations do not come as a surprise.
 2. Consyzer logs and excludes from analysis any files that are not ECMA-355 assemblies;  
 3. Consyzer analyzes the remaining ECMA assemblies for the presence of P/Invoke calls;  
 4. Consyzer analyzes each found P/Invoke method and checks whether the corresponding native libraries exist in the system;  
-5. Consyzer generates a report based on the analysis results in one or more formats (Console, CSV, JSON), depending on the configuration;  
+5. Consyzer generates a report based on the analysis results in one or more formats depending on the configuration;  
 6. Consyzer returns an exit code indicating the specific analysis result, which also enables you to handle analysis incidents in accordance with your requirements.
 
 ## Analysis Results
@@ -40,8 +40,8 @@ Consyzer was created to ensure that such situations do not come as a surprise.
 The following report formats are supported:
 
 1. `Console` — human-readable text report output to the terminal;  
-2. `Csv` — line-based CSV file split into logical sections;  
-3. `Json` — structured JSON with full analysis details.
+2. `Json` — structured JSON with full analysis details;
+3. `Csv` — line-based CSV file split into logical sections. 
 
 ### Example report (Console)
 ```
@@ -49,33 +49,43 @@ The following report formats are supported:
     [0]
         File: Foo.dll
         Version: 1.0.0.0
-        CreationDate: 21.06.2025 12:00:00
-        SHA256 Hash: ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890
+        CreationDateUtc: 21.06.2025 12:00:00
+        Sha256: ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890
     [1]
         File: Bar.dll
         Version: 2.1.3.0
-        CreationDate: 22.06.2025 15:30:00
-        SHA256 Hash: 1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF
-[PInvokeGroups]
+        CreationDateUtc: 22.06.2025 15:30:00
+        Sha256: 1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF
+    [2]
+        File: Baz.dll
+        Version: 1.2.0.0
+        CreationDateUtc: 23.06.2025 10:45:00
+        Sha256: FEDCBA0987654321FEDCBA0987654321FEDCBA0987654321FEDCBA0987654321
+[PInvokeMethodGroups]
     [0] File: Foo.dll — Found: 2
         [0]
-            Method Signature: 'Int32 static Native.Foo.DoStuff()'
-            Import Name: 'existentlib.dll'
-            Import Flags: 'CallingConventionCDecl'
+            Signature: 'Int32 static Native.Foo.DoStuff()'
+            ImportName: 'existentlib.dll'
+            ImportFlags: 'CallingConventionCDecl'
         [1]
-            Method Signature: 'Void static Native.Foo.FailStuff(String)'
-            Import Name: 'missinglib.dll'
-            Import Flags: 'CallingConventionStdCall'
-    [1] File: Bar.dll — No P/Invoke methods
+            Signature: 'Void static Native.Foo.FailStuff(String)'
+            ImportName: 'missinglib.dll'
+            ImportFlags: 'CallingConventionStdCall'
+    [1] File: Baz.dll — Found: 1
+        [0]
+            Signature: 'Boolean static Native.Baz.CheckSomething(Int32)'
+            ImportName: 'anotherlib.dll'
+            ImportFlags: 'CallingConventionStdCall'
 [LibraryPresences]
     [0] existentlib.dll - FOUND [InSystemDirectory]
-    [1] missinglib.dll - NOT FOUND [Missing]
+    [1] missinglib.dll - MISSING [Missing]
+    [2] anotherlib.dll - FOUND [InEnvironmentPath]
 [Summary]
-    Total Files: 2
-    ECMA Assemblies: 2
-    Assemblies With P/Invoke: 1
-    Total P/Invoke Methods: 2
-    Missing Libraries: 1
+    TotalFiles: 3
+    EcmaAssemblies: 3
+    AssembliesWithPInvoke: 2
+    TotalPInvokeMethods: 3
+    MissingLibraries: 1
 ```
 
 ### Exit Codes
@@ -115,11 +125,11 @@ The following report formats are supported:
 You can also specify two optional parameters:
 
 1. `--RecursiveSearch` — specifies whether to search for CIL modules in subdirectories. Default: `false`.  
-2. `--OutputFormat` — sets the report output format (`Console`, `Csv`, `Json`). Multiple values supported via comma. Default: `Console`.
+2. `--OutputFormat` — sets the report output format (`Console`, `Json`, `Csv`). Multiple values supported via comma. Default: `Console`.
 
 ### General usage pattern
 ```
-Consyzer.exe --AnalysisDirectory <path_to_directory> --SearchPattern <search_pattern> [--RecursiveSearch true|false] [--OutputFormat Console, Csv, Json]
+Consyzer.exe --AnalysisDirectory <path_to_directory> --SearchPattern <search_pattern> [--RecursiveSearch true|false] [--OutputFormat Console, Json, Csv]
 ```
 
 ### Example

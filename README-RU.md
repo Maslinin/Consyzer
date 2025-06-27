@@ -33,7 +33,7 @@ Consyzer был разработан для того, чтобы такие си
 2. Consyzer логгирует и исключает из анализа файлы, не являющиеся сборками ECMA-355;
 3. Consyzer анализирует оставшиеся ECMA-сборки на наличие P/Invoke-вызовов;
 4. Consyzer анализирует каждый найденный P/Invoke-метод и проверяет наличие соответствующих нативных библиотек в системе;
-5. Consyzer формирует отчёт по результатам анализа в одном или нескольких форматах (Console, CSV, JSON), в зависимости от конфигурации;
+5. Consyzer формирует отчёт по результатам анализа в одном или нескольких форматах в зависимости от конфигурации;
 6. Consyzer возвращает код выхода, указывающий на конкретный результат анализа, что также позволяет осуществлять индивидуальную обработку инцидентов анализа в соответствии с Вашими требованиями.
 
 ## Результаты анализа
@@ -41,8 +41,8 @@ Consyzer был разработан для того, чтобы такие си
 Поддерживаются следующие форматы отчетов:
 
 1. `Console` — человеко-читаемый текстовый отчёт, выводимый в терминал;
-2. `Csv` — построчный CSV-файл, разделённый на логические секции;
-3. `Json` — структурированный JSON с полной информацией об анализе.
+2. `Json` — структурированный JSON с полной информацией об анализе;
+3. `Csv` — построчный CSV-файл, разделённый на логические секции.
 
 ### Пример отчёта (Console)
 ```
@@ -50,33 +50,43 @@ Consyzer был разработан для того, чтобы такие си
     [0]
         File: Foo.dll
         Version: 1.0.0.0
-        CreationDate: 21.06.2025 12:00:00
-        SHA256 Hash: ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890
+        CreationDateUtc: 21.06.2025 12:00:00
+        Sha256: ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890
     [1]
         File: Bar.dll
         Version: 2.1.3.0
-        CreationDate: 22.06.2025 15:30:00
-        SHA256 Hash: 1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF
-[PInvokeGroups]
+        CreationDateUtc: 22.06.2025 15:30:00
+        Sha256: 1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF
+    [2]
+        File: Baz.dll
+        Version: 1.2.0.0
+        CreationDateUtc: 23.06.2025 10:45:00
+        Sha256: FEDCBA0987654321FEDCBA0987654321FEDCBA0987654321FEDCBA0987654321
+[PInvokeMethodGroups]
     [0] File: Foo.dll — Found: 2
         [0]
-            Method Signature: 'Int32 static Native.Foo.DoStuff()'
-            Import Name: 'existentlib.dll'
-            Import Flags: 'CallingConventionCDecl'
+            Signature: 'Int32 static Native.Foo.DoStuff()'
+            ImportName: 'existentlib.dll'
+            ImportFlags: 'CallingConventionCDecl'
         [1]
-            Method Signature: 'Void static Native.Foo.FailStuff(String)'
-            Import Name: 'missinglib.dll'
-            Import Flags: 'CallingConventionStdCall'
-	[1] File: Bar.dll — No P/Invoke methods
+            Signature: 'Void static Native.Foo.FailStuff(String)'
+            ImportName: 'missinglib.dll'
+            ImportFlags: 'CallingConventionStdCall'
+    [1] File: Baz.dll — Found: 1
+        [0]
+            Signature: 'Boolean static Native.Baz.CheckSomething(Int32)'
+            ImportName: 'anotherlib.dll'
+            ImportFlags: 'CallingConventionStdCall'
 [LibraryPresences]
     [0] existentlib.dll - FOUND [InSystemDirectory]
-    [1] missinglib.dll - NOT FOUND [Missing]
+    [1] missinglib.dll - MISSING [Missing]
+    [2] anotherlib.dll - FOUND [InEnvironmentPath]
 [Summary]
-	Total Files: 2
-	ECMA Assemblies: 2
-	Assemblies With P/Invoke: 1
-	Total P/Invoke Methods: 2
-	Missing Libraries: 1
+    TotalFiles: 3
+    EcmaAssemblies: 3
+    AssembliesWithPInvoke: 2
+    TotalPInvokeMethods: 3
+    MissingLibraries: 1
 ```
 
 ## Коды возврата
@@ -117,11 +127,11 @@ Consyzer был разработан для того, чтобы такие си
 Вы также можете указать два дополнительных параметра:
 
 1. `--RecursiveSearch` — указывает, выполнять ли поиск CIL-модулей во вложенных директориях. По умолчанию: `false`.
-2. `--OutputFormat` — задает формат вывода отчёта (`Console`, `Csv`, `Json`). Поддерживаются множественные значения через запятую. По умолчанию: `Console`.
+2. `--OutputFormat` — задает формат вывода отчёта (`Console`, `Json`, `Csv`). Поддерживаются множественные значения через запятую. По умолчанию: `Console`.
 
 ### Общий шаблон запуска
 ```
-Consyzer.exe --AnalysisDirectory <путь_к_директории> --SearchPattern <шаблон_поиска> [--RecursiveSearch true|false] [--OutputFormat Console, Csv, Json]
+Consyzer.exe --AnalysisDirectory <путь_к_директории> --SearchPattern <шаблон_поиска> [--RecursiveSearch true|false] [--OutputFormat Console, Json, Csv]
 ```
 
 ### Пример

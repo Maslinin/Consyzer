@@ -64,7 +64,7 @@ internal sealed class AnalysisOrchestrator(
         var outcome = new AnalysisOutcome
         {
             AssemblyMetadataList = metadataList,
-            PInvokeGroups = pInvokeGroups,
+            PInvokeMethodGroups = pInvokeGroups,
             LibraryPresences = libraryPresences,
             Summary = summary
         };

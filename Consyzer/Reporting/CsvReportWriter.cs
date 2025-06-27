@@ -35,8 +35,8 @@ internal sealed class CsvReportWriter(
         sb.AppendLine(Section.AssemblyMetadataList);
         sb.AppendLine(CsvTable(outcome.AssemblyMetadataList));
 
-        sb.AppendLine(Section.PInvokeGroups);
-        sb.AppendLine(CsvPInvoke(outcome.PInvokeGroups));
+        sb.AppendLine(Section.PInvokeMethodGroups);
+        sb.AppendLine(CsvPInvoke(outcome.PInvokeMethodGroups));
 
         sb.AppendLine(Section.LibraryPresences);
         sb.AppendLine(CsvTable(outcome.LibraryPresences));

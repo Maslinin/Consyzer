@@ -11,7 +11,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     public string Write(AnalysisOutcome outcome)
     {
         WriteAssemblyMetadata(outcome.AssemblyMetadataList);
-        WritePInvokeGroups(outcome.PInvokeGroups);
+        WritePInvokeGroups(outcome.PInvokeMethodGroups);
         WriteLibraryPresence(outcome.LibraryPresences);
         WriteSummary(outcome.Summary);
 
@@ -38,7 +38,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WritePInvokeGroups(IEnumerable<PInvokeMethodGroup> groups)
     {
         var builder = new IndentedTextBuilder()
-            .Title(Section.PInvokeGroups)
+            .Title(Section.PInvokeMethodGroups)
             .PushIndent();
 
         builder.IndexedSection(groups, (b, g) =>

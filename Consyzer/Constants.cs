@@ -40,7 +40,6 @@ internal static class Constants
         {
             public const string Json = ".json";
             public const string Csv = ".csv";
-            public const string Xml = ".xml";
         }
 
         public static class Name
@@ -69,7 +68,7 @@ internal static class Constants
             public const string EcmaAssemblies = $"[{nameof(AnalysisFileClassification.EcmaAssemblies)}]";
 
             public const string AssemblyMetadataList = $"[{nameof(AnalysisOutcome.AssemblyMetadataList)}]";
-            public const string PInvokeGroups = $"[{nameof(AnalysisOutcome.PInvokeGroups)}]";
+            public const string PInvokeMethodGroups = $"[{nameof(AnalysisOutcome.PInvokeMethodGroups)}]";
             public const string LibraryPresences = $"[{nameof(AnalysisOutcome.LibraryPresences)}]";
             public const string Summary = $"[{nameof(AnalysisOutcome.Summary)}]";
         }
