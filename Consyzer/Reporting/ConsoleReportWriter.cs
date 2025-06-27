@@ -43,17 +43,9 @@ internal sealed class ConsoleReportWriter : IReportWriter
 
         builder.IndexedSection(groups, (b, g) =>
         {
-            var methods = g.Methods;
+            b.Line($"{Label.PInvoke.File}: {g.File.Name} — Found: {g.Methods.Count()}");
 
-            if (!methods.Any())
-            {
-                b.Line($"{Label.PInvoke.File}: {g.File.Name} — No P/Invoke methods");
-                return;
-            }
-
-            b.Line($"{Label.PInvoke.File}: {g.File.Name} — Found: {methods.Count()}");
-
-            b.IndexedSection(methods, (bb, m) =>
+            b.IndexedSection(g.Methods, (bb, m) =>
             {
                 bb.Line($"{Label.PInvoke.Signature}: '{m.Signature}'");
                 bb.Line($"{Label.PInvoke.ImportName}: '{m.ImportName}'");
