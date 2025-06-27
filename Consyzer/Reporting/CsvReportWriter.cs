@@ -105,17 +105,17 @@ internal sealed class CsvReportWriter(
     {
         var delimiter = Options.Delimiter;
         var innerDelimiter = GetSafeInnerDelimiter(delimiter);
-        var safeItems = items.Select(s => (s ?? string.Empty).Replace(delimiter, " "));
+        var safeItems = items.Select(s => (s ?? string.Empty).Replace(delimiter, ' '));
         var joined = string.Join(innerDelimiter, safeItems);
         return EscapeValue(joined);
     }
 
-    private static string GetSafeInnerDelimiter(string delimiter)
+    private static string GetSafeInnerDelimiter(char delimiter)
         => delimiter switch
         {
-            ";" => "|",
-            "|" => "/",
-            "," => ";",
+            ';' => "|",
+            '|' => "/",
+            ',' => ";",
             _ => " "
         };
 

@@ -1,6 +1,6 @@
 ﻿namespace Consyzer.Core.Text;
 
-internal sealed class CsvTableBuilder(string delimiter)
+internal sealed class CsvTableBuilder(char delimiter)
 {
     private readonly List<string> lines = [];
 

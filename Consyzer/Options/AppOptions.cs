@@ -10,7 +10,7 @@ internal sealed class AppOptions
 
         public sealed class CsvOptions
         {
-            public required string Delimiter { get; set; }
+            public required char Delimiter { get; set; }
             public required string? Encoding { get; set; }
         }
     }
