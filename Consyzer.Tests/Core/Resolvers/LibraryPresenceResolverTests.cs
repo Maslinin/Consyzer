@@ -21,19 +21,19 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
     public LibraryPresenceResolverTests()
     {
-        Directory.CreateDirectory(this._analyzedDirectory);
-        Directory.CreateDirectory(this._envPathDirectory);
+        Directory.CreateDirectory(_analyzedDirectory);
+        Directory.CreateDirectory(_envPathDirectory);
     }
 
     [Fact]
     public void Resolve_ShouldReturnInAnalyzedDirectory_WhenLibraryIsInAnalyzedDir()
     {
-        var libPath = Path.Combine(this._analyzedDirectory, TestLibAnalyzed);
+        var libPath = Path.Combine(_analyzedDirectory, TestLibAnalyzed);
         File.WriteAllText(libPath, DummyFileContent);
 
         try
         {
-            var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
+            var resolver = new CrossPlatformLibraryPresenceResolver(_analyzedDirectory);
             var result = resolver.Resolve(TestLibAnalyzed);
 
             Assert.Equal(LibraryLocationKind.InAnalyzedDirectory, result.LocationKind);
@@ -53,7 +53,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         try
         {
-            var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
+            var resolver = new CrossPlatformLibraryPresenceResolver(_analyzedDirectory);
             var result = resolver.Resolve(libPath);
 
             Assert.Equal(LibraryLocationKind.OnAbsolutePath, result.LocationKind);
@@ -73,7 +73,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         try
         {
-            var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
+            var resolver = new CrossPlatformLibraryPresenceResolver(_analyzedDirectory);
             var result = resolver.Resolve(TestLibRel);
 
             Assert.Equal(LibraryLocationKind.OnRelativePath, result.LocationKind);
@@ -88,15 +88,15 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     [Fact]
     public void Resolve_ShouldReturnInEnvironmentPath_WhenLibraryInPath()
     {
-        var libPath = Path.Combine(this._envPathDirectory, TestLibEnv);
+        var libPath = Path.Combine(_envPathDirectory, TestLibEnv);
         File.WriteAllText(libPath, DummyFileContent);
 
         var originalPath = Environment.GetEnvironmentVariable(PathVariableName) ?? string.Empty;
-        Environment.SetEnvironmentVariable(PathVariableName, this._envPathDirectory + Path.PathSeparator + originalPath);
+        Environment.SetEnvironmentVariable(PathVariableName, _envPathDirectory + Path.PathSeparator + originalPath);
 
         try
         {
-            var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
+            var resolver = new CrossPlatformLibraryPresenceResolver(_analyzedDirectory);
             var result = resolver.Resolve(TestLibEnv);
 
             Assert.Equal(LibraryLocationKind.InEnvironmentPath, result.LocationKind);
@@ -119,7 +119,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
         if (libName is null) return;
 
-        var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
+        var resolver = new CrossPlatformLibraryPresenceResolver(_analyzedDirectory);
         var result = resolver.Resolve(libName);
 
         Assert.Contains(result.LocationKind, new[] {
@@ -132,7 +132,7 @@ public sealed class LibraryPresenceResolverTests : IDisposable
     [Fact]
     public void Resolve_ShouldReturnMissing_WhenLibraryNotFound()
     {
-        var resolver = new CrossPlatformLibraryPresenceResolver(this._analyzedDirectory);
+        var resolver = new CrossPlatformLibraryPresenceResolver(_analyzedDirectory);
         var result = resolver.Resolve(TestLibMissing);
 
         Assert.Equal(LibraryLocationKind.Missing, result.LocationKind);
@@ -141,8 +141,8 @@ public sealed class LibraryPresenceResolverTests : IDisposable
 
     public void Dispose()
     {
-        DeleteIfExists(this._analyzedDirectory);
-        DeleteIfExists(this._envPathDirectory);
+        DeleteIfExists(_analyzedDirectory);
+        DeleteIfExists(_envPathDirectory);
     }
 
     private static void DeleteIfExists(string path)

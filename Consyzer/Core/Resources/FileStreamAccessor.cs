@@ -8,25 +8,25 @@ internal sealed class FileStreamAccessor : IResourceAccessor<FileInfo, Stream>
     {
         string filePath = file.FullName;
 
-        if (this._resources.TryGetValue(file.FullName, out var resource))
+        if (_resources.TryGetValue(file.FullName, out var resource))
         {
             resource.Position = 0;
             return resource;
         }
 
         var stream = file.OpenRead();
-        this._resources[filePath] = stream;
+        _resources[filePath] = stream;
 
         return stream;
     }
 
     public void Dispose()
     {
-        foreach (var resource in this._resources.Values)
+        foreach (var resource in _resources.Values)
         {
             resource.Dispose();
         }
 
-        this._resources.Clear();
+        _resources.Clear();
     }
 }

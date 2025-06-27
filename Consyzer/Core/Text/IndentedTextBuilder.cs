@@ -11,31 +11,31 @@ internal sealed class IndentedTextBuilder
 
     public IndentedTextBuilder PushIndent()
     {
-        ++this._level;
+        ++_level;
         return this;
     }
 
     public IndentedTextBuilder PopIndent()
     {
-        if (this._level > 0) --this._level;
+        if (_level > 0) --_level;
         return this;
     }
 
     public IndentedTextBuilder Title(string title)
     {
-        this._sb.AppendLine(title);
+        _sb.AppendLine(title);
         return this;
     }
 
     public IndentedTextBuilder Line(string label, object? value)
     {
-        this._sb.AppendLine($"{IndentString()}{label}: {value}");
+        _sb.AppendLine($"{IndentString()}{label}: {value}");
         return this;
     }
 
     public IndentedTextBuilder Line(string label)
     {
-        this._sb.AppendLine($"{IndentString()}{label}");
+        _sb.AppendLine($"{IndentString()}{label}");
         return this;
     }
 
@@ -45,7 +45,7 @@ internal sealed class IndentedTextBuilder
         var indent = IndentString();
         foreach (var item in items)
         {
-            this._sb.AppendLine($"{indent}[{index++}] {formatter(item)}");
+            _sb.AppendLine($"{indent}[{index++}] {formatter(item)}");
         }
 
         return this;
@@ -57,7 +57,7 @@ internal sealed class IndentedTextBuilder
         var indent = IndentString();
         foreach (var item in items)
         {
-            this._sb.AppendLine($"{indent}[{index++}]");
+            _sb.AppendLine($"{indent}[{index++}]");
             PushIndent();
             renderer(this, item);
             PopIndent();
@@ -66,7 +66,7 @@ internal sealed class IndentedTextBuilder
         return this;
     }
 
-    public string Build() => this._sb.ToString();
+    public string Build() => _sb.ToString();
 
     private string IndentString() => new(Indent, _level);
 }

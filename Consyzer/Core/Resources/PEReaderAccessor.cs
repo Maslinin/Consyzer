@@ -12,7 +12,7 @@ internal sealed class PEReaderAccessor(
     {
         string filePath = file.FullName;
 
-        if (this._resources.TryGetValue(filePath, out var resource))
+        if (_resources.TryGetValue(filePath, out var resource))
         {
             return resource;
         }
@@ -20,18 +20,18 @@ internal sealed class PEReaderAccessor(
         var stream = fileStreamAccessor.Get(file);
         var reader = new PEReader(stream);
 
-        this._resources[filePath] = reader;
+        _resources[filePath] = reader;
 
         return reader;
     }
 
     public void Dispose()
     {
-        foreach (var resource in this._resources.Values)
+        foreach (var resource in _resources.Values)
         {
             resource.Dispose();
         }
 
-        this._resources.Clear();
+        _resources.Clear();
     }
 }

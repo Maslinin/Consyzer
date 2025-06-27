@@ -12,13 +12,13 @@ internal sealed class Sha256FileHasher(
     public string CalculateHash(FileInfo fileInfo)
     {
         var stream = fileStreamAccessor.Get(fileInfo);
-        byte[] hash = this._sha256.ComputeHash(stream);
+        byte[] hash = _sha256.ComputeHash(stream);
 
         return Convert.ToHexString(hash);
     }
 
     public void Dispose()
     {
-        this._sha256.Dispose();
+        _sha256.Dispose();
     }
 }

@@ -19,7 +19,7 @@ internal sealed class LibraryPresenceAnalyzer(
 
         foreach (var import in distinctImportNames)
         {
-            yield return this._filePresenceResolver.Resolve(import);
+            yield return _filePresenceResolver.Resolve(import);
         }
     }
 }
