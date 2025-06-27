@@ -110,13 +110,13 @@ internal sealed class CsvReportWriter(
         return EscapeValue(joined);
     }
 
-    private static string GetSafeInnerDelimiter(char delimiter)
+    private static char GetSafeInnerDelimiter(char delimiter)
         => delimiter switch
         {
-            ';' => "|",
-            '|' => "/",
-            ',' => ";",
-            _ => " "
+            ';' => '|',
+            '|' => '/',
+            ',' => ';',
+            _ => ' '
         };
 
     private static string EscapeValue(string? value)
