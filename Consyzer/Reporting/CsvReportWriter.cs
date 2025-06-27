@@ -4,9 +4,9 @@ using Consyzer.Core.Text;
 using Consyzer.Core.Models;
 using Microsoft.Extensions.Options;
 using static Consyzer.Constants;
-using static Consyzer.Reporting.Writers.Sections.ReportSections;
+using static Consyzer.Constants.OutputStructure;
 
-namespace Consyzer.Reporting.Writers;
+namespace Consyzer.Reporting;
 
 internal sealed class CsvReportWriter(
     IOptions<AppOptions> options
@@ -32,16 +32,16 @@ internal sealed class CsvReportWriter(
     {
         var sb = new StringBuilder();
 
-        sb.AppendLine(AssemblyMetadataList);
+        sb.AppendLine(Section.AssemblyMetadataList);
         sb.AppendLine(CsvTable(outcome.AssemblyMetadataList));
 
-        sb.AppendLine(PInvokeGroups);
+        sb.AppendLine(Section.PInvokeGroups);
         sb.AppendLine(CsvPInvoke(outcome.PInvokeGroups));
 
-        sb.AppendLine(LibraryPresences);
+        sb.AppendLine(Section.LibraryPresences);
         sb.AppendLine(CsvTable(outcome.LibraryPresences));
 
-        sb.AppendLine(Summary);
+        sb.AppendLine(Section.Summary);
         sb.AppendLine(CsvTable([outcome.Summary]));
 
         return sb.ToString();
@@ -50,7 +50,7 @@ internal sealed class CsvReportWriter(
     private string CsvTable<T>(IEnumerable<T> items)
     {
         return new CsvTableBuilder(Options.Delimiter)
-            .WithObjectRows(items, SerializeValue)
+            .Records(items, SerializeValue)
             .ToString();
     }
 
@@ -59,13 +59,17 @@ internal sealed class CsvReportWriter(
         var sigProps = typeof(MethodSignature).GetProperties();
         var signatureFieldName = nameof(PInvokeMethod.Signature);
 
-        var header = new List<string> { "File" };
+        var header = new List<string>
+        {
+            Label.PInvoke.File
+        };
+
         header.AddRange(sigProps.Select(p => $"{signatureFieldName}_{p.Name}"));
-        header.Add(nameof(PInvokeMethod.ImportName));
-        header.Add(nameof(PInvokeMethod.ImportFlags));
+        header.Add(Label.PInvoke.ImportName);
+        header.Add(Label.PInvoke.ImportFlags);
 
         var table = new CsvTableBuilder(Options.Delimiter)
-            .WithHeader(header);
+            .Header(header);
 
         foreach (var group in groups)
         {
@@ -80,13 +84,12 @@ internal sealed class CsvReportWriter(
                 row.Add(SerializeValue(method.ImportName));
                 row.Add(SerializeValue(method.ImportFlags.ToString()));
 
-                table.AddRow(row);
+                table.Record(row);
             }
         }
 
         return table.ToString();
     }
-
 
     private string SerializeValue(object? val)
     {

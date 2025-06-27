@@ -2,9 +2,9 @@
 using System.Reflection;
 using Consyzer.Core.Models;
 using static Consyzer.Constants;
-using Consyzer.Reporting.Writers.Converters;
+using Consyzer.Reporting.Converters;
 
-namespace Consyzer.Reporting.Writers;
+namespace Consyzer.Reporting;
 
 internal sealed class JsonReportWriter : IReportWriter
 {

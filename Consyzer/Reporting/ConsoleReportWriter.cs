@@ -1,8 +1,8 @@
 ﻿using Consyzer.Core.Text;
 using Consyzer.Core.Models;
-using static Consyzer.Reporting.Writers.Sections.ReportSections;
+using static Consyzer.Constants.OutputStructure;
 
-namespace Consyzer.Reporting.Writers;
+namespace Consyzer.Reporting;
 
 internal sealed class ConsoleReportWriter : IReportWriter
 {
@@ -21,14 +21,14 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteAssemblyMetadata(IEnumerable<AssemblyMetadata> metadataList)
     {
         var builder = new IndentedTextBuilder()
-            .Title(AssemblyMetadataList)
+            .Title(Section.AssemblyMetadataList)
             .PushIndent()
             .IndexedSection(metadataList, (b, m) =>
             {
-                b.Line($"File: {m.File.Name}");
-                b.Line($"Version: {m.Version}");
-                b.Line($"CreationDate: {m.CreationDateUtc}");
-                b.Line($"SHA256 Hash: {m.Sha256}");
+                b.Line($"{Label.Assembly.File}: {m.File.Name}");
+                b.Line($"{Label.Assembly.Version}: {m.Version}");
+                b.Line($"{Label.Assembly.CreationDateUtc}: {m.CreationDateUtc}");
+                b.Line($"{Label.Assembly.Sha256}: {m.Sha256}");
             })
             .PopIndent();
 
@@ -38,7 +38,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WritePInvokeGroups(IEnumerable<PInvokeMethodGroup> groups)
     {
         var builder = new IndentedTextBuilder()
-            .Title(PInvokeGroups)
+            .Title(Section.PInvokeGroups)
             .PushIndent();
 
         builder.IndexedSection(groups, (b, g) =>
@@ -47,17 +47,17 @@ internal sealed class ConsoleReportWriter : IReportWriter
 
             if (!methods.Any())
             {
-                b.Line($"File: {g.File.Name} — No P/Invoke methods");
+                b.Line($"{Label.PInvoke.File}: {g.File.Name} — No P/Invoke methods");
                 return;
             }
 
-            b.Line($"File: {g.File.Name} — Found: {methods.Count()}");
+            b.Line($"{Label.PInvoke.File}: {g.File.Name} — Found: {methods.Count()}");
 
             b.IndexedSection(methods, (bb, m) =>
             {
-                bb.Line($"Method Signature: '{m.Signature}'");
-                bb.Line($"Import Name: '{m.ImportName}'");
-                bb.Line($"Import Flags: '{m.ImportFlags}'");
+                bb.Line($"{Label.PInvoke.Signature}: '{m.Signature}'");
+                bb.Line($"{Label.PInvoke.ImportName}: '{m.ImportName}'");
+                bb.Line($"{Label.PInvoke.ImportFlags}: '{m.ImportFlags}'");
             });
         });
 
@@ -69,7 +69,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteLibraryPresence(IEnumerable<LibraryPresence> presences)
     {
         var builder = new IndentedTextBuilder()
-            .Title(LibraryPresences)
+            .Title(Section.LibraryPresences)
             .PushIndent()
             .IndexedItems(presences, p =>
             {
@@ -84,13 +84,13 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteSummary(AnalysisSummary summary)
     {
         var builder = new IndentedTextBuilder()
-            .Title(Summary)
+            .Title(Section.Summary)
             .PushIndent()
-            .Line("Total Files", summary.TotalFiles)
-            .Line("ECMA Assemblies", summary.EcmaAssemblies)
-            .Line("Assemblies With P/Invoke", summary.AssembliesWithPInvoke)
-            .Line("Total P/Invoke Methods", summary.TotalPInvokeMethods)
-            .Line("Missing Libraries", summary.MissingLibraries)
+            .Line(Label.Summary.TotalFiles, summary.TotalFiles)
+            .Line(Label.Summary.EcmaAssemblies, summary.EcmaAssemblies)
+            .Line(Label.Summary.AssembliesWithPInvoke, summary.AssembliesWithPInvoke)
+            .Line(Label.Summary.TotalPInvokeMethods, summary.TotalPInvokeMethods)
+            .Line(Label.Summary.MissingLibraries, summary.MissingLibraries)
             .PopIndent();
 
         Console.Out.Write(builder.Build());

@@ -1,4 +1,6 @@
-﻿using Consyzer.Helpers;
+﻿using Consyzer.Options;
+using Consyzer.Helpers;
+using Consyzer.Core.Models;
 
 namespace Consyzer;
 
@@ -50,6 +52,58 @@ internal static class Constants
             public static string Csv => $"{Prefix}{Identifier}{Extension.Csv}";
             public static string Xml => $"{Prefix}{Identifier}{Extension.Xml}";
             public static string Identifier => Path.GetFileNameWithoutExtension(LoggingHelper.GetCurrentLogFilePath() ?? ReserveIdentifier);
+        }
+    }
+
+    internal static class OutputStructure
+    {
+        public static class Section
+        {
+            public const string AnalysisOptions = $"[{nameof(Options.AnalysisOptions)}]";
+            public const string FilesFound = "[FilesFound]";
+            public const string FileClassification = $"[{nameof(AnalysisFileClassification)}]";
+            public const string NotEcma = $"[{nameof(AnalysisFileClassification.NonEcmaModules)}]";
+            public const string NotAssemblies = $"[{nameof(AnalysisFileClassification.NonEcmaAssemblies)}]";
+            public const string EcmaAssemblies = $"[{nameof(AnalysisFileClassification.EcmaAssemblies)}]";
+
+            public const string AssemblyMetadataList = $"[{nameof(AnalysisOutcome.AssemblyMetadataList)}]";
+            public const string PInvokeGroups = $"[{nameof(AnalysisOutcome.PInvokeGroups)}]";
+            public const string LibraryPresences = $"[{nameof(AnalysisOutcome.LibraryPresences)}]";
+            public const string Summary = $"[{nameof(AnalysisOutcome.Summary)}]";
+        }
+
+        public static class Label
+        {
+            public static class Options
+            {
+                public const string AnalysisDirectory = nameof(AnalysisOptions.AnalysisDirectory);
+                public const string SearchPattern = nameof(AnalysisOptions.SearchPattern);
+            }
+
+            public static class Assembly
+            {
+                public const string File = nameof(AssemblyMetadata.File);
+                public const string Version = nameof(AssemblyMetadata.Version);
+                public const string CreationDateUtc = nameof(AssemblyMetadata.CreationDateUtc);
+                public const string Sha256 = nameof(AssemblyMetadata.Sha256);
+            }
+
+            public static class PInvoke
+            {
+                public const string File = nameof(PInvokeMethodGroup.File);
+                public const string Signature = nameof(PInvokeMethod.Signature);
+                public const string ImportName = nameof(PInvokeMethod.ImportName);
+                public const string ImportFlags = nameof(PInvokeMethod.ImportFlags);
+            }
+
+            public static class Summary
+            {
+                public const string TotalFiles = nameof(AnalysisSummary.TotalFiles);
+                public const string EcmaAssemblies = nameof(AnalysisSummary.EcmaAssemblies);
+                public const string AssembliesWithPInvoke = nameof(AnalysisSummary.AssembliesWithPInvoke);
+                public const string TotalPInvokeMethods = nameof(AnalysisSummary.TotalPInvokeMethods);
+                public const string MissingLibraries = nameof(AnalysisSummary.MissingLibraries);
+            }
         }
     }
 }

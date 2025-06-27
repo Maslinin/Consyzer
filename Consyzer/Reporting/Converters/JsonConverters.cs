@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Consyzer.Reporting.Writers.Converters;
+namespace Consyzer.Reporting.Converters;
 
 internal class JsonFileInfoConverter : JsonConverter<FileInfo>
 {
