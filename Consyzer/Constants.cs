@@ -32,8 +32,8 @@ internal static class Constants
         {
             public const string Destination = "Reports";
 
-            public static string Base => Environment.CurrentDirectory;
-            public static string FullPath => Path.Combine(Base, Destination);
+            public static readonly string Base = Environment.CurrentDirectory;
+            public static readonly string FullPath = Path.Combine(Base, Destination);
         }
 
         public static class Extension
@@ -48,10 +48,9 @@ internal static class Constants
             public const string Prefix = "report_";
             public const string ReserveIdentifier = "fallback";
 
-            public static string Json => $"{Prefix}{Identifier}{Extension.Json}";
-            public static string Csv => $"{Prefix}{Identifier}{Extension.Csv}";
-            public static string Xml => $"{Prefix}{Identifier}{Extension.Xml}";
-            public static string Identifier => Path.GetFileNameWithoutExtension(LoggingHelper.GetCurrentLogFilePath() ?? ReserveIdentifier);
+            public static readonly string Json = $"{Prefix}{Identifier}{Extension.Json}";
+            public static readonly string Csv = $"{Prefix}{Identifier}{Extension.Csv}";
+            public static readonly string Identifier = Path.GetFileNameWithoutExtension(LoggingHelper.GetCurrentLogFilePath() ?? ReserveIdentifier);
         }
     }
 
