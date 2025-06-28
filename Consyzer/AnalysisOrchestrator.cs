@@ -16,7 +16,7 @@ internal sealed class AnalysisOrchestrator(
     IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>> metadataAnalyzer,
     IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>> pinvokeAnalyzer,
     IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>> libraryPresenceAnalyzer,
-    IAnalyzer<IEnumerable<LibraryPresence>, int> exitCodeAnalyzer,
+    IAnalyzer<IEnumerable<LibraryPresence>, LibraryLocationKind> libraryStatusAnalyzer,
     IEnumerable<IReportWriter> reportWriters
 )
 {
@@ -78,6 +78,6 @@ internal sealed class AnalysisOrchestrator(
 
         logger.LogInformation("Analysis completed. Report(s) successfully generated.");
 
-        return exitCodeAnalyzer.Analyze(libraryPresences);
+        return (int)libraryStatusAnalyzer.Analyze(libraryPresences);
     }
 }

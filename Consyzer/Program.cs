@@ -43,7 +43,7 @@ var serviceProvider = new ServiceCollection()
     .AddScoped<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<AssemblyMetadata>>, AssemblyMetadataAnalyzer>()
     .AddScoped<IAnalyzer<IEnumerable<FileInfo>, IEnumerable<PInvokeMethodGroup>>, PInvokeMethodAnalyzer>()
     .AddScoped<IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>, LibraryPresenceAnalyzer>()
-    .AddScoped<IAnalyzer<IEnumerable<LibraryPresence>, int>, ExitCodeAnalyzer>()
+    .AddScoped<IAnalyzer<IEnumerable<LibraryPresence>, LibraryLocationKind>, LibraryPresenceStatusAnalyzer>()
 
     // Extractors
     .AddScoped<IExtractor<FileInfo, IEnumerable<PInvokeMethod>>, PInvokeMethodExtractor>()
