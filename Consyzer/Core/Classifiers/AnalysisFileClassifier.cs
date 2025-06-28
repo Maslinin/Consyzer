@@ -3,11 +3,11 @@ using System.Reflection.PortableExecutable;
 using Consyzer.Core.Models;
 using Consyzer.Core.Resources;
 
-namespace Consyzer.Core.Checkers;
+namespace Consyzer.Core.Classifiers;
 
-internal sealed class FileClassificationChecker(
+internal sealed class AnalysisFileClassifier(
     IResourceAccessor<FileInfo, PEReader> peReaderAccessor
-) : IFileClassificationChecker<AnalysisFileClassification>
+) : IFileClassifier<AnalysisFileClassification>
 {
     public AnalysisFileClassification Check(IEnumerable<FileInfo> files)
     {

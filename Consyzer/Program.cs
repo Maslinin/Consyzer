@@ -11,7 +11,7 @@ using Consyzer.Logging;
 using Consyzer.Options;
 using Consyzer.Analyzers;
 using Consyzer.Core.Models;
-using Consyzer.Core.Checkers;
+using Consyzer.Core.Classifiers;
 using Consyzer.Core.Resources;
 using Consyzer.Core.Extractors;
 using Consyzer.Core.Cryptography;
@@ -50,8 +50,8 @@ var serviceProvider = new ServiceCollection()
     .AddScoped<IExtractor<MethodDefinition, MethodSignature>, MethodSignatureExtractor>()
     .AddScoped<IExtractor<FileInfo, AssemblyMetadata>, AssemblyMetadataExtractor>()
 
-    // Checkers
-    .AddScoped<IFileClassificationChecker<AnalysisFileClassification>, FileClassificationChecker>()
+    // Classifiers
+    .AddScoped<IFileClassifier<AnalysisFileClassification>, AnalysisFileClassifier>()
 
     // Cryptography
     .AddSingleton<IFileHasher, Sha256FileHasher>()

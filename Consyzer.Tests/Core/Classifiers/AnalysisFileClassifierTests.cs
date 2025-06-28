@@ -1,19 +1,19 @@
 ﻿using Xunit;
-using Consyzer.Core.Checkers;
 using Consyzer.Core.Resources;
+using Consyzer.Core.Classifiers;
 using static Consyzer.Tests.TestInfrastructure.Constants;
 using static Consyzer.Tests.TestInfrastructure.Helpers.MatchesHelper;
 
-namespace Consyzer.Tests.Core.Checkers;
+namespace Consyzer.Tests.Core.Classifiers;
 
-public sealed class FileClassificationCheckerTests
+public sealed class AnalysisFileClassifierTests
 {
     [Fact]
     public void Resolve_ShouldClassifyFilesCorrectly_WhenGivenMixedInput()
     {
         using var streamAccessor = new FileStreamAccessor();
         using var peAccessor = new PEReaderAccessor(streamAccessor);
-        var resolver = new FileClassificationChecker(peAccessor);
+        var resolver = new AnalysisFileClassifier(peAccessor);
 
         var files = new[]
         {
