@@ -74,7 +74,7 @@ Consyzer был разработан для того, чтобы такие си
             ImportFlags: 'CallingConventionStdCall'
     [1] File: Baz.dll — Found: 1
         [0]
-            Signature: 'Boolean static Native.Baz.CheckSomething(Int32)'
+            Signature: 'Boolean static .Baz.CheckSomething(Int32)'
             ImportName: 'anotherlib.dll'
             ImportFlags: 'CallingConventionStdCall'
 [LibraryPresences]
