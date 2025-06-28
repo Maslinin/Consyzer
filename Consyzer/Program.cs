@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Consyzer;
 using Consyzer.Helpers;
-using Consyzer.Logging;
 using Consyzer.Options;
 using Consyzer.Analyzers;
 using Consyzer.Core.Models;
@@ -15,6 +14,7 @@ using Consyzer.Core.Classifiers;
 using Consyzer.Core.Resources;
 using Consyzer.Core.Extractors;
 using Consyzer.Core.Cryptography;
+using Consyzer.Output.Logging;
 using Consyzer.DependencyInjection;
 using static Consyzer.Constants.Search;
 

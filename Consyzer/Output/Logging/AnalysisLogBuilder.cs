@@ -1,9 +1,9 @@
 ﻿using Consyzer.Options;
-using Consyzer.Core.Text;
+using Consyzer.Output.Formatters;
 using Consyzer.Core.Models;
 using static Consyzer.Constants.OutputStructure;
 
-namespace Consyzer.Logging;
+namespace Consyzer.Output.Logging;
 
 internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
 {

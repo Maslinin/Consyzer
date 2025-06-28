@@ -1,10 +1,10 @@
-﻿using Consyzer.Logging;
-using Consyzer.Options;
-using Consyzer.Reporting;
+﻿using Consyzer.Options;
 using Consyzer.Analyzers;
 using Consyzer.Core.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Consyzer.Output.Reporting;
+using Consyzer.Output.Logging;
 
 namespace Consyzer;
 

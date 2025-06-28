@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Consyzer.Core.Text;
+namespace Consyzer.Output.Formatters;
 
 internal sealed class IndentedTextBuilder
 {

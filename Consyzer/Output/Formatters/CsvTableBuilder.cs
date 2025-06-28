@@ -1,4 +1,4 @@
-﻿namespace Consyzer.Core.Text;
+﻿namespace Consyzer.Output.Formatters;
 
 internal sealed class CsvTableBuilder(char delimiter)
 {

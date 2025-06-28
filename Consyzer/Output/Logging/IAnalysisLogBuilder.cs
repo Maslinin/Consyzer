@@ -1,7 +1,7 @@
 ﻿using Consyzer.Options;
 using Consyzer.Core.Models;
 
-namespace Consyzer.Logging;
+namespace Consyzer.Output.Logging;
 
 internal interface IAnalysisLogBuilder
 {

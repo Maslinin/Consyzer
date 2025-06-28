@@ -1,5 +1,5 @@
 ﻿using Consyzer.Options;
-using Consyzer.Reporting;
+using Consyzer.Output.Reporting;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Consyzer.DependencyInjection;

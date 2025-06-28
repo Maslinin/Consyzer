@@ -1,6 +1,6 @@
 ﻿using Consyzer.Core.Models;
 
-namespace Consyzer.Reporting;
+namespace Consyzer.Output.Reporting;
 
 internal interface IReportWriter
 {

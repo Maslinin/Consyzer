@@ -44,19 +44,17 @@
 	<ItemGroup>
 		<SonarQubeSetting Include="sonar.coverage.exclusions">
 			<Value>
+				Program.cs,
+				Constants.cs,
+				AnalysisOrchestrator.cs,
 				Properties\**,
+				Output\**,
 				Options\**,
 				DependencyInjection\**,
 				Helpers\**,
-				Logging\**,
 				Analyzers\**,
-				Reporting\**,
 				Core\Models\**,
-				Core\Text\**,
-				Core\Extractors\Providers\StringSignatureTypeProvider.cs,
-				AnalysisOrchestrator.cs,
-				Constants.cs,
-				Program.cs
+				Core\Extractors\Providers\StringSignatureTypeProvider.cs
 			</Value>
 		</SonarQubeSetting>
 	</ItemGroup>

@@ -1,12 +1,12 @@
 ﻿using System.Text;
 using Consyzer.Options;
-using Consyzer.Core.Text;
+using Consyzer.Output.Formatters;
 using Consyzer.Core.Models;
 using Microsoft.Extensions.Options;
 using static Consyzer.Constants;
 using static Consyzer.Constants.OutputStructure;
 
-namespace Consyzer.Reporting;
+namespace Consyzer.Output.Reporting;
 
 internal sealed class CsvReportWriter(
     IOptions<AppOptions> options
