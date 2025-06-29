@@ -45,7 +45,7 @@ internal static class Constants
             private const string XmlExtension = ".xml";
 
             private static readonly string Identifier = Path.GetFileNameWithoutExtension(
-                LoggingHelper.GetCurrentLogFilePath() ?? ReserveIdentifier);
+                LoggingHelper.GetLogFileName() ?? ReserveIdentifier);
         }
 
         public static class Structure

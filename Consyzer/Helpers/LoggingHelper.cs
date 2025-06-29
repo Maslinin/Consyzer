@@ -5,7 +5,7 @@ namespace Consyzer.Helpers;
 
 internal static class LoggingHelper
 {
-    public static string? GetCurrentLogFilePath()
+    public static string? GetLogFileName()
     {
         var config = LogManager.Configuration;
         if (config is null) return null;
