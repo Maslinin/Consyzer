@@ -17,6 +17,9 @@ internal static partial class ServiceCollectionExtensions
         if (formats.HasFlag(OutputFormats.Csv))
             services.AddSingleton<IReportWriter, CsvReportWriter>();
 
+        if (formats.HasFlag(OutputFormats.Xml))
+            services.AddSingleton<IReportWriter, XmlReportWriter>();
+
         return services;
     }
 }

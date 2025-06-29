@@ -1,5 +1,5 @@
 ﻿using Consyzer.Core.Models;
-using static Consyzer.Constants.LibraryPresence;
+using static Consyzer.Constants.LibrarySpace;
 
 namespace Consyzer.Core.Resolvers;
 

@@ -1,10 +1,9 @@
 ﻿using System.Text;
 using Consyzer.Options;
-using Consyzer.Output.Formatters;
 using Consyzer.Core.Models;
+using Consyzer.Output.Formatters;
 using Microsoft.Extensions.Options;
-using static Consyzer.Constants;
-using static Consyzer.Constants.OutputStructure;
+using static Consyzer.Constants.Output;
 
 namespace Consyzer.Output.Reporting;
 
@@ -16,15 +15,15 @@ internal sealed class CsvReportWriter(
 
     public string Write(AnalysisOutcome outcome)
     {
-        Directory.CreateDirectory(Report.Directory.FullPath);
-        var fullPath = Path.Combine(Report.Directory.FullPath, Report.Name.Csv);
+        Directory.CreateDirectory(Destination.TargetDirectory);
+        var fullPath = Path.Combine(Destination.TargetDirectory, Destination.Csv);
 
-        var encoding = GetEncoding(Options?.Encoding);
-        var bom = encoding.GetPreamble();
+        var encoding = Encoding.GetEncoding(Options.Encoding);
 
         var csv = BuildCsv(outcome);
 
-        File.WriteAllBytes(fullPath, [.. bom, .. encoding.GetBytes(csv)]);
+        File.WriteAllText(fullPath, csv, encoding);
+        
         return fullPath;
     }
 
@@ -32,16 +31,16 @@ internal sealed class CsvReportWriter(
     {
         var sb = new StringBuilder();
 
-        sb.AppendLine(Section.AssemblyMetadataList);
+        sb.AppendLine(Structure.Section.Bracketed.AssemblyMetadataList);
         sb.AppendLine(CsvTable(outcome.AssemblyMetadataList));
 
-        sb.AppendLine(Section.PInvokeMethodGroups);
+        sb.AppendLine(Structure.Section.Bracketed.PInvokeMethodGroups);
         sb.AppendLine(CsvPInvoke(outcome.PInvokeMethodGroups));
 
-        sb.AppendLine(Section.LibraryPresences);
+        sb.AppendLine(Structure.Section.Bracketed.LibraryPresences);
         sb.AppendLine(CsvTable(outcome.LibraryPresences));
 
-        sb.AppendLine(Section.Summary);
+        sb.AppendLine(Structure.Section.Bracketed.Summary);
         sb.AppendLine(CsvTable([outcome.Summary]));
 
         return sb.ToString();
@@ -51,7 +50,7 @@ internal sealed class CsvReportWriter(
     {
         return new CsvTableBuilder(Options.Delimiter)
             .Records(items, SerializeValue)
-            .ToString();
+            .Build();
     }
 
     private string CsvPInvoke(IEnumerable<PInvokeMethodGroup> methodGroups)
@@ -61,12 +60,12 @@ internal sealed class CsvReportWriter(
 
         var header = new List<string>
         {
-            Label.PInvoke.File
+            Structure.Label.PInvoke.File
         };
 
         header.AddRange(signatureProperties.Select(p => $"{signatureFieldName}_{p.Name}"));
-        header.Add(Label.PInvoke.ImportName);
-        header.Add(Label.PInvoke.ImportFlags);
+        header.Add(Structure.Label.PInvoke.ImportName);
+        header.Add(Structure.Label.PInvoke.ImportFlags);
 
         var table = new CsvTableBuilder(Options.Delimiter)
             .Header(header);
@@ -88,7 +87,7 @@ internal sealed class CsvReportWriter(
             }
         }
 
-        return table.ToString();
+        return table.Build();
     }
 
     private string SerializeValue(object? value)
@@ -123,10 +122,5 @@ internal sealed class CsvReportWriter(
     {
         if (string.IsNullOrEmpty(value)) return "\"\"";
         return $"\"{value.Replace("\"", "\"\"").Replace('\n', ' ').Replace('\r', ' ')}\"";
-    }
-
-    private static Encoding GetEncoding(string? encoding)
-    {
-        return string.IsNullOrEmpty(encoding) ? new UTF8Encoding(false) : Encoding.GetEncoding(encoding);
     }
 }

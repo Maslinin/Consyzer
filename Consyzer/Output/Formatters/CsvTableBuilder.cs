@@ -29,5 +29,5 @@ internal sealed class CsvTableBuilder(char delimiter)
         return this;
     }
 
-    public override string ToString() => string.Join(Environment.NewLine, lines) + Environment.NewLine;
+    public string Build() => string.Join(Environment.NewLine, lines) + Environment.NewLine;
 }

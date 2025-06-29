@@ -1,6 +1,6 @@
-﻿using Consyzer.Output.Formatters;
-using Consyzer.Core.Models;
-using static Consyzer.Constants.OutputStructure;
+﻿using Consyzer.Core.Models;
+using Consyzer.Output.Formatters;
+using static Consyzer.Constants.Output.Structure;
 
 namespace Consyzer.Output.Reporting;
 
@@ -21,7 +21,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteAssemblyMetadata(IEnumerable<AssemblyMetadata> assemblyInfos)
     {
         var builder = new IndentedTextBuilder()
-            .Title(Section.AssemblyMetadataList)
+            .Title(Section.Bracketed.AssemblyMetadataList)
             .PushIndent()
             .IndexedSection(assemblyInfos, (b, m) =>
             {
@@ -38,7 +38,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WritePInvokeGroups(IEnumerable<PInvokeMethodGroup> groups)
     {
         var builder = new IndentedTextBuilder()
-            .Title(Section.PInvokeMethodGroups)
+            .Title(Section.Bracketed.PInvokeMethodGroups)
             .PushIndent();
 
         builder.IndexedSection(groups, (b, g) =>
@@ -61,7 +61,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteLibraryPresence(IEnumerable<LibraryPresence> presences)
     {
         var builder = new IndentedTextBuilder()
-            .Title(Section.LibraryPresences)
+            .Title(Section.Bracketed.LibraryPresences)
             .PushIndent()
             .IndexedItems(presences, p =>
             {
@@ -76,7 +76,7 @@ internal sealed class ConsoleReportWriter : IReportWriter
     private static void WriteSummary(AnalysisSummary summary)
     {
         var builder = new IndentedTextBuilder()
-            .Title(Section.Summary)
+            .Title(Section.Bracketed.Summary)
             .PushIndent()
             .Line(Label.Summary.TotalFiles, summary.TotalFiles)
             .Line(Label.Summary.EcmaAssemblies, summary.EcmaAssemblies)

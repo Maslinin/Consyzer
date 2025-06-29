@@ -39,9 +39,10 @@ Consyzer was created to ensure that such situations do not come as a surprise.
 **Consyzer** presents analysis results in the form of reports.  
 The following report formats are supported:
 
-1. `Console` — human-readable text report output to the terminal;  
-2. `Json` — structured JSON with full analysis details;
-3. `Csv` — line-based CSV file split into logical sections. 
+1. `Console`
+2. `Json`
+3. `Csv`
+4. `Xml`
 
 ### Example report (Console)
 ```
@@ -125,11 +126,11 @@ The following report formats are supported:
 You can also specify two optional parameters:
 
 1. `--RecursiveSearch` — specifies whether to search for CIL modules in subdirectories. Default: `false`.  
-2. `--OutputFormat` — sets the report output format (`Console`, `Json`, `Csv`). Multiple values supported via comma. Default: `Console`.
+2. `--OutputFormat` — sets the report output format (`Console`, `Json`, `Csv`, `Xml`). Multiple values supported via comma. Default: `Console`.
 
 ### General usage pattern
 ```
-Consyzer.exe --AnalysisDirectory <path_to_directory> --SearchPattern <search_pattern> [--RecursiveSearch true|false] [--OutputFormat Console, Json, Csv]
+Consyzer.exe --AnalysisDirectory <path_to_directory> --SearchPattern <search_pattern> [--RecursiveSearch true|false] [--OutputFormat Console, Json, Csv, Xml]
 ```
 
 ### Example

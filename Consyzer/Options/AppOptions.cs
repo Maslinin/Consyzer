@@ -10,8 +10,16 @@ internal sealed class AppOptions
 
         public sealed class CsvOptions
         {
+            public required string Encoding { get; set; }
             public required char Delimiter { get; set; }
-            public required string? Encoding { get; set; }
+        }
+
+        public required XmlOptions Xml { get; set; }
+
+        public sealed class XmlOptions
+        {
+            public required string Encoding { get; set; }
+            public required string IndentChars { get; set; }
         }
     }
 }
