@@ -13,6 +13,13 @@ internal sealed class AppOptions
             public required string IndentChars { get; set; }
         }
 
+        public required JsonOptions Json { get; set; }
+
+        public sealed class JsonOptions
+        {
+            public required string Encoding { get; set; }
+        }
+
         public required CsvOptions Csv { get; set; }
 
         public sealed class CsvOptions
