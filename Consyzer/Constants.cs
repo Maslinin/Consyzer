@@ -32,23 +32,20 @@ internal static class Constants
         {
             public static readonly string TargetDirectory = Path.Combine(Environment.CurrentDirectory, Directory);
 
-            public static string Json => $"{Prefix}{Identifier}{Extension.Json}";
-            public static string Csv => $"{Prefix}{Identifier}{Extension.Csv}";
-            public static string Xml => $"{Prefix}{Identifier}{Extension.Xml}";
+            public static string Json => $"{Prefix}{Identifier}{JsonExtension}";
+            public static string Csv => $"{Prefix}{Identifier}{CsvExtension}";
+            public static string Xml => $"{Prefix}{Identifier}{XmlExtension}";
 
             private const string Prefix = "report_";
             private const string Directory = "Reports";
             private const string ReserveIdentifier = "fallback";
 
+            private const string JsonExtension = ".json";
+            private const string CsvExtension = ".csv";
+            private const string XmlExtension = ".xml";
+
             private static readonly string Identifier = Path.GetFileNameWithoutExtension(
                 LoggingHelper.GetCurrentLogFilePath() ?? ReserveIdentifier);
-
-            private static class Extension
-            {
-                public const string Json = ".json";
-                public const string Csv = ".csv";
-                public const string Xml = ".xml";
-            }
         }
 
         public static class Structure
