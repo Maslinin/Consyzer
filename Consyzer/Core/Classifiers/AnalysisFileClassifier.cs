@@ -17,13 +17,13 @@ internal sealed class AnalysisFileClassifier(
 
         foreach (var file in files)
         {
-            if (!TryCheckEcmaModule(file, out var peReader))
+            if (!IsEcma(file, out var peReader))
             {
                 nonEcmaModules.Add(file);
                 continue;
             }
 
-            (TryCheckEcmaAssembly(peReader) ? ecmaAssemblies : nonEcmaAssemblies).Add(file);
+            (IsEcmaAssembly(peReader) ? ecmaAssemblies : nonEcmaAssemblies).Add(file);
         }
 
         return new AnalysisFileClassification
@@ -34,7 +34,7 @@ internal sealed class AnalysisFileClassifier(
         };
     }
 
-    private bool TryCheckEcmaModule(FileInfo file, out PEReader peReader)
+    private bool IsEcma(FileInfo file, out PEReader peReader)
     {
         try
         {
@@ -48,7 +48,7 @@ internal sealed class AnalysisFileClassifier(
         }
     }
 
-    private static bool TryCheckEcmaAssembly(PEReader peReader)
+    private static bool IsEcmaAssembly(PEReader peReader)
     {
         return peReader.GetMetadataReader().IsAssembly;
     }
