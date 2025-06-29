@@ -1,16 +1,22 @@
-﻿using Consyzer.Core.Models;
+﻿using Microsoft.Extensions.Options;
+using Consyzer.Options;
+using Consyzer.Core.Models;
 using Consyzer.Output.Builders;
 using static Consyzer.Constants.Output.Structure;
 
 namespace Consyzer.Output.Reporting;
 
-internal sealed class ConsoleReportWriter : IReportWriter
+internal sealed class ConsoleReportWriter(
+    IOptions<AppOptions> options
+) : IReportWriter
 {
     private const string Destination = "Console";
 
+    private readonly AppOptions.OutputOptions.ConsoleOptions _options = options.Value.Output.Console;
+
     public string Write(AnalysisOutcome outcome)
     {
-        var builder = new IndentedTextBuilder();
+        var builder = new IndentedTextBuilder(_options.IndentChars);
 
         WriteAssemblyMetadata(builder, outcome.AssemblyMetadataList);
         WritePInvokeGroups(builder, outcome.PInvokeMethodGroups);

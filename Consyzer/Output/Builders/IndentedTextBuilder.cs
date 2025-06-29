@@ -2,10 +2,10 @@
 
 namespace Consyzer.Output.Builders;
 
-internal sealed class IndentedTextBuilder
+internal sealed class IndentedTextBuilder(
+    string indentedChars
+)
 {
-    private const char Indent = '\t';
-
     private int _level;
     private readonly StringBuilder _sb = new();
 
@@ -41,12 +41,11 @@ internal sealed class IndentedTextBuilder
 
     public IndentedTextBuilder IndexedItems<T>(IEnumerable<T> items, Func<T, string> formatter)
     {
-        int index = 0;
         var indent = IndentString();
 
-        foreach (var item in items)
+        foreach (var (item, index) in items.Select((x, i) => (x, i)))
         {
-            _sb.AppendLine($"{indent}[{++index}] {formatter(item)}");
+            _sb.AppendLine($"{indent}[{index}] {formatter(item)}");
         }
 
         return this;
@@ -54,12 +53,11 @@ internal sealed class IndentedTextBuilder
 
     public IndentedTextBuilder IndexedSection<T>(IEnumerable<T> items, Action<IndentedTextBuilder, T> renderer)
     {
-        int index = 0;
         var indent = IndentString();
 
-        foreach (var item in items)
+        foreach (var (item, index) in items.Select((x, i) => (x, i)))
         {
-            _sb.AppendLine($"{indent}[{++index}]");
+            _sb.AppendLine($"{indent}[{index}]");
             PushIndent();
             renderer(this, item);
             PopIndent();
@@ -70,5 +68,5 @@ internal sealed class IndentedTextBuilder
 
     public string Build() => _sb.ToString();
 
-    private string IndentString() => new(Indent, _level);
+    private string IndentString() => string.Concat(Enumerable.Repeat(indentedChars, _level));
 }

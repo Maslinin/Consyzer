@@ -1,14 +1,19 @@
-﻿using Consyzer.Options;
+﻿using Microsoft.Extensions.Options;
+using Consyzer.Options;
 using Consyzer.Core.Models;
 using Consyzer.Output.Builders;
 using static Consyzer.Constants.Output.Structure;
 
 namespace Consyzer.Output.Logging;
 
-internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
+internal sealed class AnalysisLogBuilder(
+    IOptions<AppOptions> options
+) : IAnalysisLogBuilder
 {
+    private readonly AppOptions.OutputOptions.ConsoleOptions _options = options.Value.Output.Console;
+
     public string BuildAnalysisOptionsLog(AnalysisOptions options) =>
-        new IndentedTextBuilder()
+        new IndentedTextBuilder(_options.IndentChars)
             .Title(Section.Bracketed.AnalysisOptions)
             .PushIndent()
             .Line(Label.Options.AnalysisDirectory, options.AnalysisDirectory)
@@ -17,7 +22,7 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
             .Build();
 
     public string BuildFoundFilesLog(IEnumerable<FileInfo> files) =>
-        new IndentedTextBuilder()
+        new IndentedTextBuilder(_options.IndentChars)
             .Title($"{Section.Bracketed.FilesFound} Count: {files.Count()}")
             .PushIndent()
             .IndexedItems(files, f => f.Name)
@@ -25,7 +30,7 @@ internal sealed class AnalysisLogBuilder : IAnalysisLogBuilder
             .Build();
 
     public string BuildFileClassificationLog(AnalysisFileClassification fileClassification) =>
-        new IndentedTextBuilder()
+        new IndentedTextBuilder(_options.IndentChars)
             .Title(Section.Bracketed.FileClassification)
             .PushIndent()
             .Title($"{Section.Bracketed.NotEcma} Count: {fileClassification.NonEcmaModules.Count()}")

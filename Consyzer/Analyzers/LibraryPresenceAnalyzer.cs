@@ -6,10 +6,10 @@ using Consyzer.Core.Resolvers;
 namespace Consyzer.Analyzers;
 
 internal sealed class LibraryPresenceAnalyzer(
-    IOptions<AnalysisOptions> analysisOptions
+    IOptions<AnalysisOptions> options
 ) : IAnalyzer<IEnumerable<PInvokeMethodGroup>, IEnumerable<LibraryPresence>>
 {
-    private readonly CrossPlatformLibraryPresenceResolver _libraryPresenceResolver = new(analysisOptions.Value.AnalysisDirectory);
+    private readonly CrossPlatformLibraryPresenceResolver _libraryPresenceResolver = new(options.Value.AnalysisDirectory);
 
     public IEnumerable<LibraryPresence> Analyze(IEnumerable<PInvokeMethodGroup> methodGroups)
     {

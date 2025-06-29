@@ -2,10 +2,17 @@
 
 internal sealed class AppOptions
 {
-    public required ReportOptions Report {  get; set; }
+    public required OutputOptions Output {  get; set; }
 
-    public sealed class ReportOptions
+    public sealed class OutputOptions
     {
+        public required ConsoleOptions Console { get; set; }
+
+        public sealed class ConsoleOptions
+        {
+            public required string IndentChars { get; set; }
+        }
+
         public required CsvOptions Csv { get; set; }
 
         public sealed class CsvOptions

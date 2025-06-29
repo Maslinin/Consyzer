@@ -1,8 +1,8 @@
 ﻿using System.Xml;
 using System.Text;
+using Microsoft.Extensions.Options;
 using Consyzer.Options;
 using Consyzer.Core.Models;
-using Microsoft.Extensions.Options;
 using static Consyzer.Constants.Output;
 
 namespace Consyzer.Output.Reporting;
@@ -13,20 +13,20 @@ internal sealed class XmlReportWriter(
 {
     private const string ReportName = "ConsyzerReport";
 
-    private AppOptions.ReportOptions.XmlOptions Options => options.Value.Report.Xml;
+    private readonly AppOptions.OutputOptions.XmlOptions _options = options.Value.Output.Xml;
 
     public string Write(AnalysisOutcome outcome)
     {
         Directory.CreateDirectory(Destination.TargetDirectory);
         var fullPath = Path.Combine(Destination.TargetDirectory, Destination.Xml);
 
-        var encoding = Encoding.GetEncoding(Options.Encoding);
+        var encoding = Encoding.GetEncoding(_options.Encoding);
 
         using var writer = XmlWriter.Create(fullPath, new XmlWriterSettings
         {
             Indent = true,
             Encoding = encoding,
-            IndentChars = Options.IndentChars
+            IndentChars = _options.IndentChars
         });
 
         writer.WriteStartDocument();

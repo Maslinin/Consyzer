@@ -1,8 +1,8 @@
 ﻿using System.Text;
+using Microsoft.Extensions.Options;
 using Consyzer.Options;
 using Consyzer.Core.Models;
 using Consyzer.Output.Builders;
-using Microsoft.Extensions.Options;
 using static Consyzer.Constants.Output;
 
 namespace Consyzer.Output.Reporting;
@@ -11,15 +11,15 @@ internal sealed class CsvReportWriter(
     IOptions<AppOptions> options
 ) : IReportWriter
 {
-    private AppOptions.ReportOptions.CsvOptions Options => options.Value.Report.Csv;
+    private readonly AppOptions.OutputOptions.CsvOptions _options = options.Value.Output.Csv;
 
     public string Write(AnalysisOutcome outcome)
     {
         Directory.CreateDirectory(Destination.TargetDirectory);
         var fullPath = Path.Combine(Destination.TargetDirectory, Destination.Csv);
 
-        var encoding = Encoding.GetEncoding(Options.Encoding);
-        var builder = new CsvTableBuilder(Options.Delimiter);
+        var encoding = Encoding.GetEncoding(_options.Encoding);
+        var builder = new CsvTableBuilder(_options.Delimiter);
 
         WriteAssemblyMetadata(builder, outcome.AssemblyMetadataList);
         WritePInvokeGroups(builder, outcome.PInvokeMethodGroups);
@@ -94,7 +94,7 @@ internal sealed class CsvReportWriter(
 
     private string EscapeList(IEnumerable<string> items)
     {
-        var delimiter = Options.Delimiter;
+        var delimiter = _options.Delimiter;
         var innerDelimiter = GetSafeInnerDelimiter(delimiter);
         var safeItems = items.Select(i => (i ?? string.Empty).Replace(delimiter, ' '));
         var joined = string.Join(innerDelimiter, safeItems);
