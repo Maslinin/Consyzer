@@ -16,13 +16,13 @@ internal sealed class AssemblyMetadataExtractor(
         return new AssemblyMetadata
         {
             File = file,
-            Version = ExtractVersion(file),
-            CreationDateUtc = ExtractCreationDate(file),
-            Sha256 = ExtractHash(file)
+            Version = GetVersion(file),
+            CreationDateUtc = GetCreationDate(file),
+            Sha256 = GetHash(file)
         };
     }
 
-    private string ExtractVersion(FileInfo file)
+    private string GetVersion(FileInfo file)
     {
         var peReader = peReaderAccessor.Get(file);
 
@@ -30,12 +30,12 @@ internal sealed class AssemblyMetadataExtractor(
         return mdReader.GetAssemblyDefinition().Version?.ToString() ?? "unknown";
     }
 
-    private string ExtractHash(FileInfo file)
+    private string GetHash(FileInfo file)
     {
         return hasher.CalculateHash(file);
     }
 
-    private static DateTime ExtractCreationDate(FileInfo file)
+    private static DateTime GetCreationDate(FileInfo file)
     {
         return file.CreationTimeUtc;
     }
