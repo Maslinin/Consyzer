@@ -1,18 +1,18 @@
-﻿namespace Consyzer.Output.Formatters;
+﻿namespace Consyzer.Output.Builders;
 
 internal sealed class CsvTableBuilder(char delimiter)
 {
-    private readonly List<string> lines = [];
+    private readonly List<string> _lines = [];
 
     public CsvTableBuilder Header(IEnumerable<string> fields)
     {
-        lines.Add(string.Join(delimiter, fields));
+        _lines.Add(string.Join(delimiter, fields));
         return this;
     }
 
     public CsvTableBuilder Record(IEnumerable<string> fields)
     {
-        lines.Add(string.Join(delimiter, fields));
+        _lines.Add(string.Join(delimiter, fields));
         return this;
     }
 
@@ -29,5 +29,5 @@ internal sealed class CsvTableBuilder(char delimiter)
         return this;
     }
 
-    public string Build() => string.Join(Environment.NewLine, lines) + Environment.NewLine;
+    public string Build() => string.Join(Environment.NewLine, _lines) + Environment.NewLine;
 }

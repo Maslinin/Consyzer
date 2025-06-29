@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Consyzer.Options;
 using Consyzer.Core.Models;
-using Consyzer.Output.Formatters;
+using Consyzer.Output.Builders;
 using Microsoft.Extensions.Options;
 using static Consyzer.Constants.Output;
 
@@ -19,75 +19,67 @@ internal sealed class CsvReportWriter(
         var fullPath = Path.Combine(Destination.TargetDirectory, Destination.Csv);
 
         var encoding = Encoding.GetEncoding(Options.Encoding);
+        var builder = new CsvTableBuilder(Options.Delimiter);
 
-        var csv = BuildCsv(outcome);
+        WriteAssemblyMetadata(builder, outcome.AssemblyMetadataList);
+        WritePInvokeGroups(builder, outcome.PInvokeMethodGroups);
+        WriteLibraryPresences(builder, outcome.LibraryPresences);
+        WriteSummary(builder, outcome.Summary);
 
-        File.WriteAllText(fullPath, csv, encoding);
-        
+        File.WriteAllText(fullPath, builder.Build(), encoding);
+
         return fullPath;
     }
 
-    private string BuildCsv(AnalysisOutcome outcome)
+    private void WriteAssemblyMetadata(CsvTableBuilder builder, IEnumerable<AssemblyMetadata> metadataList)
     {
-        var sb = new StringBuilder();
-
-        sb.AppendLine(Structure.Section.Bracketed.AssemblyMetadataList);
-        sb.AppendLine(CsvTable(outcome.AssemblyMetadataList));
-
-        sb.AppendLine(Structure.Section.Bracketed.PInvokeMethodGroups);
-        sb.AppendLine(CsvPInvoke(outcome.PInvokeMethodGroups));
-
-        sb.AppendLine(Structure.Section.Bracketed.LibraryPresences);
-        sb.AppendLine(CsvTable(outcome.LibraryPresences));
-
-        sb.AppendLine(Structure.Section.Bracketed.Summary);
-        sb.AppendLine(CsvTable([outcome.Summary]));
-
-        return sb.ToString();
+        builder.Record([Structure.Section.Bracketed.AssemblyMetadataList]);
+        builder.Records(metadataList, SerializeValue);
+        builder.Record([]);
     }
 
-    private string CsvTable<T>(IEnumerable<T> items)
+    private void WritePInvokeGroups(CsvTableBuilder builder, IEnumerable<PInvokeMethodGroup> groups)
     {
-        return new CsvTableBuilder(Options.Delimiter)
-            .Records(items, SerializeValue)
-            .Build();
-    }
+        builder.Record([Structure.Section.Bracketed.PInvokeMethodGroups]);
 
-    private string CsvPInvoke(IEnumerable<PInvokeMethodGroup> methodGroups)
-    {
         var signatureProperties = typeof(MethodSignature).GetProperties();
-        var signatureFieldName = nameof(PInvokeMethod.Signature);
+        var signaturePrefix = nameof(PInvokeMethod.Signature);
 
-        var header = new List<string>
-        {
-            Structure.Label.PInvoke.File
-        };
-
-        header.AddRange(signatureProperties.Select(p => $"{signatureFieldName}_{p.Name}"));
+        var header = new List<string> { Structure.Label.PInvoke.File };
+        header.AddRange(signatureProperties.Select(p => $"{signaturePrefix}_{p.Name}"));
         header.Add(Structure.Label.PInvoke.ImportName);
         header.Add(Structure.Label.PInvoke.ImportFlags);
 
-        var table = new CsvTableBuilder(Options.Delimiter)
-            .Header(header);
+        builder.Header(header);
 
-        foreach (var group in methodGroups)
+        foreach (var group in groups)
         {
             foreach (var method in group.Methods)
             {
-                var record = new List<string>
-                {
-                    SerializeValue(group.File.FullName)
-                };
-
+                var record = new List<string> { SerializeValue(group.File.FullName) };
                 record.AddRange(signatureProperties.Select(p => SerializeValue(p.GetValue(method.Signature))));
                 record.Add(SerializeValue(method.ImportName));
                 record.Add(SerializeValue(method.ImportFlags.ToString()));
 
-                table.Record(record);
+                builder.Record(record);
             }
         }
 
-        return table.Build();
+        builder.Record([]);
+    }
+
+    private void WriteLibraryPresences(CsvTableBuilder builder, IEnumerable<LibraryPresence> presences)
+    {
+        builder.Record([Structure.Section.Bracketed.LibraryPresences]);
+        builder.Records(presences, SerializeValue);
+        builder.Record([]);
+    }
+
+    private void WriteSummary(CsvTableBuilder builder, AnalysisSummary summary)
+    {
+        builder.Record([Structure.Section.Bracketed.Summary]);
+        builder.Records([summary], SerializeValue);
+        builder.Record([]);
     }
 
     private string SerializeValue(object? value)
@@ -104,7 +96,7 @@ internal sealed class CsvReportWriter(
     {
         var delimiter = Options.Delimiter;
         var innerDelimiter = GetSafeInnerDelimiter(delimiter);
-        var safeItems = items.Select(s => (s ?? string.Empty).Replace(delimiter, ' '));
+        var safeItems = items.Select(i => (i ?? string.Empty).Replace(delimiter, ' '));
         var joined = string.Join(innerDelimiter, safeItems);
         return EscapeValue(joined);
     }

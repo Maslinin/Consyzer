@@ -43,11 +43,11 @@ internal sealed class XmlReportWriter(
         return fullPath;
     }
 
-    private static void WriteAssemblyMetadata(XmlWriter writer, IEnumerable<AssemblyMetadata> assemblyInfos)
+    private static void WriteAssemblyMetadata(XmlWriter writer, IEnumerable<AssemblyMetadata> metadataList)
     {
         writer.WriteStartElement(Structure.Section.Name.AssemblyMetadataList);
 
-        foreach (var info in assemblyInfos)
+        foreach (var info in metadataList)
         {
             writer.WriteStartElement(Structure.Element.Assembly);
             writer.WriteElementString(Structure.Label.Assembly.File, info.File.Name);
@@ -60,11 +60,11 @@ internal sealed class XmlReportWriter(
         writer.WriteEndElement();
     }
 
-    private static void WritePInvokeGroups(XmlWriter writer, IEnumerable<PInvokeMethodGroup> methodGroups)
+    private static void WritePInvokeGroups(XmlWriter writer, IEnumerable<PInvokeMethodGroup> groups)
     {
         writer.WriteStartElement(Structure.Section.Name.PInvokeMethodGroups);
 
-        foreach (var group in methodGroups)
+        foreach (var group in groups)
         {
             writer.WriteStartElement(Structure.Element.Group);
             writer.WriteAttributeString(Structure.Label.PInvoke.File, group.File.Name);

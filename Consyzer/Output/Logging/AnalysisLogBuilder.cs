@@ -1,6 +1,6 @@
 ﻿using Consyzer.Options;
 using Consyzer.Core.Models;
-using Consyzer.Output.Formatters;
+using Consyzer.Output.Builders;
 using static Consyzer.Constants.Output.Structure;
 
 namespace Consyzer.Output.Logging;

@@ -1,5 +1,5 @@
 ﻿using Consyzer.Core.Models;
-using Consyzer.Output.Formatters;
+using Consyzer.Output.Builders;
 using static Consyzer.Constants.Output.Structure;
 
 namespace Consyzer.Output.Reporting;
@@ -10,20 +10,24 @@ internal sealed class ConsoleReportWriter : IReportWriter
 
     public string Write(AnalysisOutcome outcome)
     {
-        WriteAssemblyMetadata(outcome.AssemblyMetadataList);
-        WritePInvokeGroups(outcome.PInvokeMethodGroups);
-        WriteLibraryPresence(outcome.LibraryPresences);
-        WriteSummary(outcome.Summary);
+        var builder = new IndentedTextBuilder();
+
+        WriteAssemblyMetadata(builder, outcome.AssemblyMetadataList);
+        WritePInvokeGroups(builder, outcome.PInvokeMethodGroups);
+        WriteLibraryPresence(builder, outcome.LibraryPresences);
+        WriteSummary(builder, outcome.Summary);
+
+        Console.Out.Write(builder.Build());
 
         return Destination;
     }
 
-    private static void WriteAssemblyMetadata(IEnumerable<AssemblyMetadata> assemblyInfos)
+    private static void WriteAssemblyMetadata(IndentedTextBuilder builder, IEnumerable<AssemblyMetadata> metadataList)
     {
-        var builder = new IndentedTextBuilder()
+        builder
             .Title(Section.Bracketed.AssemblyMetadataList)
             .PushIndent()
-            .IndexedSection(assemblyInfos, (b, m) =>
+            .IndexedSection(metadataList, (b, m) =>
             {
                 b.Line($"{Label.Assembly.File}: {m.File.Name}");
                 b.Line($"{Label.Assembly.Version}: {m.Version}");
@@ -31,36 +35,29 @@ internal sealed class ConsoleReportWriter : IReportWriter
                 b.Line($"{Label.Assembly.Sha256}: {m.Sha256}");
             })
             .PopIndent();
-
-        Console.Out.Write(builder.Build());
     }
 
-    private static void WritePInvokeGroups(IEnumerable<PInvokeMethodGroup> groups)
+    private static void WritePInvokeGroups(IndentedTextBuilder builder, IEnumerable<PInvokeMethodGroup> groups)
     {
-        var builder = new IndentedTextBuilder()
+        builder
             .Title(Section.Bracketed.PInvokeMethodGroups)
-            .PushIndent();
-
-        builder.IndexedSection(groups, (b, g) =>
-        {
-            b.Line($"{Label.PInvoke.File}: {g.File.Name} — Found: {g.Methods.Count()}");
-
-            b.IndexedSection(g.Methods, (bb, m) =>
+            .PushIndent()
+            .IndexedSection(groups, (b, g) =>
             {
-                bb.Line($"{Label.PInvoke.Signature}: '{m.Signature}'");
-                bb.Line($"{Label.PInvoke.ImportName}: '{m.ImportName}'");
-                bb.Line($"{Label.PInvoke.ImportFlags}: '{m.ImportFlags}'");
-            });
-        });
-
-        builder.PopIndent();
-
-        Console.Out.Write(builder.Build());
+                b.Line($"{Label.PInvoke.File}: {g.File.Name} — Found: {g.Methods.Count()}");
+                b.IndexedSection(g.Methods, (bb, m) =>
+                {
+                    bb.Line($"{Label.PInvoke.Signature}: '{m.Signature}'");
+                    bb.Line($"{Label.PInvoke.ImportName}: '{m.ImportName}'");
+                    bb.Line($"{Label.PInvoke.ImportFlags}: '{m.ImportFlags}'");
+                });
+            })
+            .PopIndent();
     }
 
-    private static void WriteLibraryPresence(IEnumerable<LibraryPresence> presences)
+    private static void WriteLibraryPresence(IndentedTextBuilder builder, IEnumerable<LibraryPresence> presences)
     {
-        var builder = new IndentedTextBuilder()
+        builder
             .Title(Section.Bracketed.LibraryPresences)
             .PushIndent()
             .IndexedSection(presences, (b, p) =>
@@ -70,13 +67,11 @@ internal sealed class ConsoleReportWriter : IReportWriter
                 b.Line(Label.Library.LocationKind, p.LocationKind);
             })
             .PopIndent();
-
-        Console.Out.Write(builder.Build());
     }
 
-    private static void WriteSummary(AnalysisSummary summary)
+    private static void WriteSummary(IndentedTextBuilder builder, AnalysisSummary summary)
     {
-        var builder = new IndentedTextBuilder()
+        builder
             .Title(Section.Bracketed.Summary)
             .PushIndent()
             .Line(Label.Summary.TotalFiles, summary.TotalFiles)
@@ -85,7 +80,5 @@ internal sealed class ConsoleReportWriter : IReportWriter
             .Line(Label.Summary.TotalPInvokeMethods, summary.TotalPInvokeMethods)
             .Line(Label.Summary.MissingLibraries, summary.MissingLibraries)
             .PopIndent();
-
-        Console.Out.Write(builder.Build());
     }
 }
