@@ -32,7 +32,7 @@ internal sealed class AnalysisOrchestrator(
             return (int)AppFailureCode.NoFilesFound;
         }
 
-        logger.LogInformation("{Message}", analysisLogBuilder.BuildFoundFilesLog(files));
+        logger.LogDebug("{Message}", analysisLogBuilder.BuildFoundFilesLog(files));
 
         var fileClassification = fileClassificationAnalyzer.Analyze(files);
         logger.LogInformation("{Message}", analysisLogBuilder.BuildFileClassificationLog(fileClassification));
@@ -43,13 +43,13 @@ internal sealed class AnalysisOrchestrator(
             return (int)AppFailureCode.AllFilesInvalid;
         }
 
-        logger.LogInformation("Starting metadata analysis of {Count} ECMA assemblies...", fileClassification.EcmaAssemblies.Count());
+        logger.LogInformation("Analyzing assembly metadata...");
         var metadataList = metadataAnalyzer.Analyze(fileClassification.EcmaAssemblies);
 
         logger.LogInformation("Analyzing P/Invoke methods...");
         var pInvokeGroups = pinvokeAnalyzer.Analyze(fileClassification.EcmaAssemblies);
 
-        logger.LogInformation("Checking library presence for {Count} P/Invoke method groups...", pInvokeGroups.Count());
+        logger.LogInformation("Analyzing native library presence...");
         var libraryPresences = libraryPresenceAnalyzer.Analyze(pInvokeGroups);
 
         var summary = new AnalysisSummary
@@ -73,10 +73,10 @@ internal sealed class AnalysisOrchestrator(
         {
             logger.LogInformation("Generating report using {WriterType}...", writer.GetType().Name);
             var destination = writer.Write(outcome);
-            logger.LogInformation("Report successfully written to {Destination}.", destination);
+            logger.LogInformation("Report written to {Destination}.", destination);
         }
 
-        logger.LogInformation("Analysis completed. Report(s) successfully generated.");
+        logger.LogInformation("Analysis completed.");
 
         return (int)libraryStatusAnalyzer.Analyze(libraryPresences);
     }
