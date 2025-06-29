@@ -68,6 +68,19 @@ internal sealed class CrossPlatformLibraryPresenceResolver(
         };
     }
 
+    private static LibraryPresence? ResolveSystemDirectory(string file)
+    {
+        var candidate = GetCandidatePath(Environment.SystemDirectory, file);
+        if (candidate is null || !IsPathInsideDirectory(Environment.SystemDirectory, candidate)) return null;
+
+        return new LibraryPresence
+        {
+            LibraryName = file,
+            ResolvedPath = candidate,
+            LocationKind = LibraryLocationKind.InSystemDirectory
+        };
+    }
+
     private static LibraryPresence? ResolveInEnvironmentPath(string file)
     {
         if (Path.IsPathRooted(file) || Path.GetFileName(file) != file)
@@ -91,19 +104,6 @@ internal sealed class CrossPlatformLibraryPresenceResolver(
         }
 
         return null;
-    }
-
-    private static LibraryPresence? ResolveSystemDirectory(string file)
-    {
-        var candidate = GetCandidatePath(Environment.SystemDirectory, file);
-        if (candidate is null || !IsPathInsideDirectory(Environment.SystemDirectory, candidate)) return null;
-
-        return new LibraryPresence
-        {
-            LibraryName = file,
-            ResolvedPath = candidate,
-            LocationKind = LibraryLocationKind.InSystemDirectory
-        };
     }
 
     private static LibraryPresence? ResolveAbsolutePath(string file)
