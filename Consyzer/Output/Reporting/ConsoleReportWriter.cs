@@ -1,5 +1,6 @@
 ﻿using Consyzer.Core.Models;
 using Consyzer.Output.Formatters;
+using static Consyzer.Constants.Output;
 using static Consyzer.Constants.Output.Structure;
 
 namespace Consyzer.Output.Reporting;
@@ -63,10 +64,11 @@ internal sealed class ConsoleReportWriter : IReportWriter
         var builder = new IndentedTextBuilder()
             .Title(Section.Bracketed.LibraryPresences)
             .PushIndent()
-            .IndexedItems(presences, p =>
+            .IndexedSection(presences, (b, p) =>
             {
-                var presence = p.LocationKind == LibraryLocationKind.Missing ? "MISSING" : "FOUND";
-                return $"{p.LibraryName} — {presence} [{p.LocationKind}]";
+                b.Line(Label.Library.Name, p.LibraryName);
+                b.Line(Label.Library.ResolvedPath, p.ResolvedPath ?? "null");
+                b.Line(Label.Library.LocationKind, p.LocationKind);
             })
             .PopIndent();
 

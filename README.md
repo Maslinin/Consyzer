@@ -78,9 +78,18 @@ The following report formats are supported:
             ImportName: 'anotherlib.dll'
             ImportFlags: 'CallingConventionStdCall'
 [LibraryPresences]
-    [0] existentlib.dll - FOUND [InSystemDirectory]
-    [1] missinglib.dll - MISSING [Missing]
-    [2] anotherlib.dll - FOUND [InEnvironmentPath]
+    [0]
+        LibraryName: existentlib.dll
+        ResolvedPath: C:\Windows\System32\existentlib.dll
+        LocationKind: InSystemDirectory
+    [1]
+        LibraryName: missinglib.dll
+        ResolvedPath: null
+        LocationKind: Missing
+    [2]
+        LibraryName: anotherlib.dll
+        ResolvedPath: C:\EnvPath\anotherlib.dll
+        LocationKind: InEnvironmentPath
 [Summary]
     TotalFiles: 3
     EcmaAssemblies: 3
