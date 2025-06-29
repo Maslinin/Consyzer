@@ -141,5 +141,5 @@ Consyzer.exe --AnalysisDirectory C:\Modules --SearchPattern "*.dll, *.exe" --Rec
 ```
 
 ## Анализ нескольких проектов в решении
-Вы можете использовать [этот](https://github.com/Maslinin/Consyzer/blob/master/DevOps/SolutionAnalyzer.ps1) сценарий *PowerShell* для анализа выходных артефактов всех проектов в решении. 
+Вы можете использовать [этот](https://github.com/Maslinin/Consyzer/blob/master/DevOps/Scripts/SolutionAnalyzer.ps1) сценарий *PowerShell* для анализа выходных артефактов всех проектов в решении.  
 Этот сценарий может быть также использован в **конвейере CI/CD**.

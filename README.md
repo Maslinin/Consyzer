@@ -139,5 +139,5 @@ Consyzer.exe --AnalysisDirectory C:\Modules --SearchPattern "*.dll, *.exe" --Rec
 ```
 
 ## Analyzing multiple projects in a solution
-You can use [this](https://github.com/Maslinin/Consyzer/blob/master/DevOps/SolutionAnalyzer.ps1) PowerShell script to analyze the output artifacts of all projects in a solution.  
+You can use [this](https://github.com/Maslinin/Consyzer/blob/master/DevOps/Scripts/SolutionAnalyzer.ps1) PowerShell script to analyze the output artifacts of all projects in a solution.  
 This script can also be used in a **CI/CD pipeline**.
