@@ -58,7 +58,7 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish Consyzer/Consyzer.csproj -c Release -o _publish
+          dotnet publish Consyzer/Consyzer.csproj -c Release -o _publish/Consyzer
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
