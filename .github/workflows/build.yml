@@ -57,10 +57,11 @@ jobs:
         run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
       - name: Publish
-        run: dotnet publish -c Release
+        run: |
+          dotnet publish Consyzer/Consyzer.csproj -c Release -o _publish
 
-      - name: Upload Artifact - Consyzer Utility
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Consyzer
-          path: Consyzer/bin/**/publish
+          path: _publish/
